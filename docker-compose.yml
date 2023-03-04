@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  psql:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "25432:5432"
+    volumes:
+      - ./DDL:/docker-entrypoint-initdb.d
+      - ./data/psql/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_ROOT_PASSWORD: "${APP_POSTGRES_PASSWORD}"
+      POSTGRES_DATABASE: "${APP_POSTGRES_DATABASE}"
+      POSTGRES_USER: "${APP_POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${APP_POSTGRES_PASSWORD}"
+volumes:
+  psql_data:
+    driver: local
