@@ -2,18 +2,20 @@ version: '3.9'
 
 services:
   psql:
-    image: postgres:latest
+    build:
+      context: ./docker/psql
+      dockerfile: Dockerfile
     container_name: postgres
     ports:
-      - "25432:5432"
+      - "5432:5432"
     volumes:
       - ./DDL:/docker-entrypoint-initdb.d
-      - ./data/psql/data:/var/lib/postgresql/data
+      - ./docker/psql/data:/var/lib/postgresql/data
     environment:
-      POSTGRES_ROOT_PASSWORD: "${APP_POSTGRES_PASSWORD}"
-      POSTGRES_DATABASE: "${APP_POSTGRES_DATABASE}"
-      POSTGRES_USER: "${APP_POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${APP_POSTGRES_PASSWORD}"
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=go_pg
+      - TZ=Asia/Tokyo
 volumes:
   psql_data:
     driver: local
