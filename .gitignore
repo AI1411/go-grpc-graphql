@@ -1,3 +1,4 @@
 .idea/dataSources/
 docker/psql/data/
 *.env.local
+tmp/

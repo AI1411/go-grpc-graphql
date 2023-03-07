@@ -1,6 +1,26 @@
 version: '3.9'
 
 services:
+  star:
+    build:
+      context: .
+    container_name: star
+    tty: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/go/src/
+      - ./go.mod:/go/src/go.mod
+      - ./go.sum:/go/src/go.sum
+    environment:
+      - STAR_POSTGRES_HOST=${STAR_POSTGRES_HOST}
+      - STAR_POSTGRES_PORT=${STAR_POSTGRES_PORT}
+      - STAR_POSTGRES_DB=${STAR_POSTGRES_DATABASE}
+      - STAR_POSTGRES_USER=${STAR_POSTGRES_USER}
+      - STAR_POSTGRES_PASSWORD=${STAR_POSTGRES_PASSWORD}
+      - TZ=Asia/Tokyo
+    networks:
+      - star-network
   psql:
     build:
       context: ./docker/psql
@@ -12,10 +32,17 @@ services:
       - ./DDL:/docker-entrypoint-initdb.d
       - ./docker/psql/data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_USER=root
-      - POSTGRES_DB=go_pg
+      - STAR_POSTGRES_HOST=${STAR_POSTGRES_HOST}
+      - STAR_POSTGRES_PORT=${STAR_POSTGRES_PORT}
+      - STAR_POSTGRES_DB=${STAR_POSTGRES_DATABASE}
+      - STAR_POSTGRES_USER=${STAR_POSTGRES_USER}
+      - STAR_POSTGRES_PASSWORD=${STAR_POSTGRES_PASSWORD}
       - TZ=Asia/Tokyo
+    networks:
+      - star-network
 volumes:
   psql_data:
     driver: local
+networks:
+  star-network:
+    external: false

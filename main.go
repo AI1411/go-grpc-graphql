@@ -14,7 +14,6 @@ func main() {
 		fmt.Println(err.Error())
 		panic("Error loading .env file")
 	}
-	log.Printf("env=%+v", e)
 
 	dbClient, err := db.NewClient(&e.DB)
 	if err != nil {

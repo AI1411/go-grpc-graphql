@@ -32,7 +32,7 @@ func open(env *env.DB) (*gorm.DB, error) {
 	log.Printf("env=%+v", env)
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Tokyo",
 		env.PostgresHost,
-		env.PostgresUsername,
+		env.PostgresUser,
 		env.PostgresPassword,
 		env.PostgresDatabase,
 		env.PostgresPort,
