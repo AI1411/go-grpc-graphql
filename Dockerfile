@@ -18,6 +18,11 @@ RUN useradd -s /bin/bash -m ${USERNAME} \
     && go install mvdan.cc/gofumpt@latest \
     && go install golang.org/x/tools/cmd/goimports@latest \
     && go install github.com/kyoh86/richgo@latest \
+    && go install -v google.golang.org/protobuf/cmd/protoc-gen-go@v1.26.0 \
+    && go install -v google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1.0 \
+    && go install -v github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@v1.4.1 \
+    && go install -v github.com/stormcat24/protodep@0.1.3 \
+    && go install -v github.com/golang/mock/mockgen@v1.5.0 \
     && apt-get remove --purge --auto-remove -y \
     && rm -rf /var/lib/apt/lists/*
 

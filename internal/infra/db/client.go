@@ -2,7 +2,6 @@ package db
 
 import (
 	"fmt"
-	"log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -29,7 +28,6 @@ func NewClient(e *env.DB) (*Client, error) {
 }
 
 func open(env *env.DB) (*gorm.DB, error) {
-	log.Printf("env=%+v", env)
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Tokyo",
 		env.PostgresHost,
 		env.PostgresUser,

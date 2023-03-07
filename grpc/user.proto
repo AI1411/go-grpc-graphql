@@ -1,0 +1,127 @@
+syntax = 'proto3';
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = '/grpc';
+
+package user.v1;
+
+service UserService {
+  rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
+  rpc ListUser (ListUserRequest) returns (ListUserResponse) {}
+  rpc CreateUser (CreateUserRequest) returns (google.protobuf.Empty) {}
+  rpc UpdateUser (UpdateUserRequest) returns (google.protobuf.Empty) {}
+  rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty) {}
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message ListUserRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message ListUserResponse {
+  repeated User users = 1;
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  User user = 1;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message User {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string password = 4;
+  Status status = 5;
+  Prefecture preference = 6;
+  string introduction = 7;
+  BloodType blood_type = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+enum Status {
+  STATUS_NULL = 0;
+  ACTIVE = 1;
+  RESIGNED = 2;
+  BANDED = 3;
+  PREMIUM = 4;
+}
+
+// 都道府県情報を表すenum型
+enum Prefecture {
+  PREFECTURE_NULL = 0;
+  HOKKAIDO = 1;
+  AOMORI = 2;
+  IWATE = 3;
+  MIYAGI = 4;
+  AKITA = 5;
+  YAMAGATA = 6;
+  FUKUSHIMA = 7;
+  IBARAKI = 8;
+  TOCHIGI = 9;
+  GUNMA = 10;
+  SAITAMA = 11;
+  CHIBA = 12;
+  TOKYO = 13;
+  KANAGAWA = 14;
+  NIIGATA = 15;
+  TOYAMA = 16;
+  ISHIKAWA = 17;
+  FUKUI = 18;
+  YAMANASHI = 19;
+  NAGANO = 20;
+  GIFU = 21;
+  SHIZUOKA = 22;
+  AICHI = 23;
+  MIE = 24;
+  SHIGA = 25;
+  KYOTO = 26;
+  OSAKA = 27;
+  HYOGO = 28;
+  NARA = 29;
+  WAKAYAMA = 30;
+  TOTTORI = 31;
+  SHIMANE = 32;
+  OKAYAMA = 33;
+  HIROSHIMA = 34;
+  YAMAGUCHI = 35;
+  TOKUSHIMA = 36;
+  KAGAWA = 37;
+  EHIME = 38;
+  KOCHI = 39;
+  FUKUOKA = 40;
+  SAGA = 41;
+  NAGASAKI = 42;
+  KUMAMOTO = 43;
+  OITA = 44;
+  MIYAZAKI = 45;
+  KAGOSHIMA = 46;
+  OKINAWA = 47;
+  OVERSEAS = 48;
+}
+
+enum BloodType {
+  BLOOD_TYPE_NULL = 0;
+  A = 1;
+  B = 2;
+  O = 3;
+  AB = 4;
+}
