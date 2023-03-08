@@ -1,4 +1,4 @@
-module github.com/AI1411/go-graphql-grpc
+module github.com/AI1411/go-grpc-praphql
 
 go 1.19
 

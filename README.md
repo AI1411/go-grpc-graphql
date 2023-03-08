@@ -3,4 +3,5 @@
 ```bash
 $ cp .env.local.sample .env.local
 $ make up
+$ make gen-proto
 ```

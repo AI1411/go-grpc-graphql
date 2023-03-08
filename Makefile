@@ -1,4 +1,4 @@
-.PHONY: up gen-user-proto
+.PHONY: up gen-proto
 up:
 	docker-compose --env-file .env.local -f docker-compose.yml up -d --build
 gen-proto:

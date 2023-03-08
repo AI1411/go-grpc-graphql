@@ -3,9 +3,14 @@ package main
 import (
 	"fmt"
 	"log"
+	"net"
 
-	"github.com/AI1411/go-graphql-grpc/internal/env"
-	"github.com/AI1411/go-graphql-grpc/internal/infra/db"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
+
+	grpcServer "github.com/AI1411/go-grpc-praphql/grpc"
+	"github.com/AI1411/go-grpc-praphql/internal/env"
+	"github.com/AI1411/go-grpc-praphql/internal/server"
 )
 
 func main() {
@@ -15,9 +20,19 @@ func main() {
 		panic("Error loading .env file")
 	}
 
-	dbClient, err := db.NewClient(&e.DB)
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", e.Port))
 	if err != nil {
-		panic(err)
+		log.Fatalf("failed to listen: %v", err)
 	}
-	log.Printf("dbClient=%+v", dbClient)
+
+	s := grpc.NewServer()
+	grpcServer.RegisterUserServiceServer(s, &server.UserServer{})
+
+	reflection.Register(s)
+
+	if err = s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+
+	log.Printf("lister to sever port %s", e.Port)
 }
