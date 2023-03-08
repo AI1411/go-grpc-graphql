@@ -9,7 +9,6 @@ package user.v1;
 
 service UserService {
   rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
-  rpc ListUser (ListUserRequest) returns (ListUserResponse) {}
   rpc CreateUser (CreateUserRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUser (UpdateUserRequest) returns (google.protobuf.Empty) {}
   rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty) {}
@@ -21,15 +20,6 @@ message GetUserRequest {
 
 message GetUserResponse {
   User user = 1;
-}
-
-message ListUserRequest {
-  int32 page = 1;
-  int32 limit = 2;
-}
-
-message ListUserResponse {
-  repeated User users = 1;
 }
 
 message CreateUserRequest {
