@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"github.com/AI1411/go-grpc-praphql/internal/domain/user/entity"
 	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
@@ -23,8 +24,18 @@ func NewUserRepository(dbClient *db.Client) UserRepository {
 }
 
 func (u *userRepository) GetUser(ctx context.Context, userID string) (*entity.User, error) {
-	//TODO implement me
-	panic("implement me")
+	return &entity.User{
+		ID:           "tes",
+		Username:     "tes",
+		Email:        "e",
+		Password:     "e",
+		Status:       "sss",
+		Prefecture:   "sss",
+		Introduction: "sss",
+		BloodType:    "sss",
+		CreatedAt:    time.Time{},
+		UpdatedAt:    time.Time{},
+	}, nil
 }
 
 func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) error {

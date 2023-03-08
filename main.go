@@ -10,6 +10,7 @@ import (
 
 	grpcServer "github.com/AI1411/go-grpc-praphql/grpc"
 	"github.com/AI1411/go-grpc-praphql/internal/env"
+	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
 	"github.com/AI1411/go-grpc-praphql/internal/server"
 )
 
@@ -25,8 +26,13 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	dbClient, err := db.NewClient(&e.DB)
+	if err != nil {
+		log.Fatalf("failed to connect to db: %v", err)
+	}
+
 	s := grpc.NewServer()
-	grpcServer.RegisterUserServiceServer(s, &server.UserServer{})
+	grpcServer.RegisterUserServiceServer(s, server.NewUserServer(dbClient))
 
 	reflection.Register(s)
 
