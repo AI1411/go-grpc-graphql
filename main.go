@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
@@ -26,7 +27,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	dbClient, err := db.NewClient(&e.DB)
+	dbClient, err := db.NewClient(&e.DB, &zap.Logger{})
 	if err != nil {
 		log.Fatalf("failed to connect to db: %v", err)
 	}

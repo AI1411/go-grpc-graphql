@@ -1,8 +1,10 @@
 package db
 
 import (
+	"context"
 	"fmt"
 
+	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
@@ -13,14 +15,14 @@ type Client struct {
 	db *gorm.DB
 }
 
-func NewClient(e *env.DB) (*Client, error) {
-	//gormLogger := initGormLogger(logger)
+func NewClient(e *env.DB, zapLogger *zap.Logger) (*Client, error) {
+	gormLogger := initGormLogger(zapLogger)
 	db, err := open(e)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect master DB: %v", err)
 	}
 
-	//db.Logger = db.Logger.LogMode(gormLogger.LogLevel)
+	db.Logger = db.Logger.LogMode(gormLogger.LogLevel)
 
 	return &Client{
 		db: db,
@@ -41,4 +43,8 @@ func open(env *env.DB) (*gorm.DB, error) {
 		return nil, err
 	}
 	return db, nil
+}
+
+func (c *Client) Conn(ctx context.Context) *gorm.DB {
+	return c.db.WithContext(ctx)
 }

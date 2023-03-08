@@ -2,7 +2,11 @@ package repository
 
 import (
 	"context"
-	"time"
+	"errors"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"gorm.io/gorm"
 
 	"github.com/AI1411/go-grpc-praphql/internal/domain/user/entity"
 	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
@@ -24,18 +28,15 @@ func NewUserRepository(dbClient *db.Client) UserRepository {
 }
 
 func (u *userRepository) GetUser(ctx context.Context, userID string) (*entity.User, error) {
-	return &entity.User{
-		ID:           "tes",
-		Username:     "tes",
-		Email:        "e",
-		Password:     "e",
-		Status:       "sss",
-		Prefecture:   "sss",
-		Introduction: "sss",
-		BloodType:    "sss",
-		CreatedAt:    time.Time{},
-		UpdatedAt:    time.Time{},
-	}, nil
+	var user entity.User
+	if err := u.dbClient.Conn(ctx).Where("id", userID).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, status.Errorf(codes.NotFound, "user not found: %v", err)
+		}
+		return nil, err
+	}
+
+	return &user, nil
 }
 
 func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) error {

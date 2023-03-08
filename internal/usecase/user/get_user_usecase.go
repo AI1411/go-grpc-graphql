@@ -28,11 +28,12 @@ func (usecase *getUserUsecaseImpl) Exec(ctx context.Context, userID string) (*gr
 	}
 	return &grpc.GetUserResponse{
 		User: &grpc.User{
-			Id:       user.ID,
-			Email:    userID,
-			Username: user.Username,
-			Password: user.Password,
-			Status:   grpc.Status_ACTIVE,
+			Id:           user.ID,
+			Email:        user.Email,
+			Username:     user.Username,
+			Password:     user.Password,
+			Status:       grpc.Status_ACTIVE,
+			Introduction: user.Introduction,
 		},
 	}, nil
 }
