@@ -4,13 +4,13 @@ import (
 	"context"
 	"errors"
 
-	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 
 	"github.com/AI1411/go-grpc-praphql/internal/domain/user/entity"
 	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
+	"github.com/AI1411/go-grpc-praphql/internal/util"
 )
 
 type UserRepository interface {
@@ -41,12 +41,10 @@ func (u *userRepository) GetUser(ctx context.Context, userID string) (*entity.Us
 }
 
 func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) error {
-	password, err := bcrypt.GenerateFromPassword(user.Password, 10)
-	user.Password = password
-	if err != nil {
+	if err := util.SetPassword(user); err != nil {
 		return err
 	}
-	if err = u.dbClient.Conn(ctx).Create(&user).Error; err != nil {
+	if err := u.dbClient.Conn(ctx).Create(&user).Error; err != nil {
 		return err
 	}
 	return nil
