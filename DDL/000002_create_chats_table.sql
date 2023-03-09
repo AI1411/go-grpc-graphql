@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS chats;
 CREATE TABLE IF NOT EXISTS chats
 (
-    id         UUID                     NOT NULL DEFAULT gen_random_uuid(), -- ID
+    id         UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID
     user_id    UUID                     NOT NULL,                           -- ユーザID
     body       VARCHAR(255)             NOT NULL,                           -- 本文
     is_read    BOOLEAN                  NOT NULL DEFAULT FALSE,             -- 既読フラグ

@@ -66,14 +66,14 @@ CREATE TYPE blood_type AS ENUM (
     );
 CREATE TABLE users
 (
-    id           UUID                     NOT NULL DEFAULT gen_random_uuid(), -- ID
+    id           UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID
     username     VARCHAR(100)             NOT NULL,                           -- ユーザ名
     email        VARCHAR(100)             NOT NULL UNIQUE,                    -- メールアドレス
-    "password"   VARCHAR(100)             NOT NULL,                           -- パスワード
+    "password"   TEXT                     NOT NULL,                           -- パスワード
     status       user_status              NOT NULL DEFAULT 'ACTIVE',          -- ユーザステータス
-    prefecture   prefecture               NOT NULL DEFAULT 'ひみつにする',      -- 都道府県
+    prefecture   prefecture               NOT NULL DEFAULT 'ひみつにする',          -- 都道府県
     introduction TEXT,                                                        -- 自己紹介
-    blood_type   blood_type               NOT NULL DEFAULT 'ひみつにする',      -- 血液型
+    blood_type   blood_type               NOT NULL DEFAULT 'ひみつにする',          -- 血液型
     created_at   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),             -- 作成日時
     updated_at   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()              -- 更新日時
 );

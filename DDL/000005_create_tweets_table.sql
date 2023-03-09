@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS tweets;
 CREATE TABLE IF NOT EXISTS tweets
 (
-    id         UUID                     NOT NULL DEFAULT gen_random_uuid(), -- ID
+    id         UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID
     user_id    UUID                     NOT NULL,                           -- ユーザID
     body       VARCHAR(255)             NOT NULL,                           -- 本文
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),             -- 作成日時

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS rooms;
 CREATE TABLE rooms
 (
-    id         UUID      NOT NULL DEFAULT gen_random_uuid(), -- ルームID
+    id         UUID PRIMARY KEY   DEFAULT gen_random_uuid(), -- ルームID
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),             -- 作成日時
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()              -- 更新日時
 );

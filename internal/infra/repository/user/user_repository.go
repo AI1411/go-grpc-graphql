@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
@@ -40,8 +41,15 @@ func (u *userRepository) GetUser(ctx context.Context, userID string) (*entity.Us
 }
 
 func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) error {
-	//TODO implement me
-	panic("implement me")
+	password, err := bcrypt.GenerateFromPassword(user.Password, 10)
+	user.Password = password
+	if err != nil {
+		return err
+	}
+	if err = u.dbClient.Conn(ctx).Create(&user).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *userRepository) UpdateUser(ctx context.Context, user *entity.User) error {

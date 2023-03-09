@@ -23,7 +23,13 @@ message GetUserResponse {
 }
 
 message CreateUserRequest {
-  User user = 1;
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  Status status = 4;
+  Prefecture prefecture = 5;
+  string introduction = 6;
+  BloodType blood_type = 7;
 }
 
 message UpdateUserRequest {
@@ -40,7 +46,7 @@ message User {
   string email = 3;
   string password = 4;
   Status status = 5;
-  Prefecture preference = 6;
+  Prefecture prefecture = 6;
   string introduction = 7;
   BloodType blood_type = 8;
   google.protobuf.Timestamp created_at = 9;

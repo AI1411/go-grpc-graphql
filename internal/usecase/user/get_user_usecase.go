@@ -5,6 +5,7 @@ import (
 
 	"github.com/AI1411/go-grpc-praphql/grpc"
 	userRepo "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-praphql/internal/util"
 )
 
 type GetUserUsecase interface {
@@ -28,10 +29,10 @@ func (usecase *getUserUsecaseImpl) Exec(ctx context.Context, userID string) (*gr
 	}
 	return &grpc.GetUserResponse{
 		User: &grpc.User{
-			Id:           user.ID,
+			Id:           util.NullUUIDToString(user.ID),
 			Email:        user.Email,
 			Username:     user.Username,
-			Password:     user.Password,
+			Password:     string(user.Password),
 			Status:       grpc.Status_ACTIVE,
 			Introduction: user.Introduction,
 		},
