@@ -8,6 +8,8 @@ import (
 	"github.com/AI1411/go-grpc-praphql/grpc"
 	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
 	repository "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-praphql/internal/server/form"
+	userForm "github.com/AI1411/go-grpc-praphql/internal/server/form/user"
 	"github.com/AI1411/go-grpc-praphql/internal/usecase/user"
 )
 
@@ -23,6 +25,11 @@ func NewUserServer(dbClient *db.Client) *UserServer {
 }
 
 func (s *UserServer) GetUser(ctx context.Context, in *grpc.GetUserRequest) (*grpc.GetUserResponse, error) {
+	validator := form.NewFormValidator(userForm.NewGetUserForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
 	userRepo := repository.NewUserRepository(s.dbClient)
 	usecase := user.NewGetUserUsecaseImpl(userRepo)
 	return usecase.Exec(ctx, in.GetId())
