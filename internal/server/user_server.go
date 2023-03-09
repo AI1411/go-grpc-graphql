@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"log"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 
@@ -37,9 +36,13 @@ func (s *UserServer) GetUser(ctx context.Context, in *grpc.GetUserRequest) (*grp
 }
 
 func (s *UserServer) CreateUser(ctx context.Context, in *grpc.CreateUserRequest) (*emptypb.Empty, error) {
+	validator := form.NewFormValidator(userForm.NewCreateUserForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
 	userRepo := repository.NewUserRepository(s.dbClient)
 	usecase := user.NewCreateUserUsecaseImpl(userRepo)
-	log.Printf("CreateUser: %v", in)
 	if err := usecase.Exec(ctx, in); err != nil {
 		return nil, err
 	}
