@@ -16,7 +16,7 @@ import (
 type UserRepository interface {
 	GetUser(context.Context, string) (*entity.User, error)
 	CreateUser(context.Context, *entity.User) error
-	UpdateUser(context.Context, *entity.User) error
+	UpdateUserProfile(context.Context, *entity.User) error
 	DeleteUser(context.Context, string) error
 }
 
@@ -50,9 +50,14 @@ func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) erro
 	return nil
 }
 
-func (u *userRepository) UpdateUser(ctx context.Context, user *entity.User) error {
-	//TODO implement me
-	panic("implement me")
+func (u *userRepository) UpdateUserProfile(ctx context.Context, user *entity.User) error {
+	if err := u.dbClient.Conn(ctx).
+		Where("id", user.ID).
+		Select("Username", "Prefecture", "Introduction", "BloodType").
+		Updates(&user).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *userRepository) DeleteUser(ctx context.Context, userID string) error {

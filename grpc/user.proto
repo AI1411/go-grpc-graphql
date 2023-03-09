@@ -10,7 +10,7 @@ package user.v1;
 service UserService {
   rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
   rpc CreateUser (CreateUserRequest) returns (google.protobuf.Empty) {}
-  rpc UpdateUser (UpdateUserRequest) returns (google.protobuf.Empty) {}
+  rpc UpdateUserProfile (UpdateUserProfileRequest) returns (google.protobuf.Empty) {}
   rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty) {}
 }
 
@@ -31,8 +31,12 @@ message CreateUserRequest {
   BloodType blood_type = 7;
 }
 
-message UpdateUserRequest {
-  User user = 1;
+message UpdateUserProfileRequest {
+  string id = 1;
+  string username = 2;
+  Prefecture prefecture = 3;
+  string introduction = 4;
+  BloodType blood_type = 5;
 }
 
 message DeleteUserRequest {
