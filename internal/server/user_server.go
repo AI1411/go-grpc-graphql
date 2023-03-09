@@ -50,6 +50,11 @@ func (s *UserServer) CreateUser(ctx context.Context, in *grpc.CreateUserRequest)
 }
 
 func (s *UserServer) UpdateUserProfile(ctx context.Context, in *grpc.UpdateUserProfileRequest) (*emptypb.Empty, error) {
+	validator := form.NewFormValidator(userForm.NewUpdateUserProfileForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
 	userRepo := repository.NewUserRepository(s.dbClient)
 	usecase := user.NewUpdateUserProfileUsecaseImpl(userRepo)
 	if err := usecase.Exec(ctx, in); err != nil {
