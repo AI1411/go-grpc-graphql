@@ -19,6 +19,7 @@ type UserRepository interface {
 	UpdateUserProfile(context.Context, *entity.User) error
 	DeleteUser(context.Context, string) error
 	UpdateUserStatus(context.Context, *entity.User) error
+	UpdateUserPassword(context.Context, *entity.UserPassword) error
 }
 
 type userRepository struct {
@@ -26,7 +27,9 @@ type userRepository struct {
 }
 
 func NewUserRepository(dbClient *db.Client) UserRepository {
-	return &userRepository{dbClient: dbClient}
+	return &userRepository{
+		dbClient: dbClient,
+	}
 }
 
 func (u *userRepository) GetUser(ctx context.Context, userID string) (*entity.User, error) {
@@ -71,6 +74,36 @@ func (u *userRepository) UpdateUserStatus(ctx context.Context, user *entity.User
 		Model(&entity.User{}).
 		Where("id", user.ID).
 		Update("status", user.Status).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *userRepository) UpdateUserPassword(ctx context.Context, user *entity.UserPassword) error {
+	userEntity := &entity.User{}
+	// get user
+	if err := u.dbClient.Conn(ctx).Where("id", user.ID).First(&userEntity).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return status.Errorf(codes.NotFound, "user not found: %v", err)
+		}
+		return status.Errorf(codes.Internal, "failed to get user: %v", err)
+	}
+	// check password
+	if err := util.ComparePassword(userEntity, user.ExPassword); err != nil {
+		return status.Errorf(codes.InvalidArgument, "invalid password: %v", err)
+	}
+
+	// set new password
+	userEntity.Password = user.Password
+	if err := util.SetPassword(userEntity); err != nil {
+		return err
+	}
+	user.Password = userEntity.Password
+
+	if err := u.dbClient.Conn(ctx).
+		Model(&entity.User{}).
+		Where("id", user.ID).
+		Update("password", user.Password).Error; err != nil {
 		return err
 	}
 	return nil

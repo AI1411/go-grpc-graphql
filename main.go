@@ -12,6 +12,7 @@ import (
 	grpcServer "github.com/AI1411/go-grpc-praphql/grpc"
 	"github.com/AI1411/go-grpc-praphql/internal/env"
 	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
+	repository "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
 	"github.com/AI1411/go-grpc-praphql/internal/server"
 )
 
@@ -31,9 +32,15 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to connect to db: %v", err)
 	}
+	userRepo := repository.NewUserRepository(dbClient)
 
 	s := grpc.NewServer()
-	grpcServer.RegisterUserServiceServer(s, server.NewUserServer(dbClient))
+	userServer := server.NewUserServer(
+		dbClient,
+		&zap.Logger{},
+		userRepo,
+	)
+	grpcServer.RegisterUserServiceServer(s, userServer)
 
 	reflection.Register(s)
 

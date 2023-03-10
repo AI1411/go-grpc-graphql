@@ -1,0 +1,19 @@
+package user
+
+import "github.com/AI1411/go-grpc-praphql/grpc"
+
+type UpdateUserPasswordForm struct {
+	ID                   string `jaFieldName:"ユーザID" validate:"required,uuid4"`
+	ExPassword           string `jaFieldName:"現在のパスワード" validate:"required,lte=100"`
+	Password             string `jaFieldName:"新しいパスワード" validate:"required,lte=100"`
+	PasswordConfirmation string `jaFieldName:"新しいパスワード(確認)" validate:"required,lte=100,eqfield=Password"`
+}
+
+func NewUpdateUserPasswordForm(in *grpc.UpdateUserPasswordRequest) *UpdateUserPasswordForm {
+	return &UpdateUserPasswordForm{
+		ID:                   in.GetId(),
+		ExPassword:           in.GetExPassword(),
+		Password:             in.GetPassword(),
+		PasswordConfirmation: in.GetPasswordConfirmation(),
+	}
+}

@@ -10,7 +10,7 @@ import (
 	"github.com/AI1411/go-grpc-praphql/internal/util"
 )
 
-type Exec interface {
+type UpdateUserProfileUsecase interface {
 	Exec(ctx context.Context, in *grpc.UpdateUserProfileRequest) error
 }
 
@@ -18,7 +18,7 @@ type updateUserProfileUsecaseImpl struct {
 	userRepository repository.UserRepository
 }
 
-func NewUpdateUserProfileUsecaseImpl(userRepository repository.UserRepository) Exec {
+func NewUpdateUserProfileUsecaseImpl(userRepository repository.UserRepository) UpdateUserProfileUsecase {
 	return &updateUserProfileUsecaseImpl{
 		userRepository: userRepository,
 	}

@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 
+	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/AI1411/go-grpc-praphql/grpc"
@@ -15,12 +16,20 @@ import (
 
 type UserServer struct {
 	grpc.UnimplementedUserServiceServer
-	dbClient *db.Client
+	dbClient  *db.Client
+	zapLogger *zap.Logger
+	userRepo  repository.UserRepository
 }
 
-func NewUserServer(dbClient *db.Client) *UserServer {
+func NewUserServer(
+	dbClient *db.Client,
+	zapLogger *zap.Logger,
+	userRepo repository.UserRepository,
+) *UserServer {
 	return &UserServer{
-		dbClient: dbClient,
+		dbClient:  dbClient,
+		zapLogger: zapLogger,
+		userRepo:  userRepo,
 	}
 }
 
@@ -30,8 +39,7 @@ func (s *UserServer) GetUser(ctx context.Context, in *grpc.GetUserRequest) (*grp
 		return nil, err
 	}
 
-	userRepo := repository.NewUserRepository(s.dbClient)
-	usecase := user.NewGetUserUsecaseImpl(userRepo)
+	usecase := user.NewGetUserUsecaseImpl(s.userRepo)
 	return usecase.Exec(ctx, in.GetId())
 }
 
@@ -41,8 +49,7 @@ func (s *UserServer) CreateUser(ctx context.Context, in *grpc.CreateUserRequest)
 		return nil, err
 	}
 
-	userRepo := repository.NewUserRepository(s.dbClient)
-	usecase := user.NewCreateUserUsecaseImpl(userRepo)
+	usecase := user.NewCreateUserUsecaseImpl(s.userRepo)
 	if err := usecase.Exec(ctx, in); err != nil {
 		return nil, err
 	}
@@ -55,8 +62,7 @@ func (s *UserServer) UpdateUserProfile(ctx context.Context, in *grpc.UpdateUserP
 		return nil, err
 	}
 
-	userRepo := repository.NewUserRepository(s.dbClient)
-	usecase := user.NewUpdateUserProfileUsecaseImpl(userRepo)
+	usecase := user.NewUpdateUserProfileUsecaseImpl(s.userRepo)
 	if err := usecase.Exec(ctx, in); err != nil {
 		return nil, err
 	}
@@ -68,8 +74,25 @@ func (s *UserServer) DeleteUser(ctx context.Context, in *grpc.DeleteUserRequest)
 }
 
 func (s *UserServer) UpdateUserStatus(ctx context.Context, in *grpc.UpdateUserStatusRequest) (*emptypb.Empty, error) {
-	userRepo := repository.NewUserRepository(s.dbClient)
-	usecase := user.NewUpdateUserStatusUsecaseImpl(userRepo)
+	validator := form.NewFormValidator(userForm.NewUpdateUserStatusForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
+	usecase := user.NewUpdateUserStatusUsecaseImpl(s.userRepo)
+	if err := usecase.Exec(ctx, in); err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
+
+func (s *UserServer) UpdateUserPassword(ctx context.Context, in *grpc.UpdateUserPasswordRequest) (*emptypb.Empty, error) {
+	validator := form.NewFormValidator(userForm.NewUpdateUserPasswordForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
+	usecase := user.NewUpdateUserPasswordUsecaseImpl(s.userRepo)
 	if err := usecase.Exec(ctx, in); err != nil {
 		return nil, err
 	}

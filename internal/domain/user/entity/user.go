@@ -20,3 +20,10 @@ type User struct {
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
+
+type UserPassword struct {
+	ID                   uuid.NullUUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	ExPassword           []byte
+	Password             []byte
+	PasswordConfirmation []byte
+}

@@ -13,6 +13,7 @@ service UserService {
   rpc UpdateUserProfile (UpdateUserProfileRequest) returns (google.protobuf.Empty) {}
   rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUserStatus (UpdateUserStatusRequest) returns (google.protobuf.Empty) {}
+  rpc UpdateUserPassword (UpdateUserPasswordRequest) returns (google.protobuf.Empty) {}
 }
 
 message GetUserRequest {
@@ -47,6 +48,13 @@ message DeleteUserRequest {
 message UpdateUserStatusRequest {
   string id = 1;
   Status status = 2;
+}
+
+message UpdateUserPasswordRequest {
+  string id = 1;
+  string ex_password = 2; // 現在のパスワード
+  string password = 3; // 新しいパスワード
+  string password_confirmation = 4; // 新しいパスワードの確認
 }
 
 message User {
