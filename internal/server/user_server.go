@@ -69,10 +69,6 @@ func (s *UserServer) UpdateUserProfile(ctx context.Context, in *grpc.UpdateUserP
 	return &emptypb.Empty{}, nil
 }
 
-func (s *UserServer) DeleteUser(ctx context.Context, in *grpc.DeleteUserRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
-}
-
 func (s *UserServer) UpdateUserStatus(ctx context.Context, in *grpc.UpdateUserStatusRequest) (*emptypb.Empty, error) {
 	validator := form.NewFormValidator(userForm.NewUpdateUserStatusForm(in))
 	if err := validator.Validate(); err != nil {

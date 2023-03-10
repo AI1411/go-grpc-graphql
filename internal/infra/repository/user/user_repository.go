@@ -17,7 +17,6 @@ type UserRepository interface {
 	GetUser(context.Context, string) (*entity.User, error)
 	CreateUser(context.Context, *entity.User) error
 	UpdateUserProfile(context.Context, *entity.User) error
-	DeleteUser(context.Context, string) error
 	UpdateUserStatus(context.Context, *entity.User) error
 	UpdateUserPassword(context.Context, *entity.UserPassword) error
 }
@@ -64,11 +63,6 @@ func (u *userRepository) UpdateUserProfile(ctx context.Context, user *entity.Use
 	return nil
 }
 
-func (u *userRepository) DeleteUser(ctx context.Context, userID string) error {
-	//TODO implement me
-	panic("implement me")
-}
-
 func (u *userRepository) UpdateUserStatus(ctx context.Context, user *entity.User) error {
 	if err := u.dbClient.Conn(ctx).
 		Model(&entity.User{}).
@@ -96,7 +90,7 @@ func (u *userRepository) UpdateUserPassword(ctx context.Context, user *entity.Us
 	// set new password
 	userEntity.Password = user.Password
 	if err := util.SetPassword(userEntity); err != nil {
-		return err
+		return status.Errorf(codes.Internal, "failed to set password: %v", err)
 	}
 	user.Password = userEntity.Password
 
@@ -104,7 +98,7 @@ func (u *userRepository) UpdateUserPassword(ctx context.Context, user *entity.Us
 		Model(&entity.User{}).
 		Where("id", user.ID).
 		Update("password", user.Password).Error; err != nil {
-		return err
+		return status.Errorf(codes.Internal, "failed to update password: %v", err)
 	}
 	return nil
 }

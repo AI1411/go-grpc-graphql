@@ -11,7 +11,6 @@ service UserService {
   rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
   rpc CreateUser (CreateUserRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUserProfile (UpdateUserProfileRequest) returns (google.protobuf.Empty) {}
-  rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUserStatus (UpdateUserStatusRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUserPassword (UpdateUserPasswordRequest) returns (google.protobuf.Empty) {}
 }
@@ -39,10 +38,6 @@ message UpdateUserProfileRequest {
   Prefecture prefecture = 3;
   string introduction = 4;
   BloodType blood_type = 5;
-}
-
-message DeleteUserRequest {
-  string id = 1;
 }
 
 message UpdateUserStatusRequest {
