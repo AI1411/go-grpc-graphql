@@ -18,6 +18,7 @@ type UserRepository interface {
 	CreateUser(context.Context, *entity.User) error
 	UpdateUserProfile(context.Context, *entity.User) error
 	DeleteUser(context.Context, string) error
+	UpdateUserStatus(context.Context, *entity.User) error
 }
 
 type userRepository struct {
@@ -63,4 +64,14 @@ func (u *userRepository) UpdateUserProfile(ctx context.Context, user *entity.Use
 func (u *userRepository) DeleteUser(ctx context.Context, userID string) error {
 	//TODO implement me
 	panic("implement me")
+}
+
+func (u *userRepository) UpdateUserStatus(ctx context.Context, user *entity.User) error {
+	if err := u.dbClient.Conn(ctx).
+		Model(&entity.User{}).
+		Where("id", user.ID).
+		Update("status", user.Status).Error; err != nil {
+		return err
+	}
+	return nil
 }

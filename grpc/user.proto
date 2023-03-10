@@ -12,6 +12,7 @@ service UserService {
   rpc CreateUser (CreateUserRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUserProfile (UpdateUserProfileRequest) returns (google.protobuf.Empty) {}
   rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty) {}
+  rpc UpdateUserStatus (UpdateUserStatusRequest) returns (google.protobuf.Empty) {}
 }
 
 message GetUserRequest {
@@ -41,6 +42,11 @@ message UpdateUserProfileRequest {
 
 message DeleteUserRequest {
   string id = 1;
+}
+
+message UpdateUserStatusRequest {
+  string id = 1;
+  Status status = 2;
 }
 
 message User {

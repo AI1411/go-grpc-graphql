@@ -3,7 +3,7 @@ DROP TYPE IF EXISTS user_status;
 DROP TYPE IF EXISTS prefecture;
 DROP TYPE IF EXISTS blood_type;
 -- user_status型: ユーザのステータスを表すenum型
-CREATE TYPE user_status AS ENUM ('ACTIVE', 'RESIGNED', 'BANDED', 'PREMIUM');
+CREATE TYPE user_status AS ENUM ('通常会員', '退会済', 'アカウント停止', 'プレミアム');
 -- prefecture型: 都道府県名を表すenum型
 CREATE TYPE prefecture AS ENUM (
     'ひみつにする',
@@ -70,7 +70,7 @@ CREATE TABLE users
     username     VARCHAR(100)             NOT NULL,                           -- ユーザ名
     email        VARCHAR(100)             NOT NULL UNIQUE,                    -- メールアドレス
     "password"   TEXT                     NOT NULL,                           -- パスワード
-    status       user_status              NOT NULL DEFAULT 'ACTIVE',          -- ユーザステータス
+    status       user_status              NOT NULL DEFAULT '通常会員',          -- ユーザステータス
     prefecture   prefecture               NOT NULL DEFAULT 'ひみつにする',          -- 都道府県
     introduction TEXT,                                                        -- 自己紹介
     blood_type   blood_type               NOT NULL DEFAULT 'ひみつにする',          -- 血液型
@@ -84,15 +84,16 @@ COMMENT ON COLUMN users.username IS 'ユーザ名';
 COMMENT ON COLUMN users.email IS 'メールアドレス';
 COMMENT ON COLUMN users.password IS 'パスワード';
 COMMENT ON COLUMN users.status IS 'ユーザステータス
-    ACTIVE = 1; // アクティブ
-    RESIGNED = 2; // 退会済
-    BANDED = 3; // アカウント停止
-    PREMIUM = 4 // プレミアム';
+    通常会員 = 1;
+    退会済 = 2;
+    アカウント停止 = 3;
+    プレミアム = 4;';
 COMMENT ON COLUMN users.prefecture IS '都道府県';
 COMMENT ON COLUMN users.introduction IS '自己紹介';
 COMMENT ON COLUMN users.created_at IS '作成日時';
 COMMENT ON COLUMN users.updated_at IS '更新日時';
 
+CREATE INDEX id_idx ON users (id);
 CREATE INDEX username_idx ON users (username);
 CREATE INDEX status_idx ON users (status);
 CREATE INDEX created_at_idx ON users (created_at);

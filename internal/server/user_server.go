@@ -66,3 +66,12 @@ func (s *UserServer) UpdateUserProfile(ctx context.Context, in *grpc.UpdateUserP
 func (s *UserServer) DeleteUser(ctx context.Context, in *grpc.DeleteUserRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil
 }
+
+func (s *UserServer) UpdateUserStatus(ctx context.Context, in *grpc.UpdateUserStatusRequest) (*emptypb.Empty, error) {
+	userRepo := repository.NewUserRepository(s.dbClient)
+	usecase := user.NewUpdateUserStatusUsecaseImpl(userRepo)
+	if err := usecase.Exec(ctx, in); err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
