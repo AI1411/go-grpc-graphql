@@ -3,10 +3,12 @@ module github.com/AI1411/go-grpc-praphql
 go 1.19
 
 require (
+	github.com/blendle/zapdriver v1.3.1
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/google/uuid v1.3.0
+	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/pkg/errors v0.9.1
 	go.uber.org/zap v1.24.0
