@@ -7,18 +7,13 @@ services:
     container_name: star
     tty: true
     ports:
-      - "8080:8080"
+      - ${STAR_SERVER_PORT}:${STAR_SERVER_PORT}
     volumes:
       - ./:/go/src/
       - ./go.mod:/go/src/go.mod
       - ./go.sum:/go/src/go.sum
-    environment:
-      - STAR_POSTGRES_HOST=${STAR_POSTGRES_HOST}
-      - STAR_POSTGRES_PORT=${STAR_POSTGRES_PORT}
-      - STAR_POSTGRES_DB=${STAR_POSTGRES_DATABASE}
-      - STAR_POSTGRES_USER=${STAR_POSTGRES_USER}
-      - STAR_POSTGRES_PASSWORD=${STAR_POSTGRES_PASSWORD}
-      - TZ=Asia/Tokyo
+    env_file:
+      - .env.local
     networks:
       - star-network
   psql:

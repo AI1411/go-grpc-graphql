@@ -9,9 +9,9 @@ import (
 
 type Values struct {
 	DB
-	Env   string `default:"local" split_words:"true"`
-	Debug bool   `default:"false" split_words:"true"`
-	Port  string `default:"8080" split_words:"true"`
+	Env        string `default:"local" split_words:"true"`
+	Debug      bool   `default:"true" split_words:"true"`
+	ServerPort string `required:"true" split_words:"true"`
 }
 
 type DB struct {
