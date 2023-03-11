@@ -17,3 +17,15 @@ var BloodTypeName = map[string]BloodType{
 	"O":               "O型",
 	"AB":              "AB型",
 }
+
+var BloodTypeValue = map[string]BloodType{
+	"ひみつにする": "BLOOD_TYPE_NULL",
+	"A型":     "A",
+	"B型":     "B",
+	"O型":     "O",
+	"AB型":    "AB",
+}
+
+func (b BloodType) String() string {
+	return string(b)
+}

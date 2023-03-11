@@ -16,3 +16,14 @@ var UserStatusName = map[string]UserStatus{
 	"BANDED":   "アカウント停止",
 	"PREMIUM":  "プレミアム",
 }
+
+var UserStatusValue = map[string]UserStatus{
+	"通常会員":    "ACTIVE",
+	"退会済":     "RESIGNED",
+	"アカウント停止": "BANDED",
+	"プレミアム":   "PREMIUM",
+}
+
+func (u UserStatus) String() string {
+	return string(u)
+}
