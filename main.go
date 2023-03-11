@@ -7,7 +7,6 @@ import (
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 
 	grpcServer "github.com/AI1411/go-grpc-praphql/grpc"
 	"github.com/AI1411/go-grpc-praphql/internal/env"
@@ -21,15 +20,15 @@ import (
 func main() {
 	e, err := env.NewValue()
 	if err != nil {
-		panic("Error loading .env file")
+		log.Fatalf("failed to load env: %v", err)
 	}
 
-	zapLogger, _ := logger.NewLogger(e.Debug)
-
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", e.Port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", e.ServerPort))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
+	zapLogger, _ := logger.NewLogger(e.Debug)
 
 	dbClient, err := db.NewClient(&e.DB, zapLogger)
 	if err != nil {
@@ -50,11 +49,9 @@ func main() {
 	)
 	grpcServer.RegisterUserServiceServer(s, userServer)
 
-	reflection.Register(s)
+	zapLogger.Info("start grpc Server port: " + e.ServerPort)
 
 	if err = s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-
-	log.Printf("lister to sever port %s", e.Port)
 }
