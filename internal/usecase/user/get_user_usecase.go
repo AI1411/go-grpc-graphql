@@ -2,6 +2,9 @@ package user
 
 import (
 	"context"
+	"log"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/AI1411/go-grpc-praphql/grpc"
 	userRepo "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
@@ -27,6 +30,7 @@ func (usecase *getUserUsecaseImpl) Exec(ctx context.Context, userID string) (*gr
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("user: %+v", user)
 	return &grpc.GetUserResponse{
 		User: &grpc.User{
 			Id:           util.NullUUIDToString(user.ID),
@@ -35,6 +39,8 @@ func (usecase *getUserUsecaseImpl) Exec(ctx context.Context, userID string) (*gr
 			Password:     string(user.Password),
 			Status:       grpc.Status_ACTIVE,
 			Introduction: user.Introduction,
+			CreatedAt:    timestamppb.New(user.CreatedAt),
+			UpdatedAt:    timestamppb.New(user.UpdatedAt),
 		},
 	}, nil
 }
