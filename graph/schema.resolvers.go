@@ -6,21 +6,14 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
-	grpcUser "github.com/AI1411/go-grpc-praphql/graph/grpc"
 	"github.com/AI1411/go-grpc-praphql/graph/model"
 	"github.com/AI1411/go-grpc-praphql/grpc"
 )
 
 // CreateUser is the resolver for the CreateUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
-	userClient, err := grpcUser.ConnectUserServiceClient()
-	if err != nil {
-		return nil, err
-	}
-
-	userClient.CreateUser(ctx, &grpc.CreateUserRequest{
+	_, err := r.UserClient.CreateUser(ctx, &grpc.CreateUserRequest{
 		Username:     input.Username,
 		Email:        input.Email,
 		Password:     input.Password,
@@ -29,12 +22,33 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUse
 		BloodType:    grpc.BloodType(input.BloodType),
 	})
 
+	if err != nil {
+		return nil, err
+	}
+
 	return nil, nil
 }
 
 // GetUser is the resolver for the user field.
 func (r *queryResolver) GetUser(ctx context.Context, input string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+	user, err := r.UserClient.GetUser(ctx, &grpc.GetUserRequest{
+		Id: input,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.User{
+		ID:         user.User.GetId(),
+		Username:   user.User.GetUsername(),
+		Email:      user.User.GetEmail(),
+		Password:   user.User.GetPassword(),
+		Status:     user.User.GetStatus().String(),
+		Prefecture: user.User.GetPrefecture().String(),
+		BloodType:  user.User.GetBloodType().String(),
+		CreatedAt:  user.User.GetCreatedAt().String(),
+		UpdatedAt:  user.User.GetUpdatedAt().String(),
+	}, nil
 }
 
 // Mutation returns MutationResolver implementation.

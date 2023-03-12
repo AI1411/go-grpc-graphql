@@ -12,6 +12,14 @@ type CreateUserInput struct {
 }
 
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID           string `json:"id"`
+	Username     string `json:"username"`
+	Email        string `json:"email"`
+	Password     string `json:"password"`
+	Status       string `json:"status"`
+	Prefecture   string `json:"prefecture"`
+	Introduction string `json:"introduction"`
+	BloodType    string `json:"bloodType"`
+	CreatedAt    string `json:"createdAt"`
+	UpdatedAt    string `json:"updatedAt"`
 }
