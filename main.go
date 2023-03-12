@@ -17,6 +17,8 @@ import (
 	"github.com/AI1411/go-grpc-praphql/internal/server"
 )
 
+const defaultPort = "8081"
+
 func main() {
 	e, err := env.NewValue()
 	if err != nil {
