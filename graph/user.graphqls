@@ -34,12 +34,14 @@ input UpdateUserProfileInput {
 
 input UpdateUserStatusInput {
     id: String!
-    status: String!
+    status: Int!
 }
 
 input UpdateUserPasswordInput {
     id: String!
+    exPassword: String!
     password: String!
+    passwordConfirmation: String!
 }
 
 type Query {
@@ -49,4 +51,6 @@ type Query {
 type Mutation {
     createUser(input: CreateUserInput!) : User
     updateUserProfile(input: UpdateUserProfileInput!) : User
+    updateUserStatus(input: UpdateUserStatusInput!) : User
+    updateUserPassword(input: UpdateUserPasswordInput!) : User
 }

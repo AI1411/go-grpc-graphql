@@ -12,8 +12,10 @@ type CreateUserInput struct {
 }
 
 type UpdateUserPasswordInput struct {
-	ID       string `json:"id"`
-	Password string `json:"password"`
+	ID                   string `json:"id"`
+	ExPassword           string `json:"exPassword"`
+	Password             string `json:"password"`
+	PasswordConfirmation string `json:"passwordConfirmation"`
 }
 
 type UpdateUserProfileInput struct {
@@ -26,7 +28,7 @@ type UpdateUserProfileInput struct {
 
 type UpdateUserStatusInput struct {
 	ID     string `json:"id"`
-	Status string `json:"status"`
+	Status int    `json:"status"`
 }
 
 type User struct {

@@ -46,6 +46,36 @@ func (r *mutationResolver) UpdateUserProfile(ctx context.Context, input model.Up
 	return nil, nil
 }
 
+// UpdateUserStatus is the resolver for the updateUserStatus field.
+func (r *mutationResolver) UpdateUserStatus(ctx context.Context, input model.UpdateUserStatusInput) (*model.User, error) {
+	_, err := r.UserClient.UpdateUserStatus(ctx, &grpc.UpdateUserStatusRequest{
+		Id:     input.ID,
+		Status: grpc.Status(input.Status),
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+// UpdateUserPassword is the resolver for the updateUserPassword field.
+func (r *mutationResolver) UpdateUserPassword(ctx context.Context, input model.UpdateUserPasswordInput) (*model.User, error) {
+	_, err := r.UserClient.UpdateUserPassword(ctx, &grpc.UpdateUserPasswordRequest{
+		Id:                   input.ID,
+		ExPassword:           input.ExPassword,
+		Password:             input.Password,
+		PasswordConfirmation: input.PasswordConfirmation,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
 // GetUser is the resolver for the user field.
 func (r *queryResolver) GetUser(ctx context.Context, input string) (*model.User, error) {
 	user, err := r.UserClient.GetUser(ctx, &grpc.GetUserRequest{
