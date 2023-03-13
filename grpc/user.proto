@@ -47,9 +47,8 @@ message UpdateUserStatusRequest {
 
 message UpdateUserPasswordRequest {
   string id = 1;
-  string ex_password = 2; // 現在のパスワード
-  string password = 3; // 新しいパスワード
-  string password_confirmation = 4; // 新しいパスワードの確認
+  string password = 2; // 新しいパスワード
+  string password_confirmation = 3; // 新しいパスワードの確認
 }
 
 message User {

@@ -82,10 +82,6 @@ func (u *userRepository) UpdateUserPassword(ctx context.Context, user *entity.Us
 		}
 		return status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
-	// check password
-	if err := util.ComparePassword(userEntity.Password, user.ExPassword); err != nil {
-		return status.Errorf(codes.InvalidArgument, "invalid password: %v", err)
-	}
 
 	// set new password
 	userEntity.Password = user.Password
