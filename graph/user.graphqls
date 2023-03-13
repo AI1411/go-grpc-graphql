@@ -39,7 +39,6 @@ input UpdateUserStatusInput {
 
 input UpdateUserPasswordInput {
     id: String!
-    exPassword: String!
     password: String!
     passwordConfirmation: String!
 }

@@ -64,7 +64,6 @@ func (r *mutationResolver) UpdateUserStatus(ctx context.Context, input model.Upd
 func (r *mutationResolver) UpdateUserPassword(ctx context.Context, input model.UpdateUserPasswordInput) (*model.User, error) {
 	_, err := r.UserClient.UpdateUserPassword(ctx, &grpc.UpdateUserPasswordRequest{
 		Id:                   input.ID,
-		ExPassword:           input.ExPassword,
 		Password:             input.Password,
 		PasswordConfirmation: input.PasswordConfirmation,
 	})

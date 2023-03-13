@@ -13,7 +13,6 @@ type CreateUserInput struct {
 
 type UpdateUserPasswordInput struct {
 	ID                   string `json:"id"`
-	ExPassword           string `json:"exPassword"`
 	Password             string `json:"password"`
 	PasswordConfirmation string `json:"passwordConfirmation"`
 }
