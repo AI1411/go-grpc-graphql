@@ -46,7 +46,8 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Mutation struct {
-		CreateUser func(childComplexity int, input model.CreateUserInput) int
+		CreateUser        func(childComplexity int, input model.CreateUserInput) int
+		UpdateUserProfile func(childComplexity int, input model.UpdateUserProfileInput) int
 	}
 
 	Query struct {
@@ -69,6 +70,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error)
+	UpdateUserProfile(ctx context.Context, input model.UpdateUserProfileInput) (*model.User, error)
 }
 type QueryResolver interface {
 	GetUser(ctx context.Context, input string) (*model.User, error)
@@ -100,6 +102,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(model.CreateUserInput)), true
+
+	case "Mutation.updateUserProfile":
+		if e.complexity.Mutation.UpdateUserProfile == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateUserProfile_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateUserProfile(childComplexity, args["input"].(model.UpdateUserProfileInput)), true
 
 	case "Query.getUser":
 		if e.complexity.Query.GetUser == nil {
@@ -192,6 +206,9 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputCreateUserInput,
+		ec.unmarshalInputUpdateUserPasswordInput,
+		ec.unmarshalInputUpdateUserProfileInput,
+		ec.unmarshalInputUpdateUserStatusInput,
 	)
 	first := true
 
@@ -278,6 +295,21 @@ func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, 
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNCreateUserInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐCreateUserInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateUserProfile_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.UpdateUserProfileInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNUpdateUserProfileInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUpdateUserProfileInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -422,6 +454,80 @@ func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_createUser_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_updateUserProfile(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updateUserProfile(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateUserProfile(rctx, fc.Args["input"].(model.UpdateUserProfileInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*model.User)
+	fc.Result = res
+	return ec.marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_updateUserProfile(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_User_id(ctx, field)
+			case "username":
+				return ec.fieldContext_User_username(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "password":
+				return ec.fieldContext_User_password(ctx, field)
+			case "status":
+				return ec.fieldContext_User_status(ctx, field)
+			case "prefecture":
+				return ec.fieldContext_User_prefecture(ctx, field)
+			case "introduction":
+				return ec.fieldContext_User_introduction(ctx, field)
+			case "bloodType":
+				return ec.fieldContext_User_bloodType(ctx, field)
+			case "createdAt":
+				return ec.fieldContext_User_createdAt(ctx, field)
+			case "updatedAt":
+				return ec.fieldContext_User_updatedAt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_updateUserProfile_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
 	}
@@ -2915,6 +3021,138 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUpdateUserPasswordInput(ctx context.Context, obj interface{}) (model.UpdateUserPasswordInput, error) {
+	var it model.UpdateUserPasswordInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"id", "password"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "password":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("password"))
+			it.Password, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateUserProfileInput(ctx context.Context, obj interface{}) (model.UpdateUserProfileInput, error) {
+	var it model.UpdateUserProfileInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"id", "username", "prefecture", "introduction", "bloodType"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "username":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("username"))
+			it.Username, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "prefecture":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("prefecture"))
+			it.Prefecture, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "introduction":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("introduction"))
+			it.Introduction, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "bloodType":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("bloodType"))
+			it.BloodType, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateUserStatusInput(ctx context.Context, obj interface{}) (model.UpdateUserStatusInput, error) {
+	var it model.UpdateUserStatusInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"id", "status"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "status":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
+			it.Status, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
@@ -2946,6 +3184,12 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createUser(ctx, field)
+			})
+
+		case "updateUserProfile":
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_updateUserProfile(ctx, field)
 			})
 
 		default:
@@ -3496,6 +3740,11 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) unmarshalNUpdateUserProfileInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUpdateUserProfileInput(ctx context.Context, v interface{}) (model.UpdateUserProfileInput, error) {
+	res, err := ec.unmarshalInputUpdateUserProfileInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNUser2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {

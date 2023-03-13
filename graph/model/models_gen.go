@@ -11,6 +11,24 @@ type CreateUserInput struct {
 	BloodType    int    `json:"bloodType"`
 }
 
+type UpdateUserPasswordInput struct {
+	ID       string `json:"id"`
+	Password string `json:"password"`
+}
+
+type UpdateUserProfileInput struct {
+	ID           string `json:"id"`
+	Username     string `json:"username"`
+	Prefecture   int    `json:"prefecture"`
+	Introduction string `json:"introduction"`
+	BloodType    int    `json:"bloodType"`
+}
+
+type UpdateUserStatusInput struct {
+	ID     string `json:"id"`
+	Status string `json:"status"`
+}
+
 type User struct {
 	ID           string `json:"id"`
 	Username     string `json:"username"`

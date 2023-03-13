@@ -24,10 +24,29 @@ input CreateUserInput {
     bloodType: Int!
 }
 
+input UpdateUserProfileInput {
+    id: String!
+    username: String!
+    prefecture: Int!
+    introduction: String!
+    bloodType: Int!
+}
+
+input UpdateUserStatusInput {
+    id: String!
+    status: String!
+}
+
+input UpdateUserPasswordInput {
+    id: String!
+    password: String!
+}
+
 type Query {
     getUser(input: ID!): User!
 }
 
 type Mutation {
     createUser(input: CreateUserInput!) : User
+    updateUserProfile(input: UpdateUserProfileInput!) : User
 }

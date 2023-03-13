@@ -29,6 +29,23 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUse
 	return nil, nil
 }
 
+// UpdateUserProfile is the resolver for the updateUserProfile field.
+func (r *mutationResolver) UpdateUserProfile(ctx context.Context, input model.UpdateUserProfileInput) (*model.User, error) {
+	_, err := r.UserClient.UpdateUserProfile(ctx, &grpc.UpdateUserProfileRequest{
+		Id:           input.ID,
+		Username:     input.Username,
+		Prefecture:   grpc.Prefecture(input.Prefecture),
+		Introduction: input.Introduction,
+		BloodType:    grpc.BloodType(input.BloodType),
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
+}
+
 // GetUser is the resolver for the user field.
 func (r *queryResolver) GetUser(ctx context.Context, input string) (*model.User, error) {
 	user, err := r.UserClient.GetUser(ctx, &grpc.GetUserRequest{
