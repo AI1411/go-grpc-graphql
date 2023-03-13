@@ -7,14 +7,14 @@ import (
 )
 
 func SetPassword(user *entity.User) error {
-	password, err := bcrypt.GenerateFromPassword(user.Password, 10)
+	password, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	if err != nil {
 		return err
 	}
-	user.Password = password
+	user.Password = string(password)
 	return nil
 }
 
-func ComparePassword(hashedPassword, password []byte) error {
-	return bcrypt.CompareHashAndPassword(hashedPassword, password)
+func ComparePassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }

@@ -12,7 +12,7 @@ type User struct {
 	ID           uuid.NullUUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	Username     string
 	Email        string
-	Password     []byte
+	Password     string
 	Status       UserStatus
 	Prefecture   entity.Prefecture
 	Introduction string
@@ -23,6 +23,6 @@ type User struct {
 
 type UserPassword struct {
 	ID                   uuid.NullUUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
-	Password             []byte
-	PasswordConfirmation []byte
+	Password             string
+	PasswordConfirmation string
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
@@ -19,6 +20,7 @@ type UserRepository interface {
 	UpdateUserProfile(context.Context, *entity.User) error
 	UpdateUserStatus(context.Context, *entity.User) error
 	UpdateUserPassword(context.Context, *entity.UserPassword) error
+	Login(context.Context, string, string) (string, error)
 }
 
 type userRepository struct {
@@ -97,4 +99,26 @@ func (u *userRepository) UpdateUserPassword(ctx context.Context, user *entity.Us
 		return status.Errorf(codes.Internal, "failed to update password: %v", err)
 	}
 	return nil
+}
+
+func (u *userRepository) Login(ctx context.Context, email, password string) (string, error) {
+	// TODO とりあえずTokenだけ返す。保存処理は後で実装
+	var user *entity.User
+	if err := u.dbClient.Conn(ctx).Where("email", email).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return "", status.Errorf(codes.NotFound, "user not found: %v", err)
+		}
+		return "", err
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		return "", status.Errorf(codes.InvalidArgument, "invalid password: %v", err)
+	}
+
+	token, err := util.GenerateToken(util.NullUUIDToString(user.ID))
+	if err != nil {
+		return "", status.Errorf(codes.Internal, "failed to generate token: %v", err)
+	}
+
+	return token, nil
 }

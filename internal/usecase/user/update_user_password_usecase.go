@@ -26,7 +26,7 @@ func NewUpdateUserPasswordUsecaseImpl(userRepository repository.UserRepository) 
 func (u *updateUserPasswordUsecaseImpl) Exec(ctx context.Context, in *grpc.UpdateUserPasswordRequest) error {
 	return u.userRepository.UpdateUserPassword(ctx, &entity.UserPassword{
 		ID:                   util.StringToNullUUID(in.GetId()),
-		Password:             []byte(in.GetPassword()),
-		PasswordConfirmation: []byte(in.GetPasswordConfirmation()),
+		Password:             in.GetPassword(),
+		PasswordConfirmation: in.GetPasswordConfirmation(),
 	})
 }

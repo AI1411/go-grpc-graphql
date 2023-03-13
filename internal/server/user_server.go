@@ -94,3 +94,17 @@ func (s *UserServer) UpdateUserPassword(ctx context.Context, in *grpc.UpdateUser
 	}
 	return &emptypb.Empty{}, nil
 }
+
+func (s *UserServer) Login(ctx context.Context, in *grpc.LoginRequest) (*grpc.LoginResponse, error) {
+	validator := form.NewFormValidator(userForm.NewLoginForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
+	usecase := user.NewLoginUsecaseImpl(s.userRepo)
+	res, err := usecase.Exec(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

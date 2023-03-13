@@ -13,6 +13,9 @@ service UserService {
   rpc UpdateUserProfile (UpdateUserProfileRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUserStatus (UpdateUserStatusRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUserPassword (UpdateUserPasswordRequest) returns (google.protobuf.Empty) {}
+
+  // auth
+  rpc Login (LoginRequest) returns (LoginResponse) {}
 }
 
 message GetUserRequest {
@@ -49,6 +52,15 @@ message UpdateUserPasswordRequest {
   string id = 1;
   string password = 2; // 新しいパスワード
   string password_confirmation = 3; // 新しいパスワードの確認
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
 }
 
 message User {
