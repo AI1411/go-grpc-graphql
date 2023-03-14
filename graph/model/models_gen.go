@@ -2,6 +2,11 @@
 
 package model
 
+type CreateTweetInput struct {
+	UserID string `json:"user_id"`
+	Body   string `json:"body"`
+}
+
 type CreateUserInput struct {
 	Username     string `json:"username"`
 	Email        string `json:"email"`

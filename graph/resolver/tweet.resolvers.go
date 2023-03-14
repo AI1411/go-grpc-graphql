@@ -6,12 +6,44 @@ package resolver
 
 import (
 	"context"
-	"fmt"
+
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/AI1411/go-grpc-praphql/graph/model"
+	"github.com/AI1411/go-grpc-praphql/grpc"
 )
 
+// CreateTweet is the resolver for the createTweet field.
+func (r *mutationResolver) CreateTweet(ctx context.Context, input model.CreateTweetInput) (*string, error) {
+	res, err := r.TweetClient.CreateTweet(ctx, &grpc.CreateTweetRequest{
+		UserId: input.UserID,
+		Body:   input.Body,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &res.Id, nil
+}
+
 // ListTweet is the resolver for the listTweet field.
-func (r *queryResolver) ListTweet(ctx context.Context, input string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: ListTweet - listTweet"))
+func (r *queryResolver) ListTweet(ctx context.Context, input *string) ([]*model.Tweet, error) {
+	res, err := r.TweetClient.ListTweet(ctx, &emptypb.Empty{})
+	if err != nil {
+		return nil, err
+	}
+
+	tweets := make([]*model.Tweet, len(res.Tweets))
+	for i, t := range res.Tweets {
+		tweets[i] = &model.Tweet{
+			ID:        t.Id,
+			Body:      t.Body,
+			UserID:    t.UserId,
+			CreatedAt: t.CreatedAt.AsTime().String(),
+			UpdatedAt: t.UpdatedAt.AsTime().String(),
+		}
+	}
+
+	return tweets, nil
 }

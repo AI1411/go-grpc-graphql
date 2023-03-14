@@ -9,7 +9,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 
 	generated "github.com/AI1411/go-grpc-praphql/graph"
-	grpcUser "github.com/AI1411/go-grpc-praphql/graph/grpc"
+	grpcClient "github.com/AI1411/go-grpc-praphql/graph/grpc"
 	"github.com/AI1411/go-grpc-praphql/graph/resolver"
 )
 
@@ -21,13 +21,19 @@ func main() {
 		port = defaultPort
 	}
 
-	userClient, err := grpcUser.ConnectUserServiceClient()
+	userClient, err := grpcClient.ConnectUserServiceClient()
 	if err != nil {
 		log.Fatalf("failed to connect to user server: %v", err)
 	}
 
+	tweetClient, err := grpcClient.ConnectTweetServiceClient()
+	if err != nil {
+		log.Fatalf("failed to connect to tweet server: %v", err)
+	}
+
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{
-		UserClient: userClient,
+		UserClient:  userClient,
+		TweetClient: tweetClient,
 	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))

@@ -7,5 +7,6 @@ import "github.com/AI1411/go-grpc-praphql/grpc"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	UserClient grpc.UserServiceClient
+	UserClient  grpc.UserServiceClient
+	TweetClient grpc.TweetServiceClient
 }

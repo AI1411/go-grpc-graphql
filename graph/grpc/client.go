@@ -3,7 +3,7 @@ package grpc
 import (
 	"google.golang.org/grpc"
 
-	grpcUser "github.com/AI1411/go-grpc-praphql/grpc"
+	grpcClient "github.com/AI1411/go-grpc-praphql/grpc"
 )
 
 func connect() (*grpc.ClientConn, error) {
@@ -21,11 +21,20 @@ func connect() (*grpc.ClientConn, error) {
 	return conn, nil
 }
 
-func ConnectUserServiceClient() (grpcUser.UserServiceClient, error) {
+func ConnectUserServiceClient() (grpcClient.UserServiceClient, error) {
 	conn, err := connect()
 	if err != nil {
 		return nil, err
 	}
 
-	return grpcUser.NewUserServiceClient(conn), nil
+	return grpcClient.NewUserServiceClient(conn), nil
+}
+
+func ConnectTweetServiceClient() (grpcClient.TweetServiceClient, error) {
+	conn, err := connect()
+	if err != nil {
+		return nil, err
+	}
+
+	return grpcClient.NewTweetServiceClient(conn), nil
 }

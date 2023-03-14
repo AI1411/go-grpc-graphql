@@ -10,6 +10,15 @@ type Tweet {
     updated_at: String!
 }
 
+input CreateTweetInput {
+    user_id: String!
+    body: String!
+}
+
 extend type Query {
-    listTweet(input: ID!): User!
+    listTweet(input: ID): [Tweet!]!
+}
+
+extend type Mutation {
+    createTweet(input: CreateTweetInput!): String
 }
