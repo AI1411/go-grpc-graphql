@@ -3,7 +3,9 @@ package db
 import (
 	"context"
 	"fmt"
+	"testing"
 
+	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -47,4 +49,10 @@ func open(env *env.DB) (*gorm.DB, error) {
 
 func (c *Client) Conn(ctx context.Context) *gorm.DB {
 	return c.db.WithContext(ctx)
+}
+
+func (c *Client) TruncateTable(ctx context.Context, t *testing.T, tables []string) {
+	for _, table := range tables {
+		require.NoError(t, c.Conn(ctx).Exec(fmt.Sprintf("TRUNCATE TABLE %s RESTART IDENTITY;", table)).Error)
+	}
 }

@@ -23,6 +23,7 @@ RUN useradd -s /bin/bash -m ${USERNAME} \
     && go install -v github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@v1.4.1 \
     && go install -v github.com/stormcat24/protodep@0.1.3 \
     && go install -v github.com/golang/mock/mockgen@v1.5.0 \
+    && go install gotest.tools/gotestsum@latest \
     && apt-get remove --purge --auto-remove -y \
     && rm -rf /var/lib/apt/lists/*
 

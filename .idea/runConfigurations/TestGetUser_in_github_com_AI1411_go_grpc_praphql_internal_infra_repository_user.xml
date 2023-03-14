@@ -1,0 +1,27 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TestGetUser in github.com/AI1411/go-grpc-praphql/internal/infra/repository/user" type="GoTestRunConfiguration" factoryName="Go Test" nameIsGenerated="true">
+    <module name="go-graphql-grpc" />
+    <working_directory value="$PROJECT_DIR$/internal/infra/repository/user" />
+    <envs>
+      <env name="STAR_DEBUG" value="true" />
+      <env name="STAR_ENV" value="local" />
+      <env name="STAR_GRAPHQL_PATH" value="/graphql" />
+      <env name="STAR_GRAPHQL_PLAYGROUND_PATH" value="/playground" />
+      <env name="STAR_GRAPHQL_PORT" value="8081" />
+      <env name="STAR_POSTGRES_DATABASE" value="go_pg" />
+      <env name="STAR_POSTGRES_HOST" value="localhost" />
+      <env name="STAR_POSTGRES_PASSWORD" value="root" />
+      <env name="STAR_POSTGRES_PORT" value="5432" />
+      <env name="STAR_POSTGRES_USER" value="root" />
+      <env name="STAR_SERVER_PORT" value="8080" />
+    </envs>
+    <root_directory value="$PROJECT_DIR$" />
+    <kind value="PACKAGE" />
+    <package value="github.com/AI1411/go-grpc-praphql/internal/infra/repository/user" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <framework value="gotest" />
+    <pattern value="^\QTestGetUser\E$" />
+    <method v="2" />
+  </configuration>
+</component>

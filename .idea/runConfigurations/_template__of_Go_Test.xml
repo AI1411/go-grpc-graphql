@@ -1,0 +1,25 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+    <module name="go-graphql-grpc" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="STAR_DEBUG" value="true" />
+      <env name="STAR_ENV" value="local" />
+      <env name="STAR_GRAPHQL_PATH" value="/graphql" />
+      <env name="STAR_GRAPHQL_PLAYGROUND_PATH" value="/playground" />
+      <env name="STAR_GRAPHQL_PORT" value="8081" />
+      <env name="STAR_POSTGRES_DATABASE" value="go_pg" />
+      <env name="STAR_POSTGRES_HOST" value="localhost" />
+      <env name="STAR_POSTGRES_PASSWORD" value="root" />
+      <env name="STAR_POSTGRES_PORT" value="5432" />
+      <env name="STAR_POSTGRES_USER" value="root" />
+      <env name="STAR_SERVER_PORT" value="8080" />
+    </envs>
+    <kind value="DIRECTORY" />
+    <package value="github.com/AI1411/go-grpc-praphql" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <framework value="gotest" />
+    <method v="2" />
+  </configuration>
+</component>

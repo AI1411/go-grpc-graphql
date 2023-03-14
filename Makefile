@@ -7,3 +7,5 @@ gqlgen:
 	go run github.com/99designs/gqlgen
 logs:
 	docker logs -f star
+test:
+	docker exec -t --env-file .env.test star gotestsum -- -p 1 -count=1 ./...
