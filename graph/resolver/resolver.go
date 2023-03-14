@@ -1,4 +1,4 @@
-package graph
+package resolver
 
 import "github.com/AI1411/go-grpc-praphql/grpc"
 

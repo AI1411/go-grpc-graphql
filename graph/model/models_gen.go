@@ -11,6 +11,14 @@ type CreateUserInput struct {
 	BloodType    int    `json:"bloodType"`
 }
 
+type Tweet struct {
+	ID        string `json:"id"`
+	UserID    string `json:"user_id"`
+	Body      string `json:"body"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+}
+
 type UpdateUserPasswordInput struct {
 	ID                   string `json:"id"`
 	Password             string `json:"password"`

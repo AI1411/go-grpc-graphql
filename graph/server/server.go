@@ -10,8 +10,7 @@ import (
 
 	generated "github.com/AI1411/go-grpc-praphql/graph"
 	grpcUser "github.com/AI1411/go-grpc-praphql/graph/grpc"
-
-	"github.com/AI1411/go-grpc-praphql/graph"
+	"github.com/AI1411/go-grpc-praphql/graph/resolver"
 )
 
 const defaultPort = "8081"
@@ -27,7 +26,7 @@ func main() {
 		log.Fatalf("failed to connect to user server: %v", err)
 	}
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{
 		UserClient: userClient,
 	}}))
 

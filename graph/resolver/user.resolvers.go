@@ -1,4 +1,4 @@
-package graph
+package resolver
 
 // This file will be automatically regenerated based on the schema, any resolver implementations
 // will be copied through when generating and any unknown code will be moved to the end.
@@ -7,6 +7,7 @@ package graph
 import (
 	"context"
 
+	"github.com/AI1411/go-grpc-praphql/graph"
 	"github.com/AI1411/go-grpc-praphql/graph/model"
 	"github.com/AI1411/go-grpc-praphql/grpc"
 )
@@ -97,11 +98,11 @@ func (r *queryResolver) GetUser(ctx context.Context, input string) (*model.User,
 	}, nil
 }
 
-// Mutation returns MutationResolver implementation.
-func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
+// Mutation returns graph.MutationResolver implementation.
+func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
 
-// Query returns QueryResolver implementation.
-func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
+// Query returns graph.QueryResolver implementation.
+func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

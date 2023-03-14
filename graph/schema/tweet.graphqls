@@ -1,0 +1,15 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Tweet {
+    id: String!
+    user_id: String!
+    body: String!
+    created_at: String!
+    updated_at: String!
+}
+
+extend type Query {
+    listTweet(input: ID!): User!
+}
