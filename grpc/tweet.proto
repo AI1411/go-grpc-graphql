@@ -9,7 +9,7 @@ package tweet.v1;
 
 // つぶやきのCRUD操作に対応するservice型
 service TweetService {
-  rpc ListTweet(google.protobuf.Empty) returns (ListTweetsResponse);
+  rpc ListTweet(google.protobuf.Empty) returns (ListTweetResponse);
   // つぶやきを作成するメソッド
   rpc CreateTweet(CreateTweetRequest) returns (CreateTweetResponse);
 }
@@ -24,7 +24,7 @@ message Tweet {
 }
 
 
-message ListTweetsResponse {
+message ListTweetResponse {
   repeated Tweet tweets = 1; // つぶやきのリスト
 }
 

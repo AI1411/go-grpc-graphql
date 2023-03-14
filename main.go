@@ -5,13 +5,14 @@ import (
 	"log"
 	"net"
 
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 
 	grpcServer "github.com/AI1411/go-grpc-praphql/grpc"
 	"github.com/AI1411/go-grpc-praphql/internal/env"
 	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
 	"github.com/AI1411/go-grpc-praphql/internal/infra/logger"
+	tweetRepo "github.com/AI1411/go-grpc-praphql/internal/infra/repository/tweet"
 	repository "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
 	interceptor "github.com/AI1411/go-grpc-praphql/internal/intorceptor"
 	"github.com/AI1411/go-grpc-praphql/internal/server"
@@ -37,9 +38,10 @@ func main() {
 		log.Fatalf("failed to connect to db: %v", err)
 	}
 	userRepo := repository.NewUserRepository(dbClient)
+	tweetRepo := tweetRepo.NewTweetRepository(dbClient)
 
 	s := grpc.NewServer(
-		grpc_middleware.WithUnaryServerChain(
+		grpcMiddleware.WithUnaryServerChain(
 			interceptor.ZapLoggerInterceptor(zapLogger),
 		),
 	)
@@ -49,7 +51,11 @@ func main() {
 		zapLogger,
 		userRepo,
 	)
+
+	tweetServer := server.NewTweetServer(dbClient, zapLogger, userRepo, tweetRepo)
+
 	grpcServer.RegisterUserServiceServer(s, userServer)
+	grpcServer.RegisterTweetServiceServer(s, tweetServer)
 
 	zapLogger.Info("start grpc Server port: " + e.ServerPort)
 
