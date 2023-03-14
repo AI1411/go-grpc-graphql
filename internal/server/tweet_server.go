@@ -10,6 +10,8 @@ import (
 	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
 	tweetRepo "github.com/AI1411/go-grpc-praphql/internal/infra/repository/tweet"
 	userRepo "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-praphql/internal/server/form"
+	tweetForm "github.com/AI1411/go-grpc-praphql/internal/server/form/tweet"
 	"github.com/AI1411/go-grpc-praphql/internal/usecase/tweet"
 )
 
@@ -43,4 +45,15 @@ func (s *TweetServer) ListTweet(ctx context.Context, _ *emptypb.Empty) (*grpc.Li
 	}
 
 	return res, nil
+}
+
+func (s *TweetServer) CreateTweet(ctx context.Context, in *grpc.CreateTweetRequest) (*grpc.CreateTweetResponse, error) {
+	validator := form.NewFormValidator(tweetForm.NewCreateTweetForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
+	usecase := tweet.NewCreateTweetUsecaseImpl(s.tweetRepo)
+
+	return usecase.Exec(ctx, in)
 }

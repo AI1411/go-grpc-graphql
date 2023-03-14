@@ -36,32 +36,5 @@ message CreateTweetRequest {
 
 // つぶやきを作成した結果を返すレスポンスmessage型
 message CreateTweetResponse {
-  Tweet tweet = 1; // 作成されたつぶやきの情報
-}
-
-// つぶやきを取得するためのリクエストmessage型
-message GetTweetRequest {
-  string id = 1; // つぶやきの一意なID
-}
-
-// つぶやきを取得した結果を返すレスポンスmessage型
-message GetTweetResponse {
-  Tweet tweet = 1; // 取得されたつぶやきの情報
-}
-
-// つぶやきを更新するためのリクエストmessage型
-message UpdateTweetRequest {
-  string id = 1; // つぶやきの一意なID
-  string user_id = 2; // つぶやきを投稿したユーザーのID
-  string body = 3; // つぶやきの本文
-}
-
-// つぶやきを更新した結果を返すレスポンスmessage型
-message UpdateTweetResponse {
-  Tweet tweet = 1; // 更新されたつぶやきの情報
-}
-
-// つぶやきを削除するためのリクエストmessage型
-message DeleteTweetRequest {
-  string id = 1; // つぶやきの一意なID
+  string id = 1; // 作成されたつぶやきのID
 }

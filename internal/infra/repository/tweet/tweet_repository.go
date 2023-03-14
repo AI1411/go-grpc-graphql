@@ -11,6 +11,7 @@ import (
 
 type TweetRepository interface {
 	ListTweet(context.Context) ([]*entity.Tweet, error)
+	CreateTweet(ctx context.Context, tweet *entity.Tweet) (string, error)
 }
 
 type tweetRepository struct {
@@ -42,4 +43,12 @@ func (r *tweetRepository) ListTweet(ctx context.Context) ([]*entity.Tweet, error
 	}
 
 	return tweets, nil
+}
+
+func (r *tweetRepository) CreateTweet(ctx context.Context, tweet *entity.Tweet) (string, error) {
+	if err := r.dbClient.Conn(ctx).Create(tweet).Error; err != nil {
+		return "", err
+	}
+
+	return util.NullUUIDToString(tweet.ID), nil
 }

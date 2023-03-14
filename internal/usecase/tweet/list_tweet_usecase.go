@@ -11,7 +11,7 @@ import (
 	"github.com/AI1411/go-grpc-praphql/internal/util"
 )
 
-type TweetUsecaseImpl interface {
+type ListTweetUsecaseImpl interface {
 	Exec(ctx context.Context) (*grpc.ListTweetResponse, error)
 }
 
@@ -20,7 +20,7 @@ type listTweetUsecaseImpl struct {
 	tweetRepository tweet.TweetRepository
 }
 
-func NewListTweetUsecaseImpl(userRepository user.UserRepository, tweetRepository tweet.TweetRepository) TweetUsecaseImpl {
+func NewListTweetUsecaseImpl(userRepository user.UserRepository, tweetRepository tweet.TweetRepository) ListTweetUsecaseImpl {
 	return &listTweetUsecaseImpl{
 		userRepository:  userRepository,
 		tweetRepository: tweetRepository,
