@@ -1,6 +1,6 @@
 package resolver
 
-import "github.com/AI1411/go-grpc-praphql/grpc"
+import "github.com/AI1411/go-grpc-graphql/grpc"
 
 // This file will not be regenerated automatically.
 //

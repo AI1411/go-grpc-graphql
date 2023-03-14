@@ -3,7 +3,7 @@ package util
 import (
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/AI1411/go-grpc-praphql/internal/domain/user/entity"
+	"github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
 )
 
 func SetPassword(user *entity.User) error {

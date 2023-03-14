@@ -6,13 +6,13 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/AI1411/go-grpc-praphql/grpc"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
-	tweetRepo "github.com/AI1411/go-grpc-praphql/internal/infra/repository/tweet"
-	userRepo "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
-	"github.com/AI1411/go-grpc-praphql/internal/server/form"
-	tweetForm "github.com/AI1411/go-grpc-praphql/internal/server/form/tweet"
-	"github.com/AI1411/go-grpc-praphql/internal/usecase/tweet"
+	"github.com/AI1411/go-grpc-graphql/grpc"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	tweetRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/tweet"
+	userRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-graphql/internal/server/form"
+	tweetForm "github.com/AI1411/go-grpc-graphql/internal/server/form/tweet"
+	"github.com/AI1411/go-grpc-graphql/internal/usecase/tweet"
 )
 
 type TweetServer struct {

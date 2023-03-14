@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 
-	"github.com/AI1411/go-grpc-praphql/grpc"
-	repository "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-graphql/grpc"
+	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
 )
 
 type LoginUsecaseImpl interface {

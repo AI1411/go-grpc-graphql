@@ -12,11 +12,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	commonEntity "github.com/AI1411/go-grpc-praphql/internal/domain/common/entity"
-	"github.com/AI1411/go-grpc-praphql/internal/domain/user/entity"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
-	repository "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
-	"github.com/AI1411/go-grpc-praphql/internal/testutil"
+	commonEntity "github.com/AI1411/go-grpc-graphql/internal/domain/common/entity"
+	"github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-graphql/internal/testutil"
 )
 
 const (

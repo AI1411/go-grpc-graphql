@@ -9,8 +9,8 @@ import (
 
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/AI1411/go-grpc-praphql/graph/model"
-	"github.com/AI1411/go-grpc-praphql/grpc"
+	"github.com/AI1411/go-grpc-graphql/graph/model"
+	"github.com/AI1411/go-grpc-graphql/grpc"
 )
 
 // CreateTweet is the resolver for the createTweet field.

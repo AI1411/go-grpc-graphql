@@ -1,6 +1,6 @@
 package user
 
-import "github.com/AI1411/go-grpc-praphql/grpc"
+import "github.com/AI1411/go-grpc-graphql/grpc"
 
 type UpdateUserPasswordForm struct {
 	ID                   string `jaFieldName:"ユーザID" validate:"required,uuid4"`

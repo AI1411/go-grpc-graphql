@@ -10,7 +10,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/AI1411/go-grpc-praphql/internal/env"
+	"github.com/AI1411/go-grpc-graphql/internal/env"
 )
 
 type Client struct {

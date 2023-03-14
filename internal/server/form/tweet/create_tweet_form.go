@@ -1,6 +1,6 @@
 package tweet
 
-import "github.com/AI1411/go-grpc-praphql/grpc"
+import "github.com/AI1411/go-grpc-graphql/grpc"
 
 type CreateTweetForm struct {
 	Body   string `json:"body" validate:"required,max=140"`

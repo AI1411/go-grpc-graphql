@@ -12,8 +12,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/AI1411/go-grpc-praphql/grpc"
-	formError "github.com/AI1411/go-grpc-praphql/internal/server/form/error"
+	"github.com/AI1411/go-grpc-graphql/grpc"
+	formError "github.com/AI1411/go-grpc-graphql/internal/server/form/error"
 )
 
 const (

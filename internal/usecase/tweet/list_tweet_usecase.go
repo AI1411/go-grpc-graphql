@@ -5,10 +5,10 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/AI1411/go-grpc-praphql/grpc"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/repository/tweet"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
-	"github.com/AI1411/go-grpc-praphql/internal/util"
+	"github.com/AI1411/go-grpc-graphql/grpc"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/repository/tweet"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 type ListTweetUsecaseImpl interface {

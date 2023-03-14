@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/AI1411/go-grpc-praphql/internal/env"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/logger"
+	"github.com/AI1411/go-grpc-graphql/internal/env"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/logger"
 )
 
 func TestConnection(t *testing.T) (*db.Client, error) {

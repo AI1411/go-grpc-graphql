@@ -7,9 +7,9 @@ package resolver
 import (
 	"context"
 
-	"github.com/AI1411/go-grpc-praphql/graph"
-	"github.com/AI1411/go-grpc-praphql/graph/model"
-	"github.com/AI1411/go-grpc-praphql/grpc"
+	"github.com/AI1411/go-grpc-graphql/graph"
+	"github.com/AI1411/go-grpc-graphql/graph/model"
+	"github.com/AI1411/go-grpc-graphql/grpc"
 )
 
 // CreateUser is the resolver for the CreateUser field.

@@ -3,11 +3,11 @@ package converter
 import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/AI1411/go-grpc-praphql/grpc"
-	commonEntity "github.com/AI1411/go-grpc-praphql/internal/domain/common/entity"
-	"github.com/AI1411/go-grpc-praphql/internal/domain/user/entity"
-	grpcTool "github.com/AI1411/go-grpc-praphql/internal/infra/grpc"
-	"github.com/AI1411/go-grpc-praphql/internal/util"
+	"github.com/AI1411/go-grpc-graphql/grpc"
+	commonEntity "github.com/AI1411/go-grpc-graphql/internal/domain/common/entity"
+	"github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
+	grpcTool "github.com/AI1411/go-grpc-graphql/internal/infra/grpc"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 func UserEntityToGRPC(user *entity.User) *grpc.GetUserResponse {

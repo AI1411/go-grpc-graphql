@@ -8,9 +8,9 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 
-	generated "github.com/AI1411/go-grpc-praphql/graph"
-	grpcClient "github.com/AI1411/go-grpc-praphql/graph/grpc"
-	"github.com/AI1411/go-grpc-praphql/graph/resolver"
+	generated "github.com/AI1411/go-grpc-graphql/graph"
+	grpcClient "github.com/AI1411/go-grpc-graphql/graph/grpc"
+	"github.com/AI1411/go-grpc-graphql/graph/resolver"
 )
 
 const defaultPort = "8081"

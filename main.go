@@ -8,14 +8,14 @@ import (
 	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 
-	grpcServer "github.com/AI1411/go-grpc-praphql/grpc"
-	"github.com/AI1411/go-grpc-praphql/internal/env"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/logger"
-	tweetRepo "github.com/AI1411/go-grpc-praphql/internal/infra/repository/tweet"
-	repository "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
-	interceptor "github.com/AI1411/go-grpc-praphql/internal/intorceptor"
-	"github.com/AI1411/go-grpc-praphql/internal/server"
+	grpcServer "github.com/AI1411/go-grpc-graphql/grpc"
+	"github.com/AI1411/go-grpc-graphql/internal/env"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/logger"
+	tweetRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/tweet"
+	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
+	interceptor "github.com/AI1411/go-grpc-graphql/internal/intorceptor"
+	"github.com/AI1411/go-grpc-graphql/internal/server"
 )
 
 const defaultPort = "8081"

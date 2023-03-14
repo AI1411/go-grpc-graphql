@@ -1,6 +1,6 @@
 package user
 
-import "github.com/AI1411/go-grpc-praphql/grpc"
+import "github.com/AI1411/go-grpc-graphql/grpc"
 
 type CreateUserForm struct {
 	Username     string          `jaFieldName:"ユーザ名" validate:"required,lte=100"`

@@ -3,9 +3,9 @@ package user
 import (
 	"context"
 
-	"github.com/AI1411/go-grpc-praphql/grpc"
-	userRepo "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
-	"github.com/AI1411/go-grpc-praphql/internal/usecase/user/converter"
+	"github.com/AI1411/go-grpc-graphql/grpc"
+	userRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-graphql/internal/usecase/user/converter"
 )
 
 type GetUserUsecase interface {

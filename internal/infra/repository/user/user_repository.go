@@ -9,9 +9,9 @@ import (
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 
-	"github.com/AI1411/go-grpc-praphql/internal/domain/user/entity"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
-	"github.com/AI1411/go-grpc-praphql/internal/util"
+	"github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 type UserRepository interface {

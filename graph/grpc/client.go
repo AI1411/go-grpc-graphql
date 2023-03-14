@@ -3,7 +3,7 @@ package grpc
 import (
 	"google.golang.org/grpc"
 
-	grpcClient "github.com/AI1411/go-grpc-praphql/grpc"
+	grpcClient "github.com/AI1411/go-grpc-graphql/grpc"
 )
 
 func connect() (*grpc.ClientConn, error) {

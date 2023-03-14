@@ -3,10 +3,10 @@ package tweet
 import (
 	"context"
 
-	"github.com/AI1411/go-grpc-praphql/grpc"
-	tweetEntity "github.com/AI1411/go-grpc-praphql/internal/domain/tweet/entity"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/repository/tweet"
-	"github.com/AI1411/go-grpc-praphql/internal/util"
+	"github.com/AI1411/go-grpc-graphql/grpc"
+	tweetEntity "github.com/AI1411/go-grpc-graphql/internal/domain/tweet/entity"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/repository/tweet"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 type CreateTweetUsecaseImpl interface {

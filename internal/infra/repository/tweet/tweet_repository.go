@@ -3,10 +3,10 @@ package tweet
 import (
 	"context"
 
-	"github.com/AI1411/go-grpc-praphql/internal/domain/tweet/entity"
-	userEntity "github.com/AI1411/go-grpc-praphql/internal/domain/user/entity"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
-	"github.com/AI1411/go-grpc-praphql/internal/util"
+	"github.com/AI1411/go-grpc-graphql/internal/domain/tweet/entity"
+	userEntity "github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 type TweetRepository interface {

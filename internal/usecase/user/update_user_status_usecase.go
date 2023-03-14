@@ -3,10 +3,10 @@ package user
 import (
 	"context"
 
-	"github.com/AI1411/go-grpc-praphql/grpc"
-	"github.com/AI1411/go-grpc-praphql/internal/domain/user/entity"
-	repository "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
-	"github.com/AI1411/go-grpc-praphql/internal/util"
+	"github.com/AI1411/go-grpc-graphql/grpc"
+	"github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
+	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 type UpdateUserStatusUsecase interface {

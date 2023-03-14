@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/AI1411/go-grpc-praphql/internal/domain/common/entity"
+	"github.com/AI1411/go-grpc-graphql/internal/domain/common/entity"
 )
 
 type User struct {

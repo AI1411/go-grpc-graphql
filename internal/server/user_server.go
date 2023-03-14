@@ -6,12 +6,12 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/AI1411/go-grpc-praphql/grpc"
-	"github.com/AI1411/go-grpc-praphql/internal/infra/db"
-	repository "github.com/AI1411/go-grpc-praphql/internal/infra/repository/user"
-	"github.com/AI1411/go-grpc-praphql/internal/server/form"
-	userForm "github.com/AI1411/go-grpc-praphql/internal/server/form/user"
-	"github.com/AI1411/go-grpc-praphql/internal/usecase/user"
+	"github.com/AI1411/go-grpc-graphql/grpc"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-graphql/internal/server/form"
+	userForm "github.com/AI1411/go-grpc-graphql/internal/server/form/user"
+	"github.com/AI1411/go-grpc-graphql/internal/usecase/user"
 )
 
 type UserServer struct {
