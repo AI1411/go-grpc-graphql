@@ -56,21 +56,37 @@ func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) erro
 }
 
 func (u *userRepository) UpdateUserProfile(ctx context.Context, user *entity.User) error {
+	var userEntity entity.User
+	if err := u.dbClient.Conn(ctx).Where("id", util.NullUUIDToString(user.ID)).First(&userEntity).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return status.Errorf(codes.NotFound, "user not found: %v", err)
+		}
+		return status.Errorf(codes.Internal, "failed to get user: %v", err)
+	}
+
 	if err := u.dbClient.Conn(ctx).
 		Where("id", user.ID).
 		Select("Username", "Prefecture", "Introduction", "BloodType").
 		Updates(&user).Error; err != nil {
-		return err
+		return status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
 	return nil
 }
 
 func (u *userRepository) UpdateUserStatus(ctx context.Context, user *entity.User) error {
+	var userEntity entity.User
+	if err := u.dbClient.Conn(ctx).Where("id", util.NullUUIDToString(user.ID)).First(&userEntity).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return status.Errorf(codes.NotFound, "user not found: %v", err)
+		}
+		return status.Errorf(codes.Internal, "failed to get user: %v", err)
+	}
+
 	if err := u.dbClient.Conn(ctx).
 		Model(&entity.User{}).
 		Where("id", user.ID).
 		Update("status", user.Status).Error; err != nil {
-		return err
+		return status.Errorf(codes.Internal, "failed to update user status: %v", err)
 	}
 	return nil
 }
