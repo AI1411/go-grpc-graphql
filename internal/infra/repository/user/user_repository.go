@@ -50,7 +50,7 @@ func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) erro
 		return err
 	}
 	if err := u.dbClient.Conn(ctx).Create(&user).Error; err != nil {
-		return err
+		return status.Errorf(codes.Internal, "failed to create user: %v", err)
 	}
 	return nil
 }

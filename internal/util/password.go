@@ -14,7 +14,3 @@ func SetPassword(user *entity.User) error {
 	user.Password = string(password)
 	return nil
 }
-
-func ComparePassword(hashedPassword, password string) error {
-	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
-}

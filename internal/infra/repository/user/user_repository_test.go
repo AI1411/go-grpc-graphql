@@ -2,10 +2,12 @@ package user_test
 
 import (
 	"context"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -103,6 +105,89 @@ func TestGetUser(t *testing.T) {
 
 				if tt.want != nil {
 					if !cmp.Equal(got, tt.want) {
+						t.Errorf("diff %s", cmp.Diff(got, tt.want))
+					}
+				}
+			},
+		)
+	}
+}
+
+func TestCreateUser(t *testing.T) {
+	ctx := context.Background()
+
+	testcasesCreateUser := []struct {
+		id        int
+		name      string
+		request   *entity.User
+		want      *entity.User
+		wantError codes.Code
+		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+	}{
+		{
+			id:   1,
+			name: "正常系/Userが作成できること",
+			request: &entity.User{
+				Username:     "username",
+				Email:        "test@gmail.com",
+				Password:     "password",
+				Status:       entity.UserStatusActive,
+				Prefecture:   "岡山県",
+				Introduction: "自己紹介",
+				BloodType:    "A型",
+			},
+			want: &entity.User{
+				Username:     "username",
+				Email:        "test@gmail.com",
+				Status:       entity.UserStatusActive,
+				Prefecture:   commonEntity.PrefectureOkayama,
+				Introduction: "自己紹介",
+				BloodType:    commonEntity.BloodTypeA,
+			},
+		},
+		{
+			id:   2,
+			name: "異常系/Userが作成できない場合、Internalエラーが返ること",
+			request: &entity.User{
+				Username:     strings.Repeat("a", 101),
+				Email:        "test@gmail.com",
+				Password:     "password",
+				Status:       entity.UserStatusActive,
+				Prefecture:   "岡山県",
+				Introduction: "自己紹介",
+				BloodType:    "A型",
+			},
+			wantError: codes.Internal,
+		},
+	}
+
+	for _, tt := range testcasesCreateUser {
+		t.Run(
+			tt.name, func(t *testing.T) {
+				a := assert.New(t)
+
+				testClient, err := testutil.TestConnection(t)
+				testClient.TruncateTable(ctx, t, []string{"users"})
+				if tt.setup != nil {
+					tt.setup(ctx, t, testClient)
+				}
+
+				userRepo := repository.NewUserRepository(testClient)
+
+				err = userRepo.CreateUser(ctx, tt.request)
+
+				var got *entity.User
+
+				if tt.wantError != 0 {
+					a.Equal(status.Code(err), tt.wantError)
+				} else {
+					a.NoError(testClient.Conn(ctx).First(&got).Error)
+					a.NoError(err)
+				}
+
+				if tt.want != nil {
+					opt := cmpopts.IgnoreFields(entity.User{}, "ID", "Password", "CreatedAt", "UpdatedAt")
+					if !cmp.Equal(got, tt.want, opt) {
 						t.Errorf("diff %s", cmp.Diff(got, tt.want))
 					}
 				}
