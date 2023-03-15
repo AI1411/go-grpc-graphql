@@ -14,17 +14,17 @@ import (
 )
 
 // CreateTweet is the resolver for the createTweet field.
-func (r *mutationResolver) CreateTweet(ctx context.Context, input model.CreateTweetInput) (*string, error) {
+func (r *mutationResolver) CreateTweet(ctx context.Context, input model.CreateTweetInput) (string, error) {
 	res, err := r.TweetClient.CreateTweet(ctx, &grpc.CreateTweetRequest{
 		UserId: input.UserID,
 		Body:   input.Body,
 	})
 
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return &res.Id, nil
+	return res.GetId(), nil
 }
 
 // ListTweet is the resolver for the listTweet field.

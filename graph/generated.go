@@ -85,7 +85,7 @@ type MutationResolver interface {
 	UpdateUserProfile(ctx context.Context, input model.UpdateUserProfileInput) (*model.User, error)
 	UpdateUserStatus(ctx context.Context, input model.UpdateUserStatusInput) (*model.User, error)
 	UpdateUserPassword(ctx context.Context, input model.UpdateUserPasswordInput) (*model.User, error)
-	CreateTweet(ctx context.Context, input model.CreateTweetInput) (*string, error)
+	CreateTweet(ctx context.Context, input model.CreateTweetInput) (string, error)
 }
 type QueryResolver interface {
 	GetUser(ctx context.Context, input string) (*model.User, error)
@@ -395,7 +395,7 @@ func (ec *executionContext) field_Mutation_createTweet_args(ctx context.Context,
 	var arg0 model.CreateTweetInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNCreateTweetInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐCreateTweetInput(ctx, tmp)
+		arg0, err = ec.unmarshalNCreateTweetInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐCreateTweetInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -410,7 +410,7 @@ func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, 
 	var arg0 model.CreateUserInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNCreateUserInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐCreateUserInput(ctx, tmp)
+		arg0, err = ec.unmarshalNCreateUserInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐCreateUserInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -425,7 +425,7 @@ func (ec *executionContext) field_Mutation_updateUserPassword_args(ctx context.C
 	var arg0 model.UpdateUserPasswordInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNUpdateUserPasswordInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUpdateUserPasswordInput(ctx, tmp)
+		arg0, err = ec.unmarshalNUpdateUserPasswordInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUpdateUserPasswordInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -440,7 +440,7 @@ func (ec *executionContext) field_Mutation_updateUserProfile_args(ctx context.Co
 	var arg0 model.UpdateUserProfileInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNUpdateUserProfileInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUpdateUserProfileInput(ctx, tmp)
+		arg0, err = ec.unmarshalNUpdateUserProfileInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUpdateUserProfileInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -455,7 +455,7 @@ func (ec *executionContext) field_Mutation_updateUserStatus_args(ctx context.Con
 	var arg0 model.UpdateUserStatusInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNUpdateUserStatusInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUpdateUserStatusInput(ctx, tmp)
+		arg0, err = ec.unmarshalNUpdateUserStatusInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUpdateUserStatusInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -572,7 +572,7 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -646,7 +646,7 @@ func (ec *executionContext) _Mutation_updateUserProfile(ctx context.Context, fie
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateUserProfile(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -720,7 +720,7 @@ func (ec *executionContext) _Mutation_updateUserStatus(ctx context.Context, fiel
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateUserStatus(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -794,7 +794,7 @@ func (ec *executionContext) _Mutation_updateUserPassword(ctx context.Context, fi
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateUserPassword(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -864,11 +864,14 @@ func (ec *executionContext) _Mutation_createTweet(ctx context.Context, field gra
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createTweet(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -923,7 +926,7 @@ func (ec *executionContext) _Query_getUser(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_getUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1000,7 +1003,7 @@ func (ec *executionContext) _Query_listTweet(ctx context.Context, field graphql.
 	}
 	res := resTmp.([]*model.Tweet)
 	fc.Result = res
-	return ec.marshalNTweet2ᚕᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐTweetᚄ(ctx, field.Selections, res)
+	return ec.marshalNTweet2ᚕᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐTweetᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_listTweet(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3902,6 +3905,9 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 				return ec._Mutation_createTweet(ctx, field)
 			})
 
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4481,12 +4487,12 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNCreateTweetInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐCreateTweetInput(ctx context.Context, v interface{}) (model.CreateTweetInput, error) {
+func (ec *executionContext) unmarshalNCreateTweetInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐCreateTweetInput(ctx context.Context, v interface{}) (model.CreateTweetInput, error) {
 	res, err := ec.unmarshalInputCreateTweetInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateUserInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐCreateUserInput(ctx context.Context, v interface{}) (model.CreateUserInput, error) {
+func (ec *executionContext) unmarshalNCreateUserInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐCreateUserInput(ctx context.Context, v interface{}) (model.CreateUserInput, error) {
 	res, err := ec.unmarshalInputCreateUserInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -4536,7 +4542,7 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNTweet2ᚕᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐTweetᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Tweet) graphql.Marshaler {
+func (ec *executionContext) marshalNTweet2ᚕᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐTweetᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Tweet) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -4560,7 +4566,7 @@ func (ec *executionContext) marshalNTweet2ᚕᚖgithubᚗcomᚋAI1411ᚋgoᚑgrp
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNTweet2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐTweet(ctx, sel, v[i])
+			ret[i] = ec.marshalNTweet2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐTweet(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4580,7 +4586,7 @@ func (ec *executionContext) marshalNTweet2ᚕᚖgithubᚗcomᚋAI1411ᚋgoᚑgrp
 	return ret
 }
 
-func (ec *executionContext) marshalNTweet2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐTweet(ctx context.Context, sel ast.SelectionSet, v *model.Tweet) graphql.Marshaler {
+func (ec *executionContext) marshalNTweet2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐTweet(ctx context.Context, sel ast.SelectionSet, v *model.Tweet) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4590,26 +4596,26 @@ func (ec *executionContext) marshalNTweet2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpc�
 	return ec._Tweet(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNUpdateUserPasswordInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUpdateUserPasswordInput(ctx context.Context, v interface{}) (model.UpdateUserPasswordInput, error) {
+func (ec *executionContext) unmarshalNUpdateUserPasswordInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUpdateUserPasswordInput(ctx context.Context, v interface{}) (model.UpdateUserPasswordInput, error) {
 	res, err := ec.unmarshalInputUpdateUserPasswordInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateUserProfileInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUpdateUserProfileInput(ctx context.Context, v interface{}) (model.UpdateUserProfileInput, error) {
+func (ec *executionContext) unmarshalNUpdateUserProfileInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUpdateUserProfileInput(ctx context.Context, v interface{}) (model.UpdateUserProfileInput, error) {
 	res, err := ec.unmarshalInputUpdateUserProfileInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateUserStatusInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUpdateUserStatusInput(ctx context.Context, v interface{}) (model.UpdateUserStatusInput, error) {
+func (ec *executionContext) unmarshalNUpdateUserStatusInput2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUpdateUserStatusInput(ctx context.Context, v interface{}) (model.UpdateUserStatusInput, error) {
 	res, err := ec.unmarshalInputUpdateUserStatusInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNUser2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2githubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4930,7 +4936,7 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑpraphqlᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋAI1411ᚋgoᚑgrpcᚑgraphqlᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
