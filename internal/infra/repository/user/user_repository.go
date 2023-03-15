@@ -39,7 +39,7 @@ func (u *userRepository) GetUser(ctx context.Context, userID string) (*entity.Us
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, status.Errorf(codes.NotFound, "user not found: %v", err)
 		}
-		return nil, err
+		return nil, status.Errorf(codes.Internal, "failed to get user: %v", err)
 	}
 
 	return &user, nil
