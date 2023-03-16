@@ -9,7 +9,7 @@ package chat.v1;
 
 // チャットのCRUD操作に対応するservice型
 service ChatService {
-  rpc ListChat(ListChatsRequest) returns (ListChatsResponse);
+  rpc ListChat(ListChatRequest) returns (ListChatResponse);
   rpc CreateChat(CreateChatRequest) returns (CreateChatResponse);
   rpc DeleteChat(DeleteChatRequest) returns (google.protobuf.Empty);
 }
@@ -17,30 +17,32 @@ service ChatService {
 // チャット情報を表すmessage型
 message Chat {
   string id = 1; // チャットの一意なID (UUID)
-  string user_id = 2; // チャットを投稿したユーザーのID (UUID)
-  string body = 3; // チャットの本文
-  bool is_read = 4; // 既読フラグ
-  google.protobuf.Timestamp created_at = 5; // チャット作成日時
-  google.protobuf.Timestamp updated_at = 6; // チャット情報更新日時
+  string from_user_id = 2; // チャットを投稿したユーザーのID (UUID)
+  string to_user_id = 3; // チャットを投稿した相手ユーザーのID (UUID)
+  string body = 4; // チャットの本文
+  bool is_read = 5; // 既読フラグ
+  google.protobuf.Timestamp created_at = 6; // チャット作成日時
+  google.protobuf.Timestamp updated_at = 7; // チャット情報更新日時
 }
 
-message ListChatsRequest {
+message ListChatRequest {
   string user_id = 1; // チャットを取得するユーザーのID
 }
 
-message ListChatsResponse {
+message ListChatResponse {
   repeated Chat chats = 1; // 取得されたチャットの情報
 }
 
 // チャットを作成するためのリクエストmessage型
 message CreateChatRequest {
-  string user_id = 1; // チャットを投稿するユーザーのID
-  string body = 2; // チャットの本文
+  string from_user_id = 1; // チャットを投稿するユーザーのID
+  string to_user_id = 2; // チャットを投稿する相手ユーザーのID
+  string body = 3; // チャットの本文
 }
 
 // チャットを作成した結果を返すレスポンスmessage型
 message CreateChatResponse {
-  Chat chat = 1; // 作成されたチャットの情報
+  string id = 1; // 作成されたチャットの情報
 }
 
 // チャットを削除するためのリクエストmessage型

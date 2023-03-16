@@ -12,6 +12,7 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/env"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/logger"
+	chatRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/chat"
 	tweetRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/tweet"
 	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
 	interceptor "github.com/AI1411/go-grpc-graphql/internal/intorceptor"
@@ -39,6 +40,7 @@ func main() {
 	}
 	userRepo := repository.NewUserRepository(dbClient)
 	tweetRepo := tweetRepo.NewTweetRepository(dbClient)
+	chatRepo := chatRepo.NewChatRepository(dbClient)
 
 	s := grpc.NewServer(
 		grpcMiddleware.WithUnaryServerChain(
@@ -46,16 +48,13 @@ func main() {
 		),
 	)
 
-	userServer := server.NewUserServer(
-		dbClient,
-		zapLogger,
-		userRepo,
-	)
-
+	userServer := server.NewUserServer(dbClient, zapLogger, userRepo)
 	tweetServer := server.NewTweetServer(dbClient, zapLogger, userRepo, tweetRepo)
+	chatServer := server.NewChatServer(dbClient, zapLogger, userRepo, chatRepo)
 
 	grpcServer.RegisterUserServiceServer(s, userServer)
 	grpcServer.RegisterTweetServiceServer(s, tweetServer)
+	grpcServer.RegisterChatServiceServer(s, chatServer)
 
 	zapLogger.Info("start grpc Server port: " + e.ServerPort)
 

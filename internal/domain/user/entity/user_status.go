@@ -2,6 +2,11 @@ package entity
 
 type UserStatus string
 
+var (
+	ActiveUser    = []UserStatus{"ACTIVE", "PREMIUM"}
+	NotActiveUser = []UserStatus{"RESIGNED", "BANDED"}
+)
+
 // 'ACTIVE', 'RESIGNED', 'BANDED', 'PREMIUM'
 const (
 	UserStatusActive   UserStatus = "通常会員"
