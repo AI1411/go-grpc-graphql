@@ -10,7 +10,7 @@ import (
 )
 
 type CreateUserUsecase interface {
-	Exec(ctx context.Context, in *grpc.CreateUserRequest) error
+	Exec(ctx context.Context, in *grpc.CreateUserRequest) (*grpc.CreateUserResponse, error)
 }
 
 type createUserUsecaseImpl struct {
@@ -23,8 +23,8 @@ func NewCreateUserUsecaseImpl(userRepository userRepo.UserRepository) CreateUser
 	}
 }
 
-func (u *createUserUsecaseImpl) Exec(ctx context.Context, in *grpc.CreateUserRequest) error {
-	return u.userRepository.CreateUser(ctx, &entity.User{
+func (u *createUserUsecaseImpl) Exec(ctx context.Context, in *grpc.CreateUserRequest) (*grpc.CreateUserResponse, error) {
+	res, err := u.userRepository.CreateUser(ctx, &entity.User{
 		Username:     in.GetUsername(),
 		Email:        in.GetEmail(),
 		Status:       entity.UserStatusActive,
@@ -32,4 +32,10 @@ func (u *createUserUsecaseImpl) Exec(ctx context.Context, in *grpc.CreateUserReq
 		Introduction: in.GetIntroduction(),
 		BloodType:    commonEntity.BloodTypeName[in.GetBloodType().String()],
 	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &grpc.CreateUserResponse{Id: res}, nil
 }

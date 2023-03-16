@@ -43,17 +43,18 @@ func (s *UserServer) GetUser(ctx context.Context, in *grpc.GetUserRequest) (*grp
 	return usecase.Exec(ctx, in.GetId())
 }
 
-func (s *UserServer) CreateUser(ctx context.Context, in *grpc.CreateUserRequest) (*emptypb.Empty, error) {
+func (s *UserServer) CreateUser(ctx context.Context, in *grpc.CreateUserRequest) (*grpc.CreateUserResponse, error) {
 	validator := form.NewFormValidator(userForm.NewCreateUserForm(in))
 	if err := validator.Validate(); err != nil {
 		return nil, err
 	}
 
 	usecase := user.NewCreateUserUsecaseImpl(s.userRepo)
-	if err := usecase.Exec(ctx, in); err != nil {
+	res, err := usecase.Exec(ctx, in)
+	if err != nil {
 		return nil, err
 	}
-	return &emptypb.Empty{}, nil
+	return &grpc.CreateUserResponse{Id: res.Id}, nil
 }
 
 func (s *UserServer) UpdateUserProfile(ctx context.Context, in *grpc.UpdateUserProfileRequest) (*emptypb.Empty, error) {

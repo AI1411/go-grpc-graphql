@@ -16,7 +16,7 @@ import (
 
 type UserRepository interface {
 	GetUser(context.Context, string) (*entity.User, error)
-	CreateUser(context.Context, *entity.User) error
+	CreateUser(context.Context, *entity.User) (string, error)
 	UpdateUserProfile(context.Context, *entity.User) error
 	UpdateUserStatus(context.Context, *entity.User) error
 	UpdateUserPassword(context.Context, *entity.UserPassword) error
@@ -45,14 +45,14 @@ func (u *userRepository) GetUser(ctx context.Context, userID string) (*entity.Us
 	return &user, nil
 }
 
-func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) error {
+func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) (string, error) {
 	if err := util.SetPassword(user); err != nil {
-		return err
+		return "", err
 	}
 	if err := u.dbClient.Conn(ctx).Create(&user).Error; err != nil {
-		return status.Errorf(codes.Internal, "failed to create user: %v", err)
+		return "", status.Errorf(codes.Internal, "failed to create user: %v", err)
 	}
-	return nil
+	return util.NullUUIDToString(user.ID), nil
 }
 
 func (u *userRepository) UpdateUserProfile(ctx context.Context, user *entity.User) error {
