@@ -2,6 +2,22 @@
 
 package model
 
+type Chat struct {
+	ID         string `json:"id"`
+	FromUserID string `json:"from_user_id"`
+	ToUserID   string `json:"to_user_id"`
+	Body       string `json:"body"`
+	IsRead     bool   `json:"is_read"`
+	CreatedAt  string `json:"created_at"`
+	UpdatedAt  string `json:"updated_at"`
+}
+
+type CreateChatInput struct {
+	FromUserID string `json:"from_user_id"`
+	ToUserID   string `json:"to_user_id"`
+	Body       string `json:"body"`
+}
+
 type CreateTweetInput struct {
 	UserID string `json:"user_id"`
 	Body   string `json:"body"`
@@ -14,6 +30,10 @@ type CreateUserInput struct {
 	Prefecture   int    `json:"prefecture"`
 	Introduction string `json:"introduction"`
 	BloodType    int    `json:"bloodType"`
+}
+
+type ListChatInput struct {
+	FromUserID string `json:"from_user_id"`
 }
 
 type Tweet struct {

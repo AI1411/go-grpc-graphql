@@ -38,3 +38,12 @@ func ConnectTweetServiceClient() (grpcClient.TweetServiceClient, error) {
 
 	return grpcClient.NewTweetServiceClient(conn), nil
 }
+
+func ConnectChatServiceClient() (grpcClient.ChatServiceClient, error) {
+	conn, err := connect()
+	if err != nil {
+		return nil, err
+	}
+
+	return grpcClient.NewChatServiceClient(conn), nil
+}

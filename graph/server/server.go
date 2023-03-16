@@ -31,9 +31,15 @@ func main() {
 		log.Fatalf("failed to connect to tweet server: %v", err)
 	}
 
+	chatClient, err := grpcClient.ConnectChatServiceClient()
+	if err != nil {
+		log.Fatalf("failed to connect to chat server: %v", err)
+	}
+
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{
 		UserClient:  userClient,
 		TweetClient: tweetClient,
+		ChatClient:  chatClient,
 	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
