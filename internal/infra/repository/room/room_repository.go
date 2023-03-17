@@ -10,8 +10,9 @@ import (
 
 type RoomRepository interface {
 	ListRoom(ctx context.Context, userID string) ([]*entity.Room, error)
-	CreateRoom(ctx context.Context, Room *entity.Room) (string, error)
 	GetRoom(ctx context.Context, id string) (*entity.Room, error)
+	CreateRoom(ctx context.Context, Room *entity.Room) (string, error)
+	DeleteRoom(ctx context.Context, id string) error
 }
 
 type roomRepository struct {
@@ -50,4 +51,12 @@ func (c *roomRepository) CreateRoom(ctx context.Context, Room *entity.Room) (str
 	}
 
 	return util.NullUUIDToString(Room.ID), nil
+}
+
+func (c *roomRepository) DeleteRoom(ctx context.Context, id string) error {
+	var room *entity.Room
+	if err := c.dbClient.Conn(ctx).Where("id", id).Delete(&room).Error; err != nil {
+		return err
+	}
+	return nil
 }
