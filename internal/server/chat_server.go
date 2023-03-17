@@ -10,6 +10,8 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
 	chatRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/chat"
 	userRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
+	"github.com/AI1411/go-grpc-graphql/internal/server/form"
+	chatForm "github.com/AI1411/go-grpc-graphql/internal/server/form/chat"
 	"github.com/AI1411/go-grpc-graphql/internal/usecase/chat"
 )
 
@@ -36,8 +38,13 @@ func NewChatServer(
 }
 
 func (s *ChatServer) ListChat(ctx context.Context, in *grpc.ListChatRequest) (*grpc.ListChatResponse, error) {
+	validator := form.NewFormValidator(chatForm.NewListChatForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
 	usecase := chat.NewListChatUsecaseImpl(s.userRepo, s.chatRepo)
-	res, err := usecase.Exec(ctx, in.GetUserId())
+	res, err := usecase.Exec(ctx, in)
 	if err != nil {
 		return nil, err
 	}

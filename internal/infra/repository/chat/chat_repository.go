@@ -15,7 +15,7 @@ import (
 )
 
 type ChatRepository interface {
-	ListChat(ctx context.Context, userID string) ([]*entity.Chat, error)
+	ListChat(ctx context.Context, chat *entity.Chat) ([]*entity.Chat, error)
 	CreateChat(ctx context.Context, chat *entity.Chat) (string, error)
 	DeleteChat(ctx context.Context, chatID string) error
 }
@@ -30,9 +30,12 @@ func NewChatRepository(dbClient *db.Client) ChatRepository {
 	}
 }
 
-func (c *chatRepository) ListChat(ctx context.Context, userID string) ([]*entity.Chat, error) {
+func (c *chatRepository) ListChat(ctx context.Context, chat *entity.Chat) ([]*entity.Chat, error) {
 	var chats []*entity.Chat
-	if err := c.dbClient.Conn(ctx).Where("from_user_id", userID).Find(&chats).Error; err != nil {
+	if err := c.dbClient.Conn(ctx).
+		Where("from_user_id", chat.FromUserID).
+		Where("room_id", chat.RoomID).
+		Find(&chats).Error; err != nil {
 		return nil, err
 	}
 	return chats, nil

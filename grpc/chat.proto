@@ -17,16 +17,18 @@ service ChatService {
 // チャット情報を表すmessage型
 message Chat {
   string id = 1; // チャットの一意なID (UUID)
-  string from_user_id = 2; // チャットを投稿したユーザーのID (UUID)
-  string to_user_id = 3; // チャットを投稿した相手ユーザーのID (UUID)
-  string body = 4; // チャットの本文
-  bool is_read = 5; // 既読フラグ
-  google.protobuf.Timestamp created_at = 6; // チャット作成日時
-  google.protobuf.Timestamp updated_at = 7; // チャット情報更新日時
+  string room_id = 2; // ルームID (UUID)
+  string from_user_id = 3; // チャットを投稿したユーザーのID (UUID)
+  string to_user_id = 4; // チャットを投稿した相手ユーザーのID (UUID)
+  string body = 5; // チャットの本文
+  bool is_read = 6; // 既読フラグ
+  google.protobuf.Timestamp created_at = 7; // チャット作成日時
+  google.protobuf.Timestamp updated_at = 8; // チャット情報更新日時
 }
 
 message ListChatRequest {
-  string user_id = 1; // チャットを取得するユーザーのID
+  string room_id = 1; // チャットを取得するルームのID
+  string user_id = 2; // チャットを取得するユーザーのID
 }
 
 message ListChatResponse {
@@ -35,9 +37,10 @@ message ListChatResponse {
 
 // チャットを作成するためのリクエストmessage型
 message CreateChatRequest {
-  string from_user_id = 1; // チャットを投稿するユーザーのID
-  string to_user_id = 2; // チャットを投稿する相手ユーザーのID
-  string body = 3; // チャットの本文
+  string room_id = 1; // ルームのID
+  string from_user_id = 2; // チャットを投稿するユーザーのID
+  string to_user_id = 3; // チャットを投稿する相手ユーザーのID
+  string body = 4; // チャットの本文
 }
 
 // チャットを作成した結果を返すレスポンスmessage型

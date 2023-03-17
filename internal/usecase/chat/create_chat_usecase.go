@@ -28,6 +28,7 @@ func NewCreateChatUsecaseImpl(userRepository userRepo.UserRepository, chatRepo c
 
 func (u *createChatUsecaseImpl) Exec(ctx context.Context, in *grpc.CreateChatRequest) (*grpc.CreateChatResponse, error) {
 	chatID, err := u.chatRepo.CreateChat(ctx, &entity.Chat{
+		RoomID:     util.StringToNullUUID(in.GetRoomId()),
 		FromUserID: util.StringToNullUUID(in.GetFromUserId()),
 		ToUserID:   util.StringToNullUUID(in.GetToUserId()),
 		Body:       in.GetBody(),
