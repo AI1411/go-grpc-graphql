@@ -9,22 +9,21 @@ package room.v1;
 
 service RoomService {
   rpc GetRoom(GetRoomRequest) returns (GetRoomResponse);
-  rpc ListRooms(ListRoomRequest) returns (ListRoomResponse);
-  rpc CreateRoom(CreateRoomRequest) returns (google.protobuf.Empty);
+  rpc ListRoom(ListRoomRequest) returns (ListRoomResponse);
+  rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse);
   rpc DeleteRoom(DeleteRoomRequest) returns (google.protobuf.Empty);
 }
 
 // チャットルーム情報を表すmessage型
 message Room {
-  int32 id = 1; // チャットルームの一意なID
-  string name = 2; // チャットルームの名前
-  string description = 3; // チャットルームの説明
-  google.protobuf.Timestamp created_at = 4; // チャットルーム作成日時
-  google.protobuf.Timestamp updated_at = 5; // チャットルーム情報更新日時
+  string id = 1; // チャットルームの一意なID
+  string user_id = 2; // チャットルームの名前
+  google.protobuf.Timestamp created_at = 3; // チャットルーム作成日時
+  google.protobuf.Timestamp updated_at = 4; // チャットルーム情報更新日時
 }
 
 message ListRoomRequest {
-  int32 user_id = 1; // 取得するチャットルームの最大数
+  string user_id = 1; // 取得するチャットルームの最大数
 }
 
 message ListRoomResponse {
@@ -32,7 +31,7 @@ message ListRoomResponse {
 }
 
 message GetRoomRequest {
-  int32 id = 1; // チャットルームの一意なID
+  string id = 1; // チャットルームの一意なID
 }
 
 message GetRoomResponse {
@@ -40,10 +39,13 @@ message GetRoomResponse {
 }
 
 message CreateRoomRequest {
-  string name = 1; // チャットルームの名前
-  string description = 2; // チャットルームの説明
+  string user_id = 1; // ユーザID
+}
+
+message CreateRoomResponse {
+  string id = 1; // 作成されたチャットルームのID
 }
 
 message DeleteRoomRequest {
-  int32 id = 1; // チャットルームの一
+  string id = 1; // チャットルームのID
 }
