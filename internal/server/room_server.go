@@ -51,3 +51,12 @@ func (s *RoomServer) CreateRoom(ctx context.Context, in *grpc.CreateRoomRequest)
 	}
 	return res, nil
 }
+
+func (s *RoomServer) GetRoom(ctx context.Context, in *grpc.GetRoomRequest) (*grpc.GetRoomResponse, error) {
+	usecase := room.NewGetRoomUsecaseImpl(s.userRepo, s.chatRepo)
+	res, err := usecase.Exec(ctx, in.GetId())
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

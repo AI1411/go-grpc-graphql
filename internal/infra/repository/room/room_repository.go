@@ -11,6 +11,7 @@ import (
 type RoomRepository interface {
 	ListRoom(ctx context.Context, userID string) ([]*entity.Room, error)
 	CreateRoom(ctx context.Context, Room *entity.Room) (string, error)
+	GetRoom(ctx context.Context, id string) (*entity.Room, error)
 }
 
 type roomRepository struct {
@@ -24,13 +25,23 @@ func NewRoomRepository(dbClient *db.Client) RoomRepository {
 }
 
 func (c *roomRepository) ListRoom(ctx context.Context, userID string) ([]*entity.Room, error) {
-	var Rooms []*entity.Room
+	var rooms []*entity.Room
 	if err := c.dbClient.Conn(ctx).
 		Where("user_id", userID).
-		Find(&Rooms).Error; err != nil {
+		Find(&rooms).Error; err != nil {
 		return nil, err
 	}
-	return Rooms, nil
+	return rooms, nil
+}
+
+func (c *roomRepository) GetRoom(ctx context.Context, id string) (*entity.Room, error) {
+	var room *entity.Room
+	if err := c.dbClient.Conn(ctx).
+		Where("id", id).
+		First(&room).Error; err != nil {
+		return nil, err
+	}
+	return room, nil
 }
 
 func (c *roomRepository) CreateRoom(ctx context.Context, Room *entity.Room) (string, error) {
