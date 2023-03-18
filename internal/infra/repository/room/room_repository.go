@@ -39,9 +39,11 @@ func (c *roomRepository) GetRoom(ctx context.Context, id string) (*entity.Room, 
 	var room *entity.Room
 	if err := c.dbClient.Conn(ctx).
 		Where("id", id).
+		Preload("Chats").
 		First(&room).Error; err != nil {
 		return nil, err
 	}
+
 	return room, nil
 }
 

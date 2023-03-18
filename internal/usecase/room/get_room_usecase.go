@@ -40,5 +40,18 @@ func (c *getRoomUsecaseImpl) Exec(ctx context.Context, userID string) (*grpc.Get
 		UpdatedAt: timestamppb.New(room.UpdatedAt),
 	}
 
-	return &grpc.GetRoomResponse{Room: res}, err
+	chats := make([]*grpc.Chat, len(room.Chats))
+	for i, chat := range room.Chats {
+		chats[i] = &grpc.Chat{
+			Id:         util.NullUUIDToString(chat.ID),
+			RoomId:     util.NullUUIDToString(chat.RoomID),
+			FromUserId: util.NullUUIDToString(chat.FromUserID),
+			ToUserId:   util.NullUUIDToString(chat.ToUserID),
+			Body:       chat.Body,
+			CreatedAt:  timestamppb.New(chat.CreatedAt),
+			UpdatedAt:  timestamppb.New(chat.UpdatedAt),
+		}
+	}
+
+	return &grpc.GetRoomResponse{Room: res, Chats: chats}, err
 }

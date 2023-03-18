@@ -2,6 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "grpc/chat.proto";
 
 option go_package = '/grpc';
 
@@ -36,6 +37,7 @@ message GetRoomRequest {
 
 message GetRoomResponse {
   Room room = 1; // 取得されたチャットルームの情報
+  repeated chat.v1.Chat chats = 2; // 取得されたチャットルームのチャット情報
 }
 
 message CreateRoomRequest {
