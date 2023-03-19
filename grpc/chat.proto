@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
 
 option go_package = '/grpc';
 
@@ -11,7 +10,6 @@ package chat.v1;
 service ChatService {
   rpc ListChat(ListChatRequest) returns (ListChatResponse);
   rpc CreateChat(CreateChatRequest) returns (CreateChatResponse);
-  rpc DeleteChat(DeleteChatRequest) returns (google.protobuf.Empty);
 }
 
 // チャット情報を表すmessage型
@@ -46,9 +44,4 @@ message CreateChatRequest {
 // チャットを作成した結果を返すレスポンスmessage型
 message CreateChatResponse {
   string id = 1; // 作成されたチャットの情報
-}
-
-// チャットを削除するためのリクエストmessage型
-message DeleteChatRequest {
-  string id = 1; // チャットの一意なID
 }

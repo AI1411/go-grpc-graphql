@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"go.uber.org/zap"
-	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/AI1411/go-grpc-graphql/grpc"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
@@ -60,9 +59,4 @@ func (s *ChatServer) CreateChat(ctx context.Context, in *grpc.CreateChatRequest)
 	}
 
 	return res, nil
-}
-
-func (s *ChatServer) DeleteChat(ctx context.Context, in *grpc.DeleteChatRequest) (*emptypb.Empty, error) {
-	//TODO implement me
-	panic("implement me")
 }
