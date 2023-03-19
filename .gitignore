@@ -4,3 +4,4 @@ docker/psql/data/
 tmp/
 /grpc/*.pb*
 /docs
+docker/redis/data/
