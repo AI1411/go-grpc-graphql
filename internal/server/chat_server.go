@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/AI1411/go-grpc-graphql/grpc"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
@@ -59,4 +60,14 @@ func (s *ChatServer) CreateChat(ctx context.Context, in *grpc.CreateChatRequest)
 	}
 
 	return res, nil
+}
+
+func (s *ChatServer) MarkChatAsRead(ctx context.Context, in *grpc.MarkChatAsReadRequest) (*emptypb.Empty, error) {
+	usecase := chat.NewMarkChatAsReadUsecaseImpl(s.userRepo, s.chatRepo)
+	err := usecase.Exec(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }

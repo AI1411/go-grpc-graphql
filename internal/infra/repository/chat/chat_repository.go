@@ -17,7 +17,7 @@ import (
 type ChatRepository interface {
 	ListChat(ctx context.Context, chat *entity.Chat) ([]*entity.Chat, error)
 	CreateChat(ctx context.Context, chat *entity.Chat) (string, error)
-	DeleteChat(ctx context.Context, chatID string) error
+	MarkChatAsRead(ctx context.Context, chatID string) error
 }
 
 type chatRepository struct {
@@ -77,7 +77,24 @@ func (c *chatRepository) CreateChat(ctx context.Context, chat *entity.Chat) (str
 	return util.NullUUIDToString(chat.ID), nil
 }
 
-func (c *chatRepository) DeleteChat(ctx context.Context, chatID string) error {
-	//TODO implement me
-	panic("implement me")
+func (c *chatRepository) MarkChatAsRead(ctx context.Context, chatID string) error {
+	var chat *entity.Chat
+	if err := c.dbClient.Conn(ctx).Where("id", chatID).First(&chat).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return status.Errorf(codes.NotFound, "chat not found")
+		}
+		return err
+	}
+
+	if chat.IsRead {
+		return status.Errorf(codes.InvalidArgument, "chat already read")
+	}
+
+	if err := c.dbClient.Conn(ctx).Model(&entity.Chat{}).
+		Where("id", chatID).
+		Update("is_read", true).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
