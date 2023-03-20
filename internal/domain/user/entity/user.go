@@ -26,3 +26,21 @@ type UserPassword struct {
 	Password             string
 	PasswordConfirmation string
 }
+
+func NewUser(
+	username, email, password string,
+	status UserStatus,
+	prefecture entity.Prefecture,
+	introduction string,
+	bloodType entity.BloodType,
+) *User {
+	return &User{
+		Username:     username,
+		Email:        email,
+		Password:     password,
+		Status:       status,
+		Prefecture:   prefecture,
+		Introduction: introduction,
+		BloodType:    bloodType,
+	}
+}
