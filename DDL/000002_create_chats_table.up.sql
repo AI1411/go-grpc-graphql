@@ -26,6 +26,3 @@ CREATE INDEX IF NOT EXISTS from_user_id_idx on chats (from_user_id);
 CREATE INDEX IF NOT EXISTS to_user_id_idx on chats (to_user_id);
 CREATE INDEX IF NOT EXISTS is_read_idx on chats (is_read);
 CREATE INDEX IF NOT EXISTS created_at_idx on chats (created_at);
-
-ALTER TABLE chats
-    ADD CONSTRAINT chats_room_id_fkey FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE;

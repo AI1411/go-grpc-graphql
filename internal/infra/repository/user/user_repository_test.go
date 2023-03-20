@@ -176,7 +176,7 @@ func TestCreateUser(t *testing.T) {
 
 				userRepo := repository.NewUserRepository(testClient)
 
-				err = userRepo.CreateUser(ctx, tt.request)
+				_, err = userRepo.CreateUser(ctx, tt.request)
 
 				var got *entity.User
 

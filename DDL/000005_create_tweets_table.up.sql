@@ -8,12 +8,12 @@ CREATE TABLE IF NOT EXISTS tweets
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()              -- 更新日時
 );
 
-COMMENT ON TABLE chats IS 'つぶやきテーブル';
-COMMENT ON COLUMN chats.id IS 'ID';
-COMMENT ON COLUMN chats.user_id IS 'ユーザID';
-COMMENT ON COLUMN chats.body IS '本文';
-COMMENT ON COLUMN chats.created_at IS '作成日時';
-COMMENT ON COLUMN chats.updated_at IS '更新日時';
+COMMENT ON TABLE tweets IS 'つぶやきテーブル';
+COMMENT ON COLUMN tweets.id IS 'ID';
+COMMENT ON COLUMN tweets.user_id IS 'ユーザID';
+COMMENT ON COLUMN tweets.body IS '本文';
+COMMENT ON COLUMN tweets.created_at IS '作成日時';
+COMMENT ON COLUMN tweets.updated_at IS '更新日時';
 
-CREATE INDEX IF NOT EXISTS user_id_idx on chats (user_id);
+CREATE INDEX IF NOT EXISTS user_id_idx on tweets (user_id);
 CREATE INDEX IF NOT EXISTS created_at_idx on chats (created_at);

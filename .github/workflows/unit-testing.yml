@@ -1,0 +1,70 @@
+name: Run unit tests
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go-version: [ 1.19 ]
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: go_pg
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.18
+        id: go
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Install golang-migrate
+        run: |
+          curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+          sudo mv migrate.linux-amd64 /usr/bin/migrate
+          which migrate
+      - name: run migrations
+        run: migrate -path DDL/ -database "postgresql://root:root@127.0.0.1:5432/go_pg?sslmode=disable" -verbose up
+
+      - name: Install protoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler 
+
+      - name: Install protoc-gen-go
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+          protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative grpc/*.proto
+
+      - name: Get dependencies
+        run: go install gotest.tools/gotestsum@latest
+
+      - name: Test
+        env:
+          STAR_SERVER_PORT: 8080
+          STAR_GRAPHQL_PORT: 8081
+          STAR_POSTGRES_HOST: localhost
+          STAR_POSTGRES_PORT: 5432
+          STAR_POSTGRES_DATABASE: go_pg
+          STAR_POSTGRES_USER: root
+          STAR_POSTGRES_PASSWORD: root
+
+        run: gotestsum -- -p 1 -count=1 ./...
