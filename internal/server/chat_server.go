@@ -53,6 +53,11 @@ func (s *ChatServer) ListChat(ctx context.Context, in *grpc.ListChatRequest) (*g
 }
 
 func (s *ChatServer) CreateChat(ctx context.Context, in *grpc.CreateChatRequest) (*grpc.CreateChatResponse, error) {
+	validator := form.NewFormValidator(chatForm.NewCreateChatForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
 	usecase := chat.NewCreateChatUsecaseImpl(s.userRepo, s.chatRepo)
 	res, err := usecase.Exec(ctx, in)
 	if err != nil {
@@ -63,6 +68,11 @@ func (s *ChatServer) CreateChat(ctx context.Context, in *grpc.CreateChatRequest)
 }
 
 func (s *ChatServer) MarkChatAsRead(ctx context.Context, in *grpc.MarkChatAsReadRequest) (*emptypb.Empty, error) {
+	validator := form.NewFormValidator(chatForm.NewMarkChatAsReadForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
 	usecase := chat.NewMarkChatAsReadUsecaseImpl(s.userRepo, s.chatRepo)
 	err := usecase.Exec(ctx, in)
 	if err != nil {
