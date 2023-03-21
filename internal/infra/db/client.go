@@ -53,6 +53,6 @@ func (c *Client) Conn(ctx context.Context) *gorm.DB {
 
 func (c *Client) TruncateTable(ctx context.Context, t *testing.T, tables []string) {
 	for _, table := range tables {
-		require.NoError(t, c.Conn(ctx).Exec(fmt.Sprintf("TRUNCATE TABLE %s RESTART IDENTITY;", table)).Error)
+		require.NoError(t, c.Conn(ctx).Exec(fmt.Sprintf("TRUNCATE TABLE %s RESTART IDENTITY CASCADE;", table)).Error)
 	}
 }
