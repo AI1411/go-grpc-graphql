@@ -3,6 +3,10 @@ package room
 import (
 	"context"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"gorm.io/gorm"
+
 	"github.com/AI1411/go-grpc-graphql/internal/domain/room/entity"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
 	"github.com/AI1411/go-grpc-graphql/internal/util"
@@ -41,6 +45,9 @@ func (c *roomRepository) GetRoom(ctx context.Context, id string) (*entity.Room, 
 		Where("id", id).
 		Preload("Chats").
 		First(&room).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, status.Errorf(codes.NotFound, "room not found: %v", err)
+		}
 		return nil, err
 	}
 
