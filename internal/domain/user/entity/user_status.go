@@ -4,7 +4,7 @@ type UserStatus string
 
 var (
 	ActiveUser    = []UserStatus{"ACTIVE", "PREMIUM"}
-	NotActiveUser = []UserStatus{"RESIGNED", "BANDED"}
+	NotActiveUser = []UserStatus{"退会済", "アカウント停止"}
 )
 
 // 'ACTIVE', 'RESIGNED', 'BANDED', 'PREMIUM'
