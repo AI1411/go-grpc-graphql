@@ -112,7 +112,7 @@ func TestChatRepository_ListRoom(t *testing.T) {
 func TestChatRepository_GetRoom(t *testing.T) {
 	ctx := context.Background()
 
-	testcasesListRoom := []struct {
+	testcasesGetRoom := []struct {
 		id        int
 		name      string
 		roomID    string
@@ -203,7 +203,7 @@ func TestChatRepository_GetRoom(t *testing.T) {
 		},
 	}
 
-	for _, tt := range testcasesListRoom {
+	for _, tt := range testcasesGetRoom {
 		t.Run(
 			tt.name, func(t *testing.T) {
 				a := assert.New(t)
@@ -227,6 +227,86 @@ func TestChatRepository_GetRoom(t *testing.T) {
 					if !cmp.Equal(got, tt.want) {
 						t.Errorf("diff %s", cmp.Diff(got, tt.want))
 					}
+				}
+			},
+		)
+	}
+}
+
+func TestChatRepository_CreateRoom(t *testing.T) {
+	ctx := context.Background()
+
+	testcasesCreateRoom := []struct {
+		id        int
+		name      string
+		request   *entity.Room
+		want      *entity.Room
+		wantError codes.Code
+	}{
+		{
+			id:   1,
+			name: "正常系/Roomが取得できること",
+			request: &entity.Room{
+				UserID: uuid.NullUUID{
+					UUID:  uuid.MustParse(testUserID),
+					Valid: true,
+				},
+			},
+		},
+	}
+
+	for _, tt := range testcasesCreateRoom {
+		t.Run(
+			tt.name, func(t *testing.T) {
+				a := assert.New(t)
+
+				testClient, err := testutil.TestConnection(t)
+				testClient.TruncateTable(ctx, t, []string{"users", "chats", "rooms"})
+
+				roomRepo := repository.NewRoomRepository(testClient)
+
+				_, err = roomRepo.CreateRoom(ctx, tt.request)
+				if tt.wantError != 0 {
+					a.Equal(status.Code(err), tt.wantError)
+				} else {
+					a.NoError(err)
+				}
+			},
+		)
+	}
+}
+
+func TestChatRepository_DeleteRoom(t *testing.T) {
+	ctx := context.Background()
+
+	testcasesDeleteRoom := []struct {
+		id        int
+		name      string
+		roomID    string
+		wantError codes.Code
+	}{
+		{
+			id:     1,
+			name:   "正常系/Roomが削除できること",
+			roomID: testRoomID,
+		},
+	}
+
+	for _, tt := range testcasesDeleteRoom {
+		t.Run(
+			tt.name, func(t *testing.T) {
+				a := assert.New(t)
+
+				testClient, err := testutil.TestConnection(t)
+				testClient.TruncateTable(ctx, t, []string{"users", "chats", "rooms"})
+
+				roomRepo := repository.NewRoomRepository(testClient)
+
+				err = roomRepo.DeleteRoom(ctx, tt.roomID)
+				if tt.wantError != 0 {
+					a.Equal(status.Code(err), tt.wantError)
+				} else {
+					a.NoError(err)
 				}
 			},
 		)
