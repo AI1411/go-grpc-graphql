@@ -1,0 +1,32 @@
+type Room {
+    id: String!
+    user_id: String!
+    created_at: String!
+    updated_at: String!
+}
+
+input ListRoomInput {
+    user_id: String!
+}
+
+input GetRoomInput {
+    id: String!
+}
+
+input DeleteRoomInput {
+    id: String!
+}
+
+input CreateRoomInput {
+    user_id: String!
+}
+
+extend type Query {
+    listRoom(input: ListRoomInput!): [Room!]!
+    getRoom(input: GetRoomInput!): Room!
+}
+
+extend type Mutation {
+    createRoom(input: CreateRoomInput!): String!
+    deleteRoom(input: DeleteRoomInput!): String
+}

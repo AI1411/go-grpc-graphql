@@ -18,6 +18,10 @@ type CreateChatInput struct {
 	Body       string `json:"body"`
 }
 
+type CreateRoomInput struct {
+	UserID string `json:"user_id"`
+}
+
 type CreateTweetInput struct {
 	UserID string `json:"user_id"`
 	Body   string `json:"body"`
@@ -32,8 +36,27 @@ type CreateUserInput struct {
 	BloodType    int    `json:"bloodType"`
 }
 
+type DeleteRoomInput struct {
+	ID string `json:"id"`
+}
+
+type GetRoomInput struct {
+	ID string `json:"id"`
+}
+
 type ListChatInput struct {
 	FromUserID string `json:"from_user_id"`
+}
+
+type ListRoomInput struct {
+	UserID string `json:"user_id"`
+}
+
+type Room struct {
+	ID        string `json:"id"`
+	UserID    string `json:"user_id"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
 }
 
 type Tweet struct {

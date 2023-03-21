@@ -10,4 +10,5 @@ type Resolver struct {
 	UserClient  grpc.UserServiceClient
 	TweetClient grpc.TweetServiceClient
 	ChatClient  grpc.ChatServiceClient
+	RoomClient  grpc.RoomServiceClient
 }

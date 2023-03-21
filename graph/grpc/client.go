@@ -47,3 +47,12 @@ func ConnectChatServiceClient() (grpcClient.ChatServiceClient, error) {
 
 	return grpcClient.NewChatServiceClient(conn), nil
 }
+
+func ConnectRoomServiceClient() (grpcClient.RoomServiceClient, error) {
+	conn, err := connect()
+	if err != nil {
+		return nil, err
+	}
+
+	return grpcClient.NewRoomServiceClient(conn), nil
+}
