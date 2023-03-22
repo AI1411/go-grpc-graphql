@@ -43,6 +43,7 @@ func main() {
 	tweetRepo := tweetRepo.NewTweetRepository(dbClient)
 	chatRepo := chatRepo.NewChatRepository(dbClient)
 	roomRepo := roomRepo.NewRoomRepository(dbClient)
+	userPointRepo := repository.NewUserPointRepository(dbClient)
 
 	s := grpc.NewServer(
 		grpcMiddleware.WithUnaryServerChain(
@@ -54,11 +55,13 @@ func main() {
 	tweetServer := server.NewTweetServer(dbClient, zapLogger, userRepo, tweetRepo)
 	chatServer := server.NewChatServer(dbClient, zapLogger, userRepo, chatRepo)
 	roomServer := server.NewRoomServer(dbClient, zapLogger, userRepo, roomRepo)
+	userPointServer := server.NewUserPointServer(dbClient, zapLogger, userRepo, userPointRepo)
 
 	grpcServer.RegisterUserServiceServer(s, userServer)
 	grpcServer.RegisterTweetServiceServer(s, tweetServer)
 	grpcServer.RegisterChatServiceServer(s, chatServer)
 	grpcServer.RegisterRoomServiceServer(s, roomServer)
+	grpcServer.RegisterUserPointServiceServer(s, userPointServer)
 
 	zapLogger.Info("start grpc Server port: " + e.ServerPort)
 
