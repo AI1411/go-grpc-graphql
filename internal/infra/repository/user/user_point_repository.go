@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 
 	"github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
@@ -29,7 +31,7 @@ func (u userPointRepository) GetPoint(ctx context.Context, userID string) (int, 
 	var point entity.UserPoint
 	if err := u.dbClient.Conn(ctx).Where("user_id", userID).First(&point).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return 0, nil
+			return 0, status.Errorf(codes.NotFound, "user point not found: %v", err)
 		}
 		return 0, err
 	}
@@ -38,6 +40,25 @@ func (u userPointRepository) GetPoint(ctx context.Context, userID string) (int, 
 }
 
 func (u userPointRepository) UpdateUserPoint(ctx context.Context, point *entity.UserPoint) error {
-	//TODO implement me
-	panic("implement me")
+	var user entity.User
+	if err := u.dbClient.Conn(ctx).Where("id", point.UserID).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return status.Errorf(codes.NotFound, "user not found: %v", err)
+		}
+		return err
+	}
+
+	var userPoint entity.UserPoint
+	if err := u.dbClient.Conn(ctx).Where("user_id", point.UserID).First(&userPoint).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return status.Errorf(codes.NotFound, "user point not found: %v", err)
+		}
+		return err
+	}
+
+	if err := u.dbClient.Conn(ctx).Model(&userPoint).Select("UserID", "Point").Updates(point).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
