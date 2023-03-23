@@ -46,9 +46,6 @@ func (u *userRepository) GetUser(ctx context.Context, userID string) (*entity.Us
 }
 
 func (u *userRepository) CreateUser(ctx context.Context, user *entity.User) (string, error) {
-	if err := util.SetPassword(user); err != nil {
-		return "", err
-	}
 	if err := u.dbClient.Conn(ctx).Create(&user).Error; err != nil {
 		return "", status.Errorf(codes.Internal, "failed to create user: %v", err)
 	}
