@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
-	"net"
+	"net/http"
 
-	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	"google.golang.org/grpc"
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 
-	grpcServer "github.com/AI1411/go-grpc-graphql/grpc"
+	"github.com/AI1411/go-grpc-graphql/grpc/grpcconnect"
 	"github.com/AI1411/go-grpc-graphql/internal/env"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/logger"
@@ -16,7 +16,6 @@ import (
 	roomRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/room"
 	tweetRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/tweet"
 	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
-	interceptor "github.com/AI1411/go-grpc-graphql/internal/intorceptor"
 	"github.com/AI1411/go-grpc-graphql/internal/server"
 )
 
@@ -28,28 +27,18 @@ func main() {
 		log.Fatalf("failed to load env: %v", err)
 	}
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", e.ServerPort))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-
 	zapLogger, _ := logger.NewLogger(e.Debug)
 
 	dbClient, err := db.NewClient(&e.DB, zapLogger)
 	if err != nil {
 		log.Fatalf("failed to connect to db: %v", err)
 	}
+
 	userRepo := repository.NewUserRepository(dbClient)
 	tweetRepo := tweetRepo.NewTweetRepository(dbClient)
 	chatRepo := chatRepo.NewChatRepository(dbClient)
 	roomRepo := roomRepo.NewRoomRepository(dbClient)
 	userPointRepo := repository.NewUserPointRepository(dbClient)
-
-	s := grpc.NewServer(
-		grpcMiddleware.WithUnaryServerChain(
-			interceptor.ZapLoggerInterceptor(zapLogger),
-		),
-	)
 
 	userServer := server.NewUserServer(dbClient, zapLogger, userRepo)
 	tweetServer := server.NewTweetServer(dbClient, zapLogger, userRepo, tweetRepo)
@@ -57,15 +46,17 @@ func main() {
 	roomServer := server.NewRoomServer(dbClient, zapLogger, userRepo, roomRepo)
 	userPointServer := server.NewUserPointServer(dbClient, zapLogger, userRepo, userPointRepo)
 
-	grpcServer.RegisterUserServiceServer(s, userServer)
-	grpcServer.RegisterTweetServiceServer(s, tweetServer)
-	grpcServer.RegisterChatServiceServer(s, chatServer)
-	grpcServer.RegisterRoomServiceServer(s, roomServer)
-	grpcServer.RegisterUserPointServiceServer(s, userPointServer)
+	mux := http.NewServeMux()
+
+	mux.Handle(grpcconnect.NewChatServiceHandler(chatServer))
+	mux.Handle(grpcconnect.NewUserServiceHandler(userServer))
+	mux.Handle(grpcconnect.NewTweetServiceHandler(tweetServer))
+	mux.Handle(grpcconnect.NewRoomServiceHandler(roomServer))
+	mux.Handle(grpcconnect.NewUserPointServiceHandler(userPointServer))
 
 	zapLogger.Info("start grpc Server port: " + e.ServerPort)
 
-	if err = s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", e.ServerPort), h2c.NewHandler(mux, &http2.Server{})); err != nil {
+		zapLogger.Fatal("failed to serve")
 	}
 }

@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 
+	"github.com/bufbuild/connect-go"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
 
@@ -13,7 +14,6 @@ import (
 )
 
 type UserPointServer struct {
-	grpc.UnimplementedUserPointServiceServer
 	dbClient      *db.Client
 	zapLogger     *zap.Logger
 	userRepo      repository.UserRepository
@@ -34,17 +34,26 @@ func NewUserPointServer(
 	}
 }
 
-func (s *UserPointServer) GetUserPoint(ctx context.Context, in *grpc.GetUserPointRequest) (*grpc.GetUserPointResponse, error) {
+func (s *UserPointServer) GetUserPoint(ctx context.Context, in *connect.Request[grpc.GetUserPointRequest]) (*connect.Response[grpc.GetUserPointResponse], error) {
 	usecase := user.NewGetUserPointUsecaseImpl(s.userRepo, s.userPointRepo)
-	return usecase.Exec(ctx, in.GetUserId())
-}
-
-func (s *UserPointServer) UpdateUserPoint(ctx context.Context, in *grpc.UpdateUserPointRequest) (*emptypb.Empty, error) {
-	usecase := user.NewUpdateUserPointUsecaseImpl(s.userRepo, s.userPointRepo)
-	err := usecase.Exec(ctx, in)
+	res, err := usecase.Exec(ctx, in.Msg.GetUserId())
 	if err != nil {
 		return nil, err
 	}
 
-	return &emptypb.Empty{}, nil
+	resp := connect.NewResponse(&grpc.GetUserPointResponse{
+		Point: res.Point,
+	})
+
+	return resp, nil
+}
+
+func (s *UserPointServer) UpdateUserPoint(ctx context.Context, in *connect.Request[grpc.UpdateUserPointRequest]) (*connect.Response[emptypb.Empty], error) {
+	usecase := user.NewUpdateUserPointUsecaseImpl(s.userRepo, s.userPointRepo)
+	err := usecase.Exec(ctx, in.Msg)
+	if err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }

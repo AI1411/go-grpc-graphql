@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 
+	"github.com/bufbuild/connect-go"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
 
@@ -15,7 +16,6 @@ import (
 )
 
 type UserServer struct {
-	grpc.UnimplementedUserServiceServer
 	dbClient  *db.Client
 	zapLogger *zap.Logger
 	userRepo  repository.UserRepository
@@ -33,79 +33,94 @@ func NewUserServer(
 	}
 }
 
-func (s *UserServer) GetUser(ctx context.Context, in *grpc.GetUserRequest) (*grpc.GetUserResponse, error) {
-	validator := form.NewFormValidator(userForm.NewGetUserForm(in))
+func (s *UserServer) GetUser(ctx context.Context, in *connect.Request[grpc.GetUserRequest]) (*connect.Response[grpc.GetUserResponse], error) {
+	validator := form.NewFormValidator(userForm.NewGetUserForm(in.Msg))
 	if err := validator.Validate(); err != nil {
 		return nil, err
 	}
 
 	usecase := user.NewGetUserUsecaseImpl(s.userRepo)
-	return usecase.Exec(ctx, in.GetId())
+	res, err := usecase.Exec(ctx, in.Msg.GetId())
+	if err != nil {
+		return nil, err
+	}
+
+	resp := connect.NewResponse(&grpc.GetUserResponse{
+		User: res.User,
+	})
+
+	return resp, nil
 }
 
-func (s *UserServer) CreateUser(ctx context.Context, in *grpc.CreateUserRequest) (*grpc.CreateUserResponse, error) {
-	validator := form.NewFormValidator(userForm.NewCreateUserForm(in))
+func (s *UserServer) CreateUser(ctx context.Context, in *connect.Request[grpc.CreateUserRequest]) (*connect.Response[grpc.CreateUserResponse], error) {
+	validator := form.NewFormValidator(userForm.NewCreateUserForm(in.Msg))
 	if err := validator.Validate(); err != nil {
 		return nil, err
 	}
 
 	usecase := user.NewCreateUserUsecaseImpl(s.userRepo)
-	res, err := usecase.Exec(ctx, in)
+	res, err := usecase.Exec(ctx, in.Msg)
 	if err != nil {
 		return nil, err
 	}
-	return &grpc.CreateUserResponse{Id: res.Id}, nil
+
+	resp := connect.NewResponse(&grpc.CreateUserResponse{
+		Id: res.Id,
+	})
+	return resp, nil
 }
 
-func (s *UserServer) UpdateUserProfile(ctx context.Context, in *grpc.UpdateUserProfileRequest) (*emptypb.Empty, error) {
-	validator := form.NewFormValidator(userForm.NewUpdateUserProfileForm(in))
+func (s *UserServer) UpdateUserProfile(ctx context.Context, in *connect.Request[grpc.UpdateUserProfileRequest]) (*connect.Response[emptypb.Empty], error) {
+	validator := form.NewFormValidator(userForm.NewUpdateUserProfileForm(in.Msg))
 	if err := validator.Validate(); err != nil {
 		return nil, err
 	}
 
 	usecase := user.NewUpdateUserProfileUsecaseImpl(s.userRepo)
-	if err := usecase.Exec(ctx, in); err != nil {
+	if err := usecase.Exec(ctx, in.Msg); err != nil {
 		return nil, err
 	}
-	return &emptypb.Empty{}, nil
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
-func (s *UserServer) UpdateUserStatus(ctx context.Context, in *grpc.UpdateUserStatusRequest) (*emptypb.Empty, error) {
-	validator := form.NewFormValidator(userForm.NewUpdateUserStatusForm(in))
+func (s *UserServer) UpdateUserStatus(ctx context.Context, in *connect.Request[grpc.UpdateUserStatusRequest]) (*connect.Response[emptypb.Empty], error) {
+	validator := form.NewFormValidator(userForm.NewUpdateUserStatusForm(in.Msg))
 	if err := validator.Validate(); err != nil {
 		return nil, err
 	}
 
 	usecase := user.NewUpdateUserStatusUsecaseImpl(s.userRepo)
-	if err := usecase.Exec(ctx, in); err != nil {
+	if err := usecase.Exec(ctx, in.Msg); err != nil {
 		return nil, err
 	}
-	return &emptypb.Empty{}, nil
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
-func (s *UserServer) UpdateUserPassword(ctx context.Context, in *grpc.UpdateUserPasswordRequest) (*emptypb.Empty, error) {
-	validator := form.NewFormValidator(userForm.NewUpdateUserPasswordForm(in))
+func (s *UserServer) UpdateUserPassword(ctx context.Context, in *connect.Request[grpc.UpdateUserPasswordRequest]) (*connect.Response[emptypb.Empty], error) {
+	validator := form.NewFormValidator(userForm.NewUpdateUserPasswordForm(in.Msg))
 	if err := validator.Validate(); err != nil {
 		return nil, err
 	}
 
 	usecase := user.NewUpdateUserPasswordUsecaseImpl(s.userRepo)
-	if err := usecase.Exec(ctx, in); err != nil {
+	if err := usecase.Exec(ctx, in.Msg); err != nil {
 		return nil, err
 	}
-	return &emptypb.Empty{}, nil
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
-func (s *UserServer) Login(ctx context.Context, in *grpc.LoginRequest) (*grpc.LoginResponse, error) {
-	validator := form.NewFormValidator(userForm.NewLoginForm(in))
+func (s *UserServer) Login(ctx context.Context, in *connect.Request[grpc.LoginRequest]) (*connect.Response[grpc.LoginResponse], error) {
+	validator := form.NewFormValidator(userForm.NewLoginForm(in.Msg))
 	if err := validator.Validate(); err != nil {
 		return nil, err
 	}
 
 	usecase := user.NewLoginUsecaseImpl(s.userRepo)
-	res, err := usecase.Exec(ctx, in)
+	res, err := usecase.Exec(ctx, in.Msg)
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+
+	return connect.NewResponse(&grpc.LoginResponse{Token: res.Token}), nil
 }

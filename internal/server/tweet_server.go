@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 
+	"github.com/bufbuild/connect-go"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
 
@@ -16,7 +17,6 @@ import (
 )
 
 type TweetServer struct {
-	grpc.UnimplementedTweetServiceServer
 	dbClient  *db.Client
 	zapLogger *zap.Logger
 	userRepo  userRepo.UserRepository
@@ -37,23 +37,36 @@ func NewTweetServer(
 	}
 }
 
-func (s *TweetServer) ListTweet(ctx context.Context, _ *emptypb.Empty) (*grpc.ListTweetResponse, error) {
+func (s *TweetServer) ListTweet(ctx context.Context, _ *connect.Request[emptypb.Empty]) (*connect.Response[grpc.ListTweetResponse], error) {
 	usecase := tweet.NewListTweetUsecaseImpl(s.userRepo, s.tweetRepo)
 	res, err := usecase.Exec(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	resp := connect.NewResponse(&grpc.ListTweetResponse{
+		Tweets: res.Tweets,
+	})
+
+	return resp, nil
 }
 
-func (s *TweetServer) CreateTweet(ctx context.Context, in *grpc.CreateTweetRequest) (*grpc.CreateTweetResponse, error) {
-	validator := form.NewFormValidator(tweetForm.NewCreateTweetForm(in))
+func (s *TweetServer) CreateTweet(ctx context.Context, in *connect.Request[grpc.CreateTweetRequest]) (*connect.Response[grpc.CreateTweetResponse], error) {
+	validator := form.NewFormValidator(tweetForm.NewCreateTweetForm(in.Msg))
 	if err := validator.Validate(); err != nil {
 		return nil, err
 	}
 
 	usecase := tweet.NewCreateTweetUsecaseImpl(s.tweetRepo)
 
-	return usecase.Exec(ctx, in)
+	res, err := usecase.Exec(ctx, in.Msg)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := connect.NewResponse(&grpc.CreateTweetResponse{
+		Id: res.Id,
+	})
+
+	return resp, nil
 }
