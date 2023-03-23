@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 
+	"github.com/bufbuild/connect-go"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
 
@@ -14,7 +15,6 @@ import (
 )
 
 type RoomServer struct {
-	grpc.UnimplementedRoomServiceServer
 	dbClient  *db.Client
 	zapLogger *zap.Logger
 	userRepo  userRepo.UserRepository
@@ -35,38 +35,54 @@ func NewRoomServer(
 	}
 }
 
-func (s *RoomServer) ListRoom(ctx context.Context, in *grpc.ListRoomRequest) (*grpc.ListRoomResponse, error) {
+func (s *RoomServer) ListRoom(ctx context.Context, in *connect.Request[grpc.ListRoomRequest]) (*connect.Response[grpc.ListRoomResponse], error) {
 	usecase := room.NewListRoomUsecaseImpl(s.userRepo, s.chatRepo)
-	res, err := usecase.Exec(ctx, in.GetUserId())
+	res, err := usecase.Exec(ctx, in.Msg.GetUserId())
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+
+	resp := connect.NewResponse(&grpc.ListRoomResponse{
+		Rooms: res.Rooms,
+	})
+
+	return resp, nil
 }
 
-func (s *RoomServer) GetRoom(ctx context.Context, in *grpc.GetRoomRequest) (*grpc.GetRoomResponse, error) {
+func (s *RoomServer) GetRoom(ctx context.Context, in *connect.Request[grpc.GetRoomRequest]) (*connect.Response[grpc.GetRoomResponse], error) {
 	usecase := room.NewGetRoomUsecaseImpl(s.userRepo, s.chatRepo)
-	res, err := usecase.Exec(ctx, in.GetId())
+	res, err := usecase.Exec(ctx, in.Msg.GetId())
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+
+	resp := connect.NewResponse(&grpc.GetRoomResponse{
+		Room: res.Room,
+	})
+
+	return resp, nil
 }
 
-func (s *RoomServer) CreateRoom(ctx context.Context, in *grpc.CreateRoomRequest) (*grpc.CreateRoomResponse, error) {
+func (s *RoomServer) CreateRoom(ctx context.Context, in *connect.Request[grpc.CreateRoomRequest]) (*connect.Response[grpc.CreateRoomResponse], error) {
 	usecase := room.NewCreateRoomUsecaseImpl(s.userRepo, s.chatRepo)
-	res, err := usecase.Exec(ctx, in)
+	res, err := usecase.Exec(ctx, in.Msg)
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+
+	resp := connect.NewResponse(&grpc.CreateRoomResponse{
+		Id: res.Id,
+	})
+
+	return resp, nil
 }
 
-func (s *RoomServer) DeleteRoom(ctx context.Context, in *grpc.DeleteRoomRequest) (*emptypb.Empty, error) {
+func (s *RoomServer) DeleteRoom(ctx context.Context, in *connect.Request[grpc.DeleteRoomRequest]) (*connect.Response[emptypb.Empty], error) {
 	usecase := room.NewDeleteRoomUsecaseImpl(s.userRepo, s.chatRepo)
-	err := usecase.Exec(ctx, in.GetId())
+	err := usecase.Exec(ctx, in.Msg.GetId())
 	if err != nil {
 		return nil, err
 	}
-	return &emptypb.Empty{}, nil
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }

@@ -4,7 +4,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "grpc/chat.proto";
 
-option go_package = '/grpc';
+option go_package = "github.com/AI1411/go-grpc-graphql/grpc";
 
 package room.v1;
 
