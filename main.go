@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -53,7 +54,9 @@ func main() {
 	mux.Handle(grpcconnect.NewRoomServiceHandler(roomServer))
 	mux.Handle(grpcconnect.NewUserPointServiceHandler(userPointServer))
 
-	http.ListenAndServe(":8080", h2c.NewHandler(mux, &http2.Server{}))
-
 	zapLogger.Info("start grpc Server port: " + e.ServerPort)
+
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", e.ServerPort), h2c.NewHandler(mux, &http2.Server{})); err != nil {
+		zapLogger.Fatal("failed to serve")
+	}
 }
