@@ -32,3 +32,21 @@ func TestGenerateToken(t *testing.T) {
 	assert.Less(t, time.Now().Unix(), expirationTime, "Token should not be expired")
 	assert.LessOrEqual(t, expirationTime, time.Now().Unix()+int64(24*time.Hour), "Token should have no more than 24 hours left")
 }
+
+func TestValidateJWT(t *testing.T) {
+	userID := "test_user"
+
+	// 生成されたトークンを検証します。
+	token, err := GenerateToken(userID)
+	assert.NoError(t, err)
+
+	valid, err := ValidateJWT(token)
+	assert.NoError(t, err)
+	assert.True(t, valid)
+
+	// 無効なトークンを検証します。
+	invalidToken := "invalid_token"
+	valid, err = ValidateJWT(invalidToken)
+	assert.Error(t, err)
+	assert.False(t, valid)
+}
