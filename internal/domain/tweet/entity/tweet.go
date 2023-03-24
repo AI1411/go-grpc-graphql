@@ -13,3 +13,13 @@ type Tweet struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+func NewTweet(id, userID uuid.NullUUID, body string, createdAt, updatedAt time.Time) *Tweet {
+	return &Tweet{
+		ID:        id,
+		UserID:    userID,
+		Body:      body,
+		CreatedAt: createdAt,
+		UpdatedAt: updatedAt,
+	}
+}
