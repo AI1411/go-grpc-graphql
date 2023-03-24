@@ -15,3 +15,19 @@ type Room struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+func NewRoom(id, userID uuid.UUID, chats []*entity.Chat, createdAt, updatedAt time.Time) *Room {
+	return &Room{
+		ID: uuid.NullUUID{
+			UUID:  id,
+			Valid: true,
+		},
+		UserID: uuid.NullUUID{
+			UUID:  userID,
+			Valid: true,
+		},
+		Chats:     chats,
+		CreatedAt: createdAt,
+		UpdatedAt: updatedAt,
+	}
+}

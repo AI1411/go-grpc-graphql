@@ -16,3 +16,28 @@ type Chat struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
+
+func NewChat(id, roomID, fromUserID, toUserID uuid.UUID, body string, isRead bool, createdAt, updatedAt time.Time) *Chat {
+	return &Chat{
+		ID: uuid.NullUUID{
+			UUID:  id,
+			Valid: true,
+		},
+		RoomID: uuid.NullUUID{
+			UUID:  roomID,
+			Valid: true,
+		},
+		FromUserID: uuid.NullUUID{
+			UUID:  fromUserID,
+			Valid: true,
+		},
+		ToUserID: uuid.NullUUID{
+			UUID:  toUserID,
+			Valid: true,
+		},
+		Body:      body,
+		IsRead:    isRead,
+		CreatedAt: createdAt,
+		UpdatedAt: updatedAt,
+	}
+}
