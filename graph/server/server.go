@@ -1,12 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/rs/cors"
 
 	generated "github.com/AI1411/go-grpc-graphql/graph"
@@ -14,12 +14,15 @@ import (
 	"github.com/AI1411/go-grpc-graphql/graph/resolver"
 )
 
-const defaultPort = "8081"
+const (
+	defaultGraphqlPort = "8081"
+	defaultClientPort  = "3000"
+)
 
 func main() {
 	port := os.Getenv("STAR_GRAPHQL_PORT")
 	if port == "" {
-		port = defaultPort
+		port = defaultGraphqlPort
 	}
 
 	userClient, err := grpcClient.ConnectUserServiceClient()
@@ -49,12 +52,15 @@ func main() {
 		RoomClient:  roomClient,
 	}}))
 
+	if os.Getenv("STAR_CLIENT_PORT") == "" {
+		os.Setenv("STAR_CLIENT_PORT", defaultClientPort)
+	}
+
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedOrigins:   []string{fmt.Sprintf("http://localhost:%s", os.Getenv("STAR_CLIENT_PORT"))},
 		AllowCredentials: true,
 	})
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", c.Handler(srv))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
