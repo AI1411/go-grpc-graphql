@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS user_logins;
+DROP TABLE IF EXISTS user_logins CASCADE;
 CREATE TABLE user_logins
 (
     id         UUID DEFAULT gen_random_uuid() PRIMARY KEY, -- UUIDを主キーに設定し、デフォルトでuuidv4を生成

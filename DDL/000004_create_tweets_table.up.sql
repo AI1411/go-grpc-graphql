@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS tweets;
+DROP TABLE IF EXISTS tweets CASCADE;
 CREATE TABLE IF NOT EXISTS tweets
 (
     id         UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID

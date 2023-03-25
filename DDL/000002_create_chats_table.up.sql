@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS chats;
+DROP TABLE IF EXISTS chats CASCADE;
 CREATE TABLE IF NOT EXISTS chats
 (
     id           UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID

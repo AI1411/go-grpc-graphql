@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS user_points;
+DROP TABLE IF EXISTS user_points CASCADE;
 CREATE TABLE IF NOT EXISTS user_points
 (
     id         UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID

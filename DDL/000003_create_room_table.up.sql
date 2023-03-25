@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS rooms;
+DROP TABLE IF EXISTS rooms CASCADE;
 CREATE TABLE rooms
 (
     id         UUID PRIMARY KEY   DEFAULT gen_random_uuid(), -- ルームID
