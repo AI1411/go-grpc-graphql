@@ -3,6 +3,9 @@ package user
 import (
 	"context"
 	"errors"
+	"os"
+	"strconv"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
@@ -22,6 +25,8 @@ type UserRepository interface {
 	UpdateUserPassword(context.Context, *entity.UserPassword) error
 	Login(context.Context, string, string) (string, error)
 }
+
+var awardPoint = os.Getenv("STAR_AWARD_POINT")
 
 type userRepository struct {
 	dbClient *db.Client
@@ -133,5 +138,104 @@ func (u *userRepository) Login(ctx context.Context, email, password string) (str
 		return "", status.Errorf(codes.Internal, "failed to generate token: %v", err)
 	}
 
+	// user_loginsに登録もしくは更新
+	today := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
+	var userLogin *entity.UserLogin
+	err = u.dbClient.Conn(ctx).
+		Where("login_date = ? AND user_id = ?", today, user.ID).First(&userLogin).Error
+	if err != nil {
+		// 今日ログインしていない場合
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			if err := u.dbClient.Conn(ctx).
+				Table("user_logins").
+				Create(&entity.UserLogin{
+					UserID:    user.ID,
+					LoginDate: today,
+				}).Error; err != nil {
+				return "", status.Errorf(codes.Internal, "failed to create user_login: %v", err)
+			}
+
+			if err := u.awardLoginPoint(ctx, util.NullUUIDToString(user.ID)); err != nil {
+				return "", status.Errorf(codes.Internal, "failed to award login point: %v", err)
+			}
+		} else {
+			return "", status.Errorf(codes.Internal, "failed to get user_login: %v", err)
+		}
+	} else {
+		// 今日ログインしている場合
+		err = u.dbClient.Conn(ctx).
+			Table("user_logins").
+			Where("login_date", today).Update("updated_at", time.Now()).Error
+		if err != nil {
+			return "", status.Errorf(codes.Internal, "failed to update user_login: %v", err)
+		}
+	}
+
 	return token, nil
+}
+
+func (u *userRepository) awardLoginPoint(ctx context.Context, userID string) error {
+	if awardPoint == "" {
+		awardPoint = "50"
+	}
+
+	// pointを数値に変換
+	point, err := strconv.Atoi(awardPoint)
+	if err != nil {
+		return status.Errorf(codes.Internal, "failed to convert string to int: %v", err)
+	}
+
+	if err = u.dbClient.Conn(ctx).Transaction(func(tx *gorm.DB) error {
+		var user *entity.User
+		if err = u.dbClient.Conn(ctx).
+			Where("id = ?", userID).
+			First(&user).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return status.Errorf(codes.NotFound, "user not found: %v", err)
+			}
+			return status.Errorf(codes.Internal, "failed to get user: %v", err)
+		}
+
+		var userPoint *entity.UserPoint
+		err = u.dbClient.Conn(ctx).
+			Where("user_id = ?", userID).First(&userPoint).Error
+
+		if err != nil {
+			// user_pointsに登録
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				if err = u.dbClient.Conn(ctx).
+					Create(&entity.UserPoint{
+						UserID: util.StringToNullUUID(userID),
+						Point:  point,
+					}).Error; err != nil {
+					return status.Errorf(codes.Internal, "failed to create user_point: %v", err)
+				}
+
+				// user_point_historyに登録
+				if err = u.dbClient.Conn(ctx).
+					Create(&entity.UserPointHistory{
+						UserID:        util.StringToNullUUID(userID),
+						Point:         point,
+						OperationType: "LOGIN",
+					}).Error; err != nil {
+					return status.Errorf(codes.Internal, "failed to create user_point: %v", err)
+				}
+			} else {
+				return status.Errorf(codes.Internal, "failed to get user_point: %v", err)
+			}
+		} else {
+			// user_pointsを更新
+			err = u.dbClient.Conn(ctx).
+				Table("user_points").
+				Where("user_id", userID).Update("point", gorm.Expr("point + ?", point)).Error
+			if err != nil {
+				return status.Errorf(codes.Internal, "failed to update user_point: %v", err)
+			}
+		}
+		return nil
+	}); err != nil {
+		return err
+	}
+
+	return nil
 }

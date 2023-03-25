@@ -74,11 +74,11 @@ CREATE TABLE users
     prefecture             prefecture               NOT NULL DEFAULT 'ひみつにする',          -- 都道府県
     introduction           TEXT,                                                        -- 自己紹介
     blood_type             blood_type               NOT NULL DEFAULT 'ひみつにする',          -- 血液型
-    occupation             VARCHAR(100),                                                -- 職業
-    education              VARCHAR(100),                                                -- 学歴
-    hobbies_and_skills     TEXT,                                                        -- 趣味・スキル
-    personality            TEXT,                                                        -- 性格
-    purpose_of_interaction TEXT,                                                        -- 交流目的
+--     occupation             VARCHAR(100)             NULL,                               -- 職業
+--     education              VARCHAR(100)             NULL,                               -- 学歴
+--     hobbies_and_skills     TEXT                     NULL,                               -- 趣味・スキル
+--     personality            TEXT                     NULL,                               -- 性格
+--     purpose_of_interaction TEXT                     NULL,                               -- 交流目的
     created_at             TIMESTAMP
                                WITH TIME ZONE       NOT NULL DEFAULT NOW(),             -- 作成日時
     updated_at             TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()              -- 更新日時
@@ -96,11 +96,11 @@ COMMENT ON COLUMN users.status IS 'ユーザステータス
     プレミアム = 4;';
 COMMENT ON COLUMN users.prefecture IS '都道府県';
 COMMENT ON COLUMN users.introduction IS '自己紹介';
-COMMENT ON COLUMN users.occupation IS '職業';
-COMMENT ON COLUMN users.education IS '学歴';
-COMMENT ON COLUMN users.hobbies_and_skills IS '趣味・特技';
-COMMENT ON COLUMN users.personality IS '性格';
-COMMENT ON COLUMN users.purpose_of_interaction IS '交流目的';
+-- COMMENT ON COLUMN users.occupation IS '職業';
+-- COMMENT ON COLUMN users.education IS '学歴';
+-- COMMENT ON COLUMN users.hobbies_and_skills IS '趣味・特技';
+-- COMMENT ON COLUMN users.personality IS '性格';
+-- COMMENT ON COLUMN users.purpose_of_interaction IS '交流目的';
 COMMENT ON COLUMN users.created_at IS '作成日時';
 COMMENT ON COLUMN users.updated_at IS '更新日時';
 
@@ -108,5 +108,5 @@ CREATE INDEX id_idx ON users (id);
 CREATE INDEX username_idx ON users (username);
 CREATE INDEX status_idx ON users (status);
 CREATE INDEX created_at_idx ON users (created_at);
-CREATE INDEX occupation_idx ON users (occupation);
-CREATE INDEX education_idx ON users (education);
+-- CREATE INDEX occupation_idx ON users (occupation);
+-- CREATE INDEX education_idx ON users (education);

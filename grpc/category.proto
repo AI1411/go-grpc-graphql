@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "grpc/hobby.proto";
+
+option go_package = '/grpc';
+
+package category.v1;
+
+service CategoryService {
+  rpc ListCategory(google.protobuf.Empty) returns (ListCategoryResponse);
+  rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse);
+  rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse);
+  rpc DeleteCategory(DeleteCategoryRequest) returns (google.protobuf.Empty);
+}
+
+message Category {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message ListCategoryResponse {
+  repeated Category categories = 1;
+}
+
+message GetCategoryRequest {
+  string id = 1;
+}
+
+message GetCategoryResponse {
+  Category category = 1;
+  repeated hobby.v1.Hobby hobbies = 2;
+}
+
+message CreateCategoryRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message CreateCategoryResponse {
+  string id = 1;
+}
+
+message DeleteCategoryRequest {
+  string id = 1;
+}

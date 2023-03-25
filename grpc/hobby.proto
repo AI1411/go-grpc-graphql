@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = '/grpc';
+
+package hobby.v1;
+
+service HobbyService {
+  rpc ListHobby(ListHobbyRequest) returns (ListHobbyResponse);
+  rpc GetHobby(ListHobbyRequest) returns (GetHobbyResponse);
+  rpc CreateHobby(CreateHobbyRequest) returns (CreateHobbyResponse);
+  rpc DeleteHobby(DeleteHobbyRequest) returns (google.protobuf.Empty);
+}
+
+message Hobby {
+  string id = 1;
+  string name = 2;
+  string category_id = 3;
+}
+
+// チャットの一覧を取得するためのリクエスト型
+message ListHobbyRequest {
+  string user_id = 1;
+}
+
+// チャットの一覧を取得するためのレスポンス型
+message ListHobbyResponse {
+  repeated Hobby hobby = 1;
+}
+
+// チャットの取得を行うためのリクエスト型
+message GetHobbyRequest {
+  string id = 1;
+}
+
+// チャットの取得を行うためのレスポンス型
+message GetHobbyResponse {
+  Hobby hobby = 1;
+}
+
+// チャットの作成を行うためのリクエスト型
+message CreateHobbyRequest {
+  string name = 1;
+  string category_id = 2;
+}
+
+// チャットの作成を行うためのレスポンス型
+message CreateHobbyResponse {
+  string id = 1;
+}
+
+// チャットの削除を行うためのリクエスト型
+message DeleteHobbyRequest {
+  string id = 1;
+}

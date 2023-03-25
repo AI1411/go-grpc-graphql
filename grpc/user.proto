@@ -16,6 +16,8 @@ service UserService {
 
   // auth
   rpc Login (LoginRequest) returns (LoginResponse) {}
+
+  rpc AwardLoginPoint (AwardLoginPointRequest) returns (google.protobuf.Empty) {}
 }
 
 message GetUserRequest {
@@ -30,9 +32,9 @@ message CreateUserRequest {
   string username = 1;
   string email = 2;
   string password = 3;
-  Prefecture prefecture = 5;
-  string introduction = 6;
-  BloodType blood_type = 7;
+  Prefecture prefecture = 4;
+  string introduction = 5;
+  BloodType blood_type = 6;
 }
 
 message CreateUserResponse {
@@ -65,6 +67,10 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1;
+}
+
+message AwardLoginPointRequest {
+  string user_id = 1;
 }
 
 message User {

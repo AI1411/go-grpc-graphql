@@ -35,16 +35,6 @@ services:
       - TZ=Asia/Tokyo
     networks:
       - star-network
-  redis-server:
-    image: redis:6.2.5-alpine
-    container_name: redis-server
-    ports:
-      - ${STAR_REDIS_PORT}:${STAR_REDIS_PORT}
-    tty: true
-    volumes:
-      - ./docker/redis/data:/data
-    networks:
-      - star-network
 volumes:
   psql_data:
     driver: local
