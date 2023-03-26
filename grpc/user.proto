@@ -70,6 +70,7 @@ message LoginResponse {
 
 message LogoutRequest {
   string token = 1;
+  string user_id = 2;
 }
 
 message User {

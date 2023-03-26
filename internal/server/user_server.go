@@ -113,3 +113,16 @@ func (s *UserServer) Login(ctx context.Context, in *grpc.LoginRequest) (*grpc.Lo
 	}
 	return res, nil
 }
+
+func (s *UserServer) Logout(ctx context.Context, in *grpc.LogoutRequest) (*emptypb.Empty, error) {
+	validator := form.NewFormValidator(userForm.NewLogoutForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
+	usecase := user.NewLogoutUsecaseImpl(s.redisRepo)
+	if err := usecase.Exec(ctx, in); err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
