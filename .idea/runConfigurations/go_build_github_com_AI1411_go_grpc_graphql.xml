@@ -13,6 +13,8 @@
       <env name="STAR_POSTGRES_PASSWORD" value="root" />
       <env name="STAR_POSTGRES_PORT" value="5432" />
       <env name="STAR_POSTGRES_USER" value="root" />
+      <env name="STAR_REDIS_HOST" value="localhost" />
+      <env name="STAR_REDIS_PORT" value="6379" />
       <env name="STAR_SERVER_PORT" value="50001" />
     </envs>
     <kind value="PACKAGE" />

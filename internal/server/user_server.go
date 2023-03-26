@@ -8,6 +8,7 @@ import (
 
 	"github.com/AI1411/go-grpc-graphql/grpc"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	redisRepository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/redis"
 	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
 	"github.com/AI1411/go-grpc-graphql/internal/server/form"
 	userForm "github.com/AI1411/go-grpc-graphql/internal/server/form/user"
@@ -19,17 +20,20 @@ type UserServer struct {
 	dbClient  *db.Client
 	zapLogger *zap.Logger
 	userRepo  repository.UserRepository
+	redisRepo redisRepository.RedisRepository
 }
 
 func NewUserServer(
 	dbClient *db.Client,
 	zapLogger *zap.Logger,
 	userRepo repository.UserRepository,
+	redisRepo redisRepository.RedisRepository,
 ) *UserServer {
 	return &UserServer{
 		dbClient:  dbClient,
 		zapLogger: zapLogger,
 		userRepo:  userRepo,
+		redisRepo: redisRepo,
 	}
 }
 
@@ -102,7 +106,7 @@ func (s *UserServer) Login(ctx context.Context, in *grpc.LoginRequest) (*grpc.Lo
 		return nil, err
 	}
 
-	usecase := user.NewLoginUsecaseImpl(s.userRepo)
+	usecase := user.NewLoginUsecaseImpl(s.userRepo, s.redisRepo)
 	res, err := usecase.Exec(ctx, in)
 	if err != nil {
 		return nil, err

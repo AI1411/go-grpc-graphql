@@ -9,6 +9,7 @@ import (
 
 type Values struct {
 	DB
+	Redis
 	Env        string `default:"local" split_words:"true"`
 	Debug      bool   `default:"true" split_words:"true"`
 	ServerPort string `required:"true" split_words:"true"`
@@ -20,6 +21,11 @@ type DB struct {
 	PostgresDatabase string `default:"go_pg" split_words:"true"`
 	PostgresUser     string `required:"true" split_words:"true"`
 	PostgresPassword string `required:"true" split_words:"true"`
+}
+
+type Redis struct {
+	RedisHost string `default:"localhost" split_words:"true"`
+	RedisPort string `default:"6379" split_words:"true"`
 }
 
 func NewValue() (*Values, error) {
