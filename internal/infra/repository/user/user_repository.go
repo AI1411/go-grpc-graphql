@@ -174,6 +174,11 @@ func (u *userRepository) Login(ctx context.Context, email, password string) (str
 	return token, nil
 }
 
+// awardLoginPoint ログインボーナスを付与する
+// ログイン時に50ポイント付与
+// 今日ログインしていない場合はログインボーナスを付与する
+// 今日ログインしている場合はログインボーナスを付与しない
+// 今日ログインしている場合はログイン日時を更新する
 func (u *userRepository) awardLoginPoint(ctx context.Context, userID string) error {
 	if awardPoint == "" {
 		awardPoint = "50"

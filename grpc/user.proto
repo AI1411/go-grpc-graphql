@@ -16,8 +16,7 @@ service UserService {
 
   // auth
   rpc Login (LoginRequest) returns (LoginResponse) {}
-
-  rpc AwardLoginPoint (AwardLoginPointRequest) returns (google.protobuf.Empty) {}
+  rpc Logout(LogoutRequest) returns (google.protobuf.Empty) {}
 }
 
 message GetUserRequest {
@@ -69,8 +68,8 @@ message LoginResponse {
   string token = 1;
 }
 
-message AwardLoginPointRequest {
-  string user_id = 1;
+message LogoutRequest {
+  string token = 1;
 }
 
 message User {
