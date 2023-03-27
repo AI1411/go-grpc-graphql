@@ -8,7 +8,7 @@ option go_package = '/grpc';
 package category.v1;
 
 service CategoryService {
-  rpc ListCategory(google.protobuf.Empty) returns (ListCategoryResponse);
+  rpc ListCategory(ListCategoryRequest) returns (ListCategoryResponse);
   rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse);
   rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse);
   rpc DeleteCategory(DeleteCategoryRequest) returns (google.protobuf.Empty);
@@ -18,6 +18,13 @@ message Category {
   string id = 1;
   string name = 2;
   string description = 3;
+}
+
+message ListCategoryRequest {
+  string name = 1;
+  string order = 2;
+  int32 limit = 3;
+  int32 offset = 4;
 }
 
 message ListCategoryResponse {
