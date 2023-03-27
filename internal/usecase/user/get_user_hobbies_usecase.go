@@ -23,21 +23,22 @@ func NewGetUserHobbiesUsecaseImpl(userHobbyRepo user.UserHobbyRepository) GetUse
 }
 
 func (u getUserHobbiesUsecaseImpl) Exec(ctx context.Context, in *grpc.GetUserHobbiesRequest) (*grpc.GetUserHobbiesResponse, error) {
-	userHobbies, err := u.userHobbyRepo.GetUserHobbies(ctx, in.GetUserId())
+	hobbies, err := u.userHobbyRepo.GetUserHobbies(ctx, in.GetUserId())
 	if err != nil {
 		return nil, err
 	}
 
-	uh := make([]*grpc.UserHobby, len(userHobbies))
-	for i, hobby := range userHobbies {
-		uh[i] = &grpc.UserHobby{
-			Id:      util.NullUUIDToString(hobby.ID),
-			UserId:  util.NullUUIDToString(hobby.UserID),
-			HobbyId: util.NullUUIDToString(hobby.HobbyID),
+	res := make([]*grpc.Hobby, len(hobbies))
+	for i, hobby := range hobbies {
+		res[i] = &grpc.Hobby{
+			Id:          util.NullUUIDToString(hobby.ID),
+			Name:        hobby.Name,
+			Description: hobby.Description,
+			CategoryId:  util.NullUUIDToString(hobby.CategoryID),
 		}
 	}
 
 	return &grpc.GetUserHobbiesResponse{
-		UserHobbies: uh,
+		Hobbies: res,
 	}, nil
 }

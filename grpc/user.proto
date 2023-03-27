@@ -3,6 +3,8 @@ syntax = 'proto3';
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
+import "grpc/hobby.proto";
+
 option go_package = '/grpc';
 
 package user.v1;
@@ -83,7 +85,7 @@ message GetUserHobbiesRequest {
 }
 
 message GetUserHobbiesResponse {
-  repeated UserHobby userHobbies = 1;
+  repeated hobby.v1.Hobby hobbies = 1;
 }
 
 message CreateUserHobbyRequest {

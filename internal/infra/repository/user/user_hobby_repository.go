@@ -11,10 +11,11 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/domain/hobby/entity"
 	userEntity "github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 type UserHobbyRepository interface {
-	GetUserHobbies(context.Context, string) ([]*userEntity.UserHobby, error)
+	GetUserHobbies(context.Context, string) ([]*entity.Hobby, error)
 	RegisterUserHobby(context.Context, *entity.Hobby) (string, error)
 	DeleteUserHobby(context.Context, string) error
 }
@@ -29,7 +30,7 @@ func NewUserHobbyRepository(dbClient *db.Client) UserHobbyRepository {
 	}
 }
 
-func (u userHobbyRepository) GetUserHobbies(ctx context.Context, userID string) ([]*userEntity.UserHobby, error) {
+func (u userHobbyRepository) GetUserHobbies(ctx context.Context, userID string) ([]*entity.Hobby, error) {
 	var user userEntity.User
 	if err := u.dbClient.Conn(ctx).Where("id = ?", userID).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -43,7 +44,21 @@ func (u userHobbyRepository) GetUserHobbies(ctx context.Context, userID string) 
 		return nil, err
 	}
 
-	return userHobbies, nil
+	if len(userHobbies) == 0 {
+		return nil, nil
+	}
+
+	hobbyIDs := make([]string, len(userHobbies))
+	for i, hobby := range userHobbies {
+		hobbyIDs[i] = util.NullUUIDToString(hobby.HobbyID)
+	}
+
+	var hobbies []*entity.Hobby
+	if err := u.dbClient.Conn(ctx).Where("id IN ?", hobbyIDs).Find(&hobbies).Error; err != nil {
+		return nil, err
+	}
+
+	return hobbies, nil
 }
 
 func (u userHobbyRepository) RegisterUserHobby(ctx context.Context, hobby *entity.Hobby) (string, error) {
