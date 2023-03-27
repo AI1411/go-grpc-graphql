@@ -16,8 +16,8 @@ import (
 
 type UserHobbyRepository interface {
 	GetUserHobbies(context.Context, string) ([]*entity.Hobby, error)
-	RegisterUserHobby(context.Context, *entity.Hobby) (string, error)
-	DeleteUserHobby(context.Context, string) error
+	RegisterUserHobby(context.Context, *userEntity.UserHobby) (string, error)
+	DeleteUserHobby(context.Context, *userEntity.UserHobby) error
 }
 
 type userHobbyRepository struct {
@@ -61,12 +61,36 @@ func (u userHobbyRepository) GetUserHobbies(ctx context.Context, userID string) 
 	return hobbies, nil
 }
 
-func (u userHobbyRepository) RegisterUserHobby(ctx context.Context, hobby *entity.Hobby) (string, error) {
-	//TODO implement me
-	panic("implement me")
+func (u userHobbyRepository) RegisterUserHobby(ctx context.Context, uh *userEntity.UserHobby) (string, error) {
+	var user userEntity.User
+	if err := u.dbClient.Conn(ctx).Where("id = ?", util.NullUUIDToString(uh.UserID)).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return "", status.Errorf(codes.NotFound, "user not found")
+		}
+		return "", err
+	}
+
+	if err := u.dbClient.Conn(ctx).Create(&uh).Error; err != nil {
+		return "", err
+	}
+
+	return util.NullUUIDToString(uh.ID), nil
 }
 
-func (u userHobbyRepository) DeleteUserHobby(ctx context.Context, userID string) error {
-	//TODO implement me
-	panic("implement me")
+func (u userHobbyRepository) DeleteUserHobby(ctx context.Context, uh *userEntity.UserHobby) error {
+	var user userEntity.User
+	if err := u.dbClient.Conn(ctx).Where("id = ?", util.NullUUIDToString(uh.UserID)).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return status.Errorf(codes.NotFound, "user not found")
+		}
+		return err
+	}
+
+	if err := u.dbClient.Conn(ctx).
+		Where("user_id = ? and hobby_id = ?", util.NullUUIDToString(uh.UserID), util.NullUUIDToString(uh.HobbyID)).
+		Delete(&userEntity.UserHobby{}).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

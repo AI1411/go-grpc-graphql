@@ -23,5 +23,6 @@ COMMENT ON COLUMN user_hobbies.id IS 'ID';
 COMMENT ON COLUMN user_hobbies.user_id IS 'ユーザID';
 COMMENT ON COLUMN user_hobbies.hobby_id IS '趣味ID';
 
-CREATE INDEX user_hobbies_user_id_idx ON user_hobbies (user_id);
-CREATE INDEX user_hobbies_hobby_id_idx ON user_hobbies (hobby_id);
+CREATE INDEX IF NOT EXISTS user_hobbies_user_id_idx ON user_hobbies (user_id);
+CREATE INDEX IF NOT EXISTS user_hobbies_hobby_id_idx ON user_hobbies (hobby_id);
+CREATE UNIQUE INDEX IF NOT EXISTS user_hobbies_user_id_hobby_id_idx ON user_hobbies (user_id, hobby_id);

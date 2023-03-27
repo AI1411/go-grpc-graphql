@@ -22,7 +22,7 @@ service UserService {
 
   // user_hobby
   rpc GetUserHobbies (GetUserHobbiesRequest) returns (GetUserHobbiesResponse) {}
-  rpc RegisterUserHobby (CreateUserHobbyRequest) returns (google.protobuf.Empty) {}
+  rpc RegisterUserHobby (RegisterUserHobbyRequest) returns (RegisterUserHobbyResponse) {}
   rpc DeleteUserHobby (DeleteUserHobbyRequest) returns (google.protobuf.Empty) {}
 }
 
@@ -88,9 +88,13 @@ message GetUserHobbiesResponse {
   repeated hobby.v1.Hobby hobbies = 1;
 }
 
-message CreateUserHobbyRequest {
+message RegisterUserHobbyRequest {
   string user_id = 1;
   string hobby_id = 2;
+}
+
+message RegisterUserHobbyResponse {
+  string id = 1;
 }
 
 message DeleteUserHobbyRequest {

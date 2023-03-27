@@ -143,3 +143,31 @@ func (s *UserServer) GetUserHobbies(ctx context.Context, in *grpc.GetUserHobbies
 	}
 	return res, nil
 }
+
+func (s *UserServer) RegisterUserHobby(ctx context.Context, in *grpc.RegisterUserHobbyRequest) (*grpc.RegisterUserHobbyResponse, error) {
+	validator := form.NewFormValidator(userForm.NewRegisterUserHobbyForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
+	usecase := user.NewRegisterUserHobbyUsecaseImpl(s.userHobbyRepo)
+	res, err := usecase.Exec(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+func (s *UserServer) DeleteUserHobby(ctx context.Context, in *grpc.DeleteUserHobbyRequest) (*emptypb.Empty, error) {
+	validator := form.NewFormValidator(userForm.NewDeleteUserHobbyForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
+	usecase := user.NewDeleteUserHobbyUsecaseImpl(s.userHobbyRepo)
+	_, err := usecase.Exec(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
