@@ -46,7 +46,10 @@ func (c categoryRepository) ListCategory(ctx context.Context, condition *entity.
 
 func (c categoryRepository) GetCategory(ctx context.Context, id string) (*entity.Category, error) {
 	var category entity.Category
-	if err := c.dbClient.Conn(ctx).Where("id", id).First(&category).Error; err != nil {
+	if err := c.dbClient.Conn(ctx).
+		Where("id", id).
+		Preload("Hobbies").
+		First(&category).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, status.Errorf(codes.NotFound, "category not found: %v", err)
 		}

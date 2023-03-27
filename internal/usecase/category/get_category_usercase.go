@@ -5,6 +5,7 @@ import (
 
 	"github.com/AI1411/go-grpc-graphql/grpc"
 	categoryRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/category"
+	hobbyRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/hobby"
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
@@ -14,6 +15,7 @@ type GetCategoryUsecaseImpl interface {
 
 type getCategoryUsecaseImpl struct {
 	categoryRepository categoryRepo.CategoryRepository
+	hobbyRepo          hobbyRepo.HobbyRepository
 }
 
 func NewGetCategoryUsecaseImpl(categoryRepository categoryRepo.CategoryRepository) GetCategoryUsecaseImpl {
@@ -34,5 +36,15 @@ func (g getCategoryUsecaseImpl) Exec(ctx context.Context, id string) (*grpc.GetC
 		Description: res.Description,
 	}
 
-	return &grpc.GetCategoryResponse{Category: category}, nil
+	hobbies := make([]*grpc.Hobby, len(res.Hobbies))
+	for i, hobby := range res.Hobbies {
+		hobbies[i] = &grpc.Hobby{
+			Id:          util.NullUUIDToString(hobby.ID),
+			Name:        hobby.Name,
+			Description: hobby.Description,
+			CategoryId:  util.NullUUIDToString(hobby.CategoryID),
+		}
+	}
+
+	return &grpc.GetCategoryResponse{Category: category, Hobbies: hobbies}, nil
 }
