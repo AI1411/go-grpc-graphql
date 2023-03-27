@@ -52,6 +52,7 @@ func main() {
 	userPointRepo := repository.NewUserPointRepository(dbClient)
 	categoryRepo := categoryRepo.NewCategoryRepository(dbClient)
 	hobbyRepo := hobbyRepo.NewHobbyRepository(dbClient)
+	userHobbyRepo := repository.NewUserHobbyRepository(dbClient)
 
 	redisRepo := redisRepository.NewRedisRepository(redisClient)
 
@@ -62,7 +63,7 @@ func main() {
 		),
 	)
 
-	userServer := server.NewUserServer(dbClient, zapLogger, userRepo, redisRepo)
+	userServer := server.NewUserServer(dbClient, zapLogger, userRepo, userHobbyRepo, redisRepo)
 	tweetServer := server.NewTweetServer(dbClient, zapLogger, userRepo, tweetRepo)
 	chatServer := server.NewChatServer(dbClient, zapLogger, userRepo, chatRepo)
 	roomServer := server.NewRoomServer(dbClient, zapLogger, userRepo, roomRepo)

@@ -17,23 +17,26 @@ import (
 
 type UserServer struct {
 	grpc.UnimplementedUserServiceServer
-	dbClient  *db.Client
-	zapLogger *zap.Logger
-	userRepo  repository.UserRepository
-	redisRepo redisRepository.RedisRepository
+	dbClient      *db.Client
+	zapLogger     *zap.Logger
+	userRepo      repository.UserRepository
+	userHobbyRepo repository.UserHobbyRepository
+	redisRepo     redisRepository.RedisRepository
 }
 
 func NewUserServer(
 	dbClient *db.Client,
 	zapLogger *zap.Logger,
 	userRepo repository.UserRepository,
+	userHobbyRepo repository.UserHobbyRepository,
 	redisRepo redisRepository.RedisRepository,
 ) *UserServer {
 	return &UserServer{
-		dbClient:  dbClient,
-		zapLogger: zapLogger,
-		userRepo:  userRepo,
-		redisRepo: redisRepo,
+		dbClient:      dbClient,
+		zapLogger:     zapLogger,
+		userRepo:      userRepo,
+		userHobbyRepo: userHobbyRepo,
+		redisRepo:     redisRepo,
 	}
 }
 
@@ -125,4 +128,18 @@ func (s *UserServer) Logout(ctx context.Context, in *grpc.LogoutRequest) (*empty
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
+}
+
+func (s *UserServer) GetUserHobbies(ctx context.Context, in *grpc.GetUserHobbiesRequest) (*grpc.GetUserHobbiesResponse, error) {
+	validator := form.NewFormValidator(userForm.NewGetUserHobbiesForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
+	usecase := user.NewGetUserHobbiesUsecaseImpl(s.userHobbyRepo)
+	res, err := usecase.Exec(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }

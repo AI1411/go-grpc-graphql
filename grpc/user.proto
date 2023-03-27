@@ -17,6 +17,11 @@ service UserService {
   // auth
   rpc Login (LoginRequest) returns (LoginResponse) {}
   rpc Logout(LogoutRequest) returns (google.protobuf.Empty) {}
+
+  // user_hobby
+  rpc GetUserHobbies (GetUserHobbiesRequest) returns (GetUserHobbiesResponse) {}
+  rpc RegisterUserHobby (CreateUserHobbyRequest) returns (google.protobuf.Empty) {}
+  rpc DeleteUserHobby (DeleteUserHobbyRequest) returns (google.protobuf.Empty) {}
 }
 
 message GetUserRequest {
@@ -73,6 +78,24 @@ message LogoutRequest {
   string user_id = 2;
 }
 
+message GetUserHobbiesRequest {
+  string user_id = 1;
+}
+
+message GetUserHobbiesResponse {
+  repeated UserHobby userHobbies = 1;
+}
+
+message CreateUserHobbyRequest {
+  string user_id = 1;
+  string hobby_id = 2;
+}
+
+message DeleteUserHobbyRequest {
+  string user_id = 1;
+  string hobby_id = 2;
+}
+
 message User {
   string id = 1;
   string username = 2;
@@ -84,6 +107,12 @@ message User {
   BloodType blood_type = 8;
   google.protobuf.Timestamp created_at = 9;
   google.protobuf.Timestamp updated_at = 10;
+}
+
+message UserHobby {
+  string id = 1;
+  string user_id = 2;
+  string hobby_id = 3;
 }
 
 enum Status {
