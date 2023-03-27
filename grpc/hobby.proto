@@ -7,8 +7,7 @@ option go_package = '/grpc';
 package hobby.v1;
 
 service HobbyService {
-  rpc ListHobby(ListHobbyRequest) returns (ListHobbyResponse);
-  rpc GetHobby(ListHobbyRequest) returns (GetHobbyResponse);
+  rpc GetHobby(GetHobbyRequest) returns (GetHobbyResponse);
   rpc CreateHobby(CreateHobbyRequest) returns (CreateHobbyResponse);
   rpc DeleteHobby(DeleteHobbyRequest) returns (google.protobuf.Empty);
 }
@@ -16,17 +15,8 @@ service HobbyService {
 message Hobby {
   string id = 1;
   string name = 2;
-  string category_id = 3;
-}
-
-// チャットの一覧を取得するためのリクエスト型
-message ListHobbyRequest {
-  string user_id = 1;
-}
-
-// チャットの一覧を取得するためのレスポンス型
-message ListHobbyResponse {
-  repeated Hobby hobby = 1;
+  string description = 3;
+  string category_id = 4;
 }
 
 // チャットの取得を行うためのリクエスト型
@@ -42,7 +32,8 @@ message GetHobbyResponse {
 // チャットの作成を行うためのリクエスト型
 message CreateHobbyRequest {
   string name = 1;
-  string category_id = 2;
+  string description = 2;
+  string category_id = 3;
 }
 
 // チャットの作成を行うためのレスポンス型
