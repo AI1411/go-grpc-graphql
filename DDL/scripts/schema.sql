@@ -74,11 +74,11 @@ CREATE TABLE users
     prefecture             prefecture               NOT NULL DEFAULT 'ひみつにする',          -- 都道府県
     introduction           TEXT,                                                        -- 自己紹介
     blood_type             blood_type               NOT NULL DEFAULT 'ひみつにする',          -- 血液型
-    occupation             VARCHAR(100)             NULL,                               -- 職業
-    education              VARCHAR(100)             NULL,                               -- 学歴
-    hobbies_and_skills     TEXT                     NULL,                               -- 趣味・スキル
-    personality            TEXT                     NULL,                               -- 性格
-    purpose_of_interaction TEXT                     NULL,                               -- 交流目的
+--     occupation             VARCHAR(100)             NULL,                               -- 職業
+--     education              VARCHAR(100)             NULL,                               -- 学歴
+--     hobbies_and_skills     TEXT                     NULL,                               -- 趣味・スキル
+--     personality            TEXT                     NULL,                               -- 性格
+--     purpose_of_interaction TEXT                     NULL,                               -- 交流目的
     created_at             TIMESTAMP
                                WITH TIME ZONE       NOT NULL DEFAULT NOW(),             -- 作成日時
     updated_at             TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()              -- 更新日時
@@ -96,11 +96,11 @@ COMMENT ON COLUMN users.status IS 'ユーザステータス
     プレミアム = 4;';
 COMMENT ON COLUMN users.prefecture IS '都道府県';
 COMMENT ON COLUMN users.introduction IS '自己紹介';
-COMMENT ON COLUMN users.occupation IS '職業';
-COMMENT ON COLUMN users.education IS '学歴';
-COMMENT ON COLUMN users.hobbies_and_skills IS '趣味・特技';
-COMMENT ON COLUMN users.personality IS '性格';
-COMMENT ON COLUMN users.purpose_of_interaction IS '交流目的';
+-- COMMENT ON COLUMN users.occupation IS '職業';
+-- COMMENT ON COLUMN users.education IS '学歴';
+-- COMMENT ON COLUMN users.hobbies_and_skills IS '趣味・特技';
+-- COMMENT ON COLUMN users.personality IS '性格';
+-- COMMENT ON COLUMN users.purpose_of_interaction IS '交流目的';
 COMMENT ON COLUMN users.created_at IS '作成日時';
 COMMENT ON COLUMN users.updated_at IS '更新日時';
 
@@ -108,10 +108,8 @@ CREATE INDEX id_idx ON users (id);
 CREATE INDEX username_idx ON users (username);
 CREATE INDEX status_idx ON users (status);
 CREATE INDEX created_at_idx ON users (created_at);
-CREATE INDEX occupation_idx ON users (occupation);
-CREATE INDEX education_idx ON users (education);
-
-DROP TABLE IF EXISTS chats CASCADE;
+-- CREATE INDEX occupation_idx ON users (occupation);
+-- CREATE INDEX education_idx ON users (education);DROP TABLE IF EXISTS chats CASCADE;
 CREATE TABLE IF NOT EXISTS chats
 (
     id           UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID
@@ -138,9 +136,7 @@ CREATE INDEX IF NOT EXISTS room_id_idx on chats (room_id);
 CREATE INDEX IF NOT EXISTS from_user_id_idx on chats (from_user_id);
 CREATE INDEX IF NOT EXISTS to_user_id_idx on chats (to_user_id);
 CREATE INDEX IF NOT EXISTS is_read_idx on chats (is_read);
-CREATE INDEX IF NOT EXISTS created_at_idx on chats (created_at);
-
-DROP TABLE IF EXISTS rooms CASCADE;
+CREATE INDEX IF NOT EXISTS created_at_idx on chats (created_at);DROP TABLE IF EXISTS rooms CASCADE;
 CREATE TABLE rooms
 (
     id         UUID PRIMARY KEY   DEFAULT gen_random_uuid(), -- ルームID
@@ -156,9 +152,7 @@ COMMENT ON COLUMN rooms.created_at IS '作成日時';
 COMMENT ON COLUMN rooms.updated_at IS '更新日時';
 
 ALTER TABLE chats
-    ADD CONSTRAINT chats_room_id_fkey FOREIGN KEY (room_id) REFERENCES rooms (id) ON DELETE CASCADE;
-
-DROP TABLE IF EXISTS tweets CASCADE;
+    ADD CONSTRAINT chats_room_id_fkey FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE;DROP TABLE IF EXISTS tweets CASCADE;
 CREATE TABLE IF NOT EXISTS tweets
 (
     id         UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID
@@ -176,9 +170,7 @@ COMMENT ON COLUMN tweets.created_at IS '作成日時';
 COMMENT ON COLUMN tweets.updated_at IS '更新日時';
 
 CREATE INDEX IF NOT EXISTS user_id_idx on tweets (user_id);
-CREATE INDEX IF NOT EXISTS created_at_idx on chats (created_at);
-
-DROP TABLE IF EXISTS user_points CASCADE;
+CREATE INDEX IF NOT EXISTS created_at_idx on chats (created_at);DROP TABLE IF EXISTS user_points CASCADE;
 CREATE TABLE IF NOT EXISTS user_points
 (
     id         UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID
@@ -199,9 +191,7 @@ CREATE INDEX IF NOT EXISTS user_id_idx on user_points (user_id);
 CREATE INDEX IF NOT EXISTS created_at_idx on user_points (created_at);
 
 ALTER TABLE user_points
-    ADD CONSTRAINT user_points_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
-
-DROP TABLE IF EXISTS user_logins CASCADE;
+    ADD CONSTRAINT user_points_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;DROP TABLE IF EXISTS user_logins CASCADE;
 CREATE TABLE user_logins
 (
     id         UUID DEFAULT gen_random_uuid() PRIMARY KEY, -- UUIDを主キーに設定し、デフォルトでuuidv4を生成
@@ -231,7 +221,6 @@ COMMENT ON COLUMN user_logins.user_id IS 'usersテーブルを参照する外部
 COMMENT ON COLUMN user_logins.login_date IS 'ユーザーがログインした日付。毎日のログインを追跡するために使用されます';
 COMMENT ON COLUMN user_logins.created_at IS 'レコードが作成されたタイムスタンプ';
 COMMENT ON COLUMN user_logins.updated_at IS 'レコードが最後に更新されたタイムスタンプ';
-
 DROP TABLE IF EXISTS user_point_histories;
 CREATE TABLE user_point_histories
 (
@@ -262,7 +251,6 @@ COMMENT ON COLUMN user_point_histories.operation_type IS 'ポイント操作の�
 COMMENT ON COLUMN user_point_histories.description IS 'ポイント操作の説明（任意）';
 COMMENT ON COLUMN user_point_histories.created_at IS 'レコードが作成されたタイムスタンプ';
 COMMENT ON COLUMN user_point_histories.updated_at IS 'レコードが最後に更新されたタイムスタンプ';
-
 DROP TABLE IF EXISTS hobbies CASCADE;
 CREATE TABLE hobbies
 (
@@ -278,9 +266,7 @@ COMMENT ON COLUMN hobbies.name IS '趣味名';
 COMMENT ON COLUMN hobbies.description IS '説明';
 COMMENT ON COLUMN hobbies.category_id IS 'カテゴリーID';
 
-CREATE INDEX hobbies_id_idx ON hobbies (id);
-
-DROP TABLE IF EXISTS user_hobbies CASCADE;
+CREATE INDEX hobbies_id_idx ON hobbies (id);DROP TABLE IF EXISTS user_hobbies CASCADE;
 CREATE TABLE user_hobbies
 (
     id       UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- ID
@@ -305,26 +291,28 @@ COMMENT ON COLUMN user_hobbies.id IS 'ID';
 COMMENT ON COLUMN user_hobbies.user_id IS 'ユーザID';
 COMMENT ON COLUMN user_hobbies.hobby_id IS '趣味ID';
 
-CREATE INDEX user_hobbies_user_id_idx ON user_hobbies (user_id);
-CREATE INDEX user_hobbies_hobby_id_idx ON user_hobbies (hobby_id);
-
-DROP TABLE IF EXISTS hobby_categories CASCADE;
-CREATE TABLE hobby_categories
+CREATE INDEX IF NOT EXISTS user_hobbies_user_id_idx ON user_hobbies (user_id);
+CREATE INDEX IF NOT EXISTS user_hobbies_hobby_id_idx ON user_hobbies (hobby_id);
+CREATE UNIQUE INDEX IF NOT EXISTS user_hobbies_user_id_hobby_id_idx ON user_hobbies (user_id, hobby_id);DROP TABLE IF EXISTS categories CASCADE;
+CREATE TABLE categories
 (
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- ID
     "name"      VARCHAR(100) NOT NULL UNIQUE,               -- カテゴリ名
     description TEXT         NULL                           -- カテゴリ名
 );
 
-COMMENT ON TABLE hobby_categories IS '趣味カテゴリーテーブル';
-COMMENT ON COLUMN hobby_categories.id IS 'ID';
-COMMENT ON COLUMN hobby_categories.name IS 'カテゴリ名';
-COMMENT ON COLUMN hobby_categories.description IS '説明';
+COMMENT ON TABLE categories IS '趣味カテゴリーテーブル';
+COMMENT ON COLUMN categories.id IS 'ID';
+COMMENT ON COLUMN categories.name IS 'カテゴリ名';
+COMMENT ON COLUMN categories.description IS '説明';
 
+
+ALTER TABLE hobbies
+    DROP CONSTRAINT IF EXISTS fk_hobbies_category_id;
 ALTER TABLE hobbies
     ADD CONSTRAINT fk_hobbies_category_id
         FOREIGN KEY (category_id)
-            REFERENCES hobby_categories (id)
-            ON DELETE SET NULL;
+            REFERENCES categories (id)
+            ON DELETE CASCADE;
 
-CREATE INDEX hobby_categories_id_idx ON hobby_categories (id);
+CREATE INDEX categories_id_idx ON categories (id);

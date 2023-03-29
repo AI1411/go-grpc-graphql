@@ -1,8 +1,12 @@
-.PHONY: up gen-proto
+.PHONY: up upd down star gen-proto gqlgen logs test mockgen-chat mockgen-user mockgen-room mockgen-tweet cp-schema
 up:
 	docker-compose --env-file .env.local -f docker-compose.yml up -d --build
 upd:
 	docker-compose --env-file .env.local -f docker-compose.yml up -d
+down:
+	docker-compose --env-file .env.local -f docker-compose.yml down
+star:
+	docker-compose --env-file .env.local -f docker-compose.yml exec star bash
 gen-proto:
 	rm -f grpc/*.go && protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative --doc_out=./docs --doc_opt=html,index.html grpc/*.proto
 gqlgen:
@@ -19,3 +23,5 @@ mockgen-room:
 	mockgen -source ./internal/infra/repository/room/room_repository.go -destination=./internal/infra/repository/room/mock/mock_room_repository.go
 mockgen-tweet:
 	mockgen -source ./internal/infra/repository/tweet/tweet_repository.go -destination=./internal/infra/repository/tweet/mock/mock_tweet_repository.go
+cp-schema:
+	cat ./DDL/*.sql > ./DDL/scripts/schema.sql
