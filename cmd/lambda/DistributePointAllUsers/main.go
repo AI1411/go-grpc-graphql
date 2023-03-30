@@ -12,6 +12,13 @@ import (
 )
 
 func main() {
+	err := distributePointAllUsers()
+	if err != nil {
+		return
+	}
+}
+
+func distributePointAllUsers() error {
 	e, err := env.NewValue()
 	if err != nil {
 		log.Fatalf("failed to load env: %v", err)
@@ -23,15 +30,18 @@ func main() {
 	dbClient, err := db.NewClient(&e.DB, zapLogger)
 	if err != nil {
 		log.Fatalf("failed to connect to db: %v", err)
+		return err
 	}
 
 	userRepo := repository.NewUserRepository(dbClient)
 	userPointRepo := repository.NewUserPointRepository(dbClient)
 
 	usecase := user.NewDistributePointAllUsersImpl(userRepo, userPointRepo)
-	if err := usecase.Exec(context.Background(), ""); err != nil {
+	if err = usecase.Exec(context.Background(), ""); err != nil {
 		zapLogger.Error(err.Error())
+		return err
 	}
-
 	zapLogger.Info("DistributePointAllUsers End")
+
+	return nil
 }
