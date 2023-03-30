@@ -15,7 +15,10 @@ import (
 type UserPointRepository interface {
 	GetPoint(ctx context.Context, userID string) (int, error)
 	UpdateUserPoint(ctx context.Context, point *entity.UserPoint) error
+	DistributePointAllUsers(ctx context.Context, reason string) error
 }
+
+const defaultDistributePoint = 50
 
 type userPointRepository struct {
 	dbClient *db.Client
@@ -58,6 +61,32 @@ func (u userPointRepository) UpdateUserPoint(ctx context.Context, point *entity.
 
 	if err := u.dbClient.Conn(ctx).Model(&userPoint).Select("UserID", "Point").Updates(point).Error; err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (u userPointRepository) DistributePointAllUsers(ctx context.Context, reason string) error {
+	var users []entity.User
+	if err := u.dbClient.Conn(ctx).Where("status IN ?", entity.ActiveUser).Find(&users).Error; err != nil {
+		return err
+	}
+
+	for _, user := range users {
+		var userPoint entity.UserPoint
+		if err := u.dbClient.Conn(ctx).Where("user_id", user.ID).First(&userPoint).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return status.Errorf(codes.NotFound, "user point not found: %v", err)
+			}
+			return err
+		}
+
+		if err := u.dbClient.Conn(ctx).Model(&userPoint).Select("UserID", "Point").Updates(&entity.UserPoint{
+			UserID: user.ID,
+			Point:  userPoint.Point + defaultDistributePoint,
+		}).Error; err != nil {
+			return err
+		}
 	}
 
 	return nil

@@ -29,5 +29,5 @@ RUN useradd -s /bin/bash -m ${USERNAME} \
 
 ENV GO111MODULE on
 WORKDIR /go/src/
-RUN go install github.com/cosmtrek/air@latest
-CMD ["air", "-c", ".air.toml"]
+CMD ["go", "build", "main.go"]
+CMD ["go", "run", "."]

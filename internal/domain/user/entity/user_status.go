@@ -3,7 +3,7 @@ package entity
 type UserStatus string
 
 var (
-	ActiveUser    = []UserStatus{"ACTIVE", "PREMIUM"}
+	ActiveUser    = []UserStatus{"通常会員", "プレミアム"}
 	NotActiveUser = []UserStatus{"退会済", "アカウント停止"}
 )
 

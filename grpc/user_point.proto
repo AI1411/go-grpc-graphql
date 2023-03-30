@@ -9,6 +9,8 @@ package user_point.v1;
 service UserPointService {
   rpc GetUserPoint (GetUserPointRequest) returns (GetUserPointResponse) {}
   rpc UpdateUserPoint (UpdateUserPointRequest) returns (google.protobuf.Empty) {}
+
+  rpc DisablePointAllUsers (DisablePointAllUsersRequest) returns (google.protobuf.Empty) {}
 }
 
 message GetUserPointRequest {
@@ -22,4 +24,8 @@ message GetUserPointResponse {
 message UpdateUserPointRequest {
   string user_id = 1;
   int32 point = 2;
+}
+
+message DisablePointAllUsersRequest {
+  string reason = 1;
 }
