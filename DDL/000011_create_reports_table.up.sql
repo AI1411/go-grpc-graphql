@@ -10,11 +10,11 @@ CREATE TYPE report_status AS ENUM (
 CREATE TABLE reports
 (
     id               UUID                   DEFAULT gen_random_uuid() PRIMARY KEY,
-    reporter_user_id UUID          NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    reported_user_id UUID          NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    reported_chat_id UUID          NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    reporter_user_id UUID          NOT NULL,
+    reported_user_id UUID          NOT NULL,
+    reported_chat_id UUID          NOT NULL,
     status           report_status NOT NULL DEFAULT 'PENDING',
-    reason           VARCHAR(255)  NOT NULL,
+    reason           VARCHAR(255)  NULL,
     created_at       TIMESTAMP     NOT NULL DEFAULT NOW(),
     updated_at       TIMESTAMP     NOT NULL DEFAULT NOW()
 );

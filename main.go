@@ -17,6 +17,7 @@ import (
 	chatRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/chat"
 	hobbyRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/hobby"
 	redisRepository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/redis"
+	"github.com/AI1411/go-grpc-graphql/internal/infra/repository/report"
 	roomRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/room"
 	tweetRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/tweet"
 	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
@@ -53,6 +54,7 @@ func main() {
 	categoryRepo := categoryRepo.NewCategoryRepository(dbClient)
 	hobbyRepo := hobbyRepo.NewHobbyRepository(dbClient)
 	userHobbyRepo := repository.NewUserHobbyRepository(dbClient)
+	reportRepo := report.NewReportRepository(dbClient)
 
 	redisRepo := redisRepository.NewRedisRepository(redisClient)
 
@@ -70,6 +72,7 @@ func main() {
 	userPointServer := server.NewUserPointServer(dbClient, zapLogger, userRepo, userPointRepo)
 	categoryServer := server.NewCategoryServer(dbClient, zapLogger, categoryRepo)
 	hobbyServer := server.NewHobbyServer(dbClient, zapLogger, hobbyRepo)
+	reportServer := server.NewReportServer(dbClient, zapLogger, reportRepo)
 
 	grpcServer.RegisterUserServiceServer(s, userServer)
 	grpcServer.RegisterTweetServiceServer(s, tweetServer)
@@ -78,6 +81,7 @@ func main() {
 	grpcServer.RegisterUserPointServiceServer(s, userPointServer)
 	grpcServer.RegisterCategoryServiceServer(s, categoryServer)
 	grpcServer.RegisterHobbyServiceServer(s, hobbyServer)
+	grpcServer.RegisterReportServiceServer(s, reportServer)
 
 	zapLogger.Info("start grpc Server port: " + e.ServerPort)
 
