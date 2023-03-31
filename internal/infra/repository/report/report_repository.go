@@ -9,6 +9,7 @@ import (
 
 type ReportRepository interface {
 	ListReport(context.Context, string) ([]*entity.Report, error)
+	GetUserReportCount(context.Context, string) (int, error)
 	GetReport(context.Context, string) (*entity.Report, error)
 	CreateReport(context.Context, *entity.Report) error
 	UpdateReportStatus(context.Context, string, string) error
@@ -31,6 +32,15 @@ func (r reportRepository) ListReport(ctx context.Context, reportedUserID string)
 	}
 
 	return reports, nil
+}
+
+func (r reportRepository) GetUserReportCount(ctx context.Context, reportedUserID string) (int, error) {
+	var reports []*entity.Report
+	if err := r.dbClient.Conn(ctx).Model(&entity.Report{}).Where("reported_user_id = ?", reportedUserID).Find(&reports).Error; err != nil {
+		return 0, err
+	}
+
+	return len(reports), nil
 }
 
 func (r reportRepository) GetReport(ctx context.Context, s string) (*entity.Report, error) {

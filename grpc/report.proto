@@ -9,6 +9,7 @@ package report.v1;
 
 service ReportService {
   rpc ListReport(ListReportRequest) returns (ListReportResponse);
+  rpc GetUserReportCount(GetUserReportCountRequest) returns (GetUserReportCountResponse);
   rpc GetReport(GetReportRequest) returns (GetReportResponse);
   rpc CreateReport(CreateReportRequest) returns (CreateReportResponse);
   rpc UpdateReportStatus(UpdateReportStatusRequest) returns (google.protobuf.Empty);
@@ -38,6 +39,14 @@ message ListReportRequest {
 
 message ListReportResponse {
   repeated Report reports = 1;
+}
+
+message GetUserReportCountRequest {
+  string reported_user_id = 1;
+}
+
+message GetUserReportCountResponse {
+  int32 count = 1;
 }
 
 message GetReportRequest {
