@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = '/grpc';
+
+package report.v1;
+
+service ReportService {
+  rpc ListReport(ListReportRequest) returns (ListReportResponse);
+  rpc GetReport(GetReportRequest) returns (GetReportResponse);
+  rpc CreateReport(CreateReportRequest) returns (CreateReportResponse);
+  rpc UpdateReportStatus(UpdateReportStatusRequest) returns (google.protobuf.Empty);
+}
+
+
+message Report {
+  enum ReportStatus {
+    PENDING = 0;
+    APPROVED = 1;
+    REJECTED = 2;
+  }
+
+  string id = 1;
+  string reporter_user_id = 2;
+  string reported_chat_id = 3;
+  string reported_user_id = 4;
+  string reason = 5;
+  ReportStatus status = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+message ListReportRequest {
+  string reported_user_id = 1;
+}
+
+message ListReportResponse {
+  repeated Report reports = 1;
+}
+
+message GetReportRequest {
+  string id = 1;
+}
+
+message GetReportResponse {
+  Report report = 1;
+}
+
+message CreateReportRequest {
+  string reporter_user_id = 1;
+  string reported_message_id = 2;
+  string reported_user_id = 3;
+  string reason = 4;
+}
+
+message CreateReportResponse {
+  string id = 1;
+}
+
+message UpdateReportStatusRequest {
+  string id = 1;
+  Report.ReportStatus status = 2;
+}

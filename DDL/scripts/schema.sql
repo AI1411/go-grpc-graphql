@@ -316,15 +316,24 @@ ALTER TABLE hobbies
             ON DELETE CASCADE;
 
 CREATE INDEX categories_id_idx ON categories (id);DROP TABLE IF EXISTS reports CASCADE;
+
+DROP TYPE IF EXISTS report_status CASCADE;
+CREATE TYPE report_status AS ENUM (
+    'PENDING',
+    'REJECTED',
+    'ACCEPTED'
+    );
+
 CREATE TABLE reports
 (
-    id               UUID                  DEFAULT gen_random_uuid() PRIMARY KEY,
-    reporter_user_id UUID         NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    reported_user_id UUID         NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    reported_chat_id UUID         NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    reason           VARCHAR(255) NOT NULL,
-    created_at       TIMESTAMP    NOT NULL DEFAULT NOW(),
-    updated_at       TIMESTAMP    NOT NULL DEFAULT NOW()
+    id               UUID                   DEFAULT gen_random_uuid() PRIMARY KEY,
+    reporter_user_id UUID          NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    reported_user_id UUID          NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    reported_chat_id UUID          NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    status           report_status NOT NULL DEFAULT 'PENDING',
+    reason           VARCHAR(255)  NOT NULL,
+    created_at       TIMESTAMP     NOT NULL DEFAULT NOW(),
+    updated_at       TIMESTAMP     NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX reports_reporter_id_idx ON reports (reporter_user_id);
