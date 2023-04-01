@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/AI1411/go-grpc-graphql/grpc"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
@@ -64,4 +65,13 @@ func (s *ReportServer) CreateReport(ctx context.Context, in *grpc.CreateReportRe
 		return nil, err
 	}
 	return res, nil
+}
+
+func (s *ReportServer) UpdateReportStatus(ctx context.Context, in *grpc.UpdateReportStatusRequest) (*emptypb.Empty, error) {
+	usecase := report.NewUpdateReportStatusImpl(s.reportRepo)
+	err := usecase.Exec(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
 }

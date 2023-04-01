@@ -13,7 +13,7 @@ type ReportRepository interface {
 	GetUserReportCount(context.Context, string) (int, error)
 	GetReport(context.Context, string) (*entity.Report, error)
 	CreateReport(context.Context, *entity.Report) (string, error)
-	UpdateReportStatus(context.Context, string, string) error
+	UpdateReportStatus(context.Context, *entity.Report) error
 }
 
 type reportRepository struct {
@@ -61,7 +61,11 @@ func (r reportRepository) CreateReport(ctx context.Context, report *entity.Repor
 	return util.NullUUIDToString(report.ID), nil
 }
 
-func (r reportRepository) UpdateReportStatus(ctx context.Context, s string, s2 string) error {
-	//TODO implement me
-	panic("implement me")
+func (r reportRepository) UpdateReportStatus(ctx context.Context, report *entity.Report) error {
+	if err := r.dbClient.Conn(ctx).Model(&entity.Report{}).Where("id = ?", report.ID).
+		Select("Status").Updates(&report).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -18,6 +18,16 @@ var ReportStatusValue = map[ReportStatus]int32{
 	ReportStatusAccepted: ReportStatusAcceptedInt,
 }
 
+var ReportStatusName = map[int32]ReportStatus{
+	ReportStatusPendingInt:  ReportStatusPending,
+	ReportStatusRejectedInt: ReportStatusRejected,
+	ReportStatusAcceptedInt: ReportStatusAccepted,
+}
+
 func (u ReportStatus) Int() int32 {
 	return ReportStatusValue[u]
+}
+
+func (u ReportStatus) String() ReportStatus {
+	return ReportStatusName[u.Int()]
 }
