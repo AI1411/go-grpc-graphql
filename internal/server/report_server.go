@@ -40,13 +40,14 @@ func (s *ReportServer) ListReport(ctx context.Context, in *grpc.ListReportReques
 	return res, nil
 }
 
-func (s *ReportServer) GetUserReportCount(ctx context.Context, in *grpc.GetUserReportCountRequest) (*grpc.GetUserReportCountResponse, error) {
+func (s *ReportServer) GetUserReportCount(ctx context.Context, _ *grpc.GetUserReportCountRequest) (*grpc.GetUserReportCountResponse, error) {
 	usecase := report.NewGetUserReportCountUsecaseImpl(s.reportRepo)
-	res, err := usecase.Exec(ctx, in.GetReportedUserId())
+	res, err := usecase.Exec(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return &grpc.GetUserReportCountResponse{Count: int32(res)}, nil
+
+	return res, nil
 }
 
 func (s *ReportServer) GetReport(ctx context.Context, in *grpc.GetReportRequest) (*grpc.GetReportResponse, error) {

@@ -16,3 +16,8 @@ type Report struct {
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
+
+type ReportCount struct {
+	ReportedUserID uuid.NullUUID
+	ReportCount    int
+}

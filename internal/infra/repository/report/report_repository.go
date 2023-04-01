@@ -10,7 +10,7 @@ import (
 
 type ReportRepository interface {
 	ListReport(context.Context, string) ([]*entity.Report, error)
-	GetUserReportCount(context.Context, string) (int, error)
+	GetUserReportCount(context.Context) ([]*entity.ReportCount, error)
 	GetReport(context.Context, string) (*entity.Report, error)
 	CreateReport(context.Context, *entity.Report) (string, error)
 	UpdateReportStatus(context.Context, *entity.Report) error
@@ -35,13 +35,19 @@ func (r reportRepository) ListReport(ctx context.Context, reportedUserID string)
 	return reports, nil
 }
 
-func (r reportRepository) GetUserReportCount(ctx context.Context, reportedUserID string) (int, error) {
-	var reports []*entity.Report
-	if err := r.dbClient.Conn(ctx).Model(&entity.Report{}).Where("reported_user_id = ?", reportedUserID).Find(&reports).Error; err != nil {
-		return 0, err
+func (r reportRepository) GetUserReportCount(ctx context.Context) ([]*entity.ReportCount, error) {
+	var reports []*entity.ReportCount
+	if err := r.dbClient.Conn(ctx).
+		Model(&entity.Report{}).
+		Select("reported_user_id, COUNT(*) AS report_count").
+		Group("reported_user_id").
+		Having("COUNT(*) >= ?", 2).
+		Order("report_count DESC").
+		Find(&reports).Error; err != nil {
+		return nil, err
 	}
 
-	return len(reports), nil
+	return reports, nil
 }
 
 func (r reportRepository) GetReport(ctx context.Context, id string) (*entity.Report, error) {

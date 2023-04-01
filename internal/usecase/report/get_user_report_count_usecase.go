@@ -3,11 +3,13 @@ package report
 import (
 	"context"
 
+	"github.com/AI1411/go-grpc-graphql/grpc"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/repository/report"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 type GetUserReportCountUsecaseImpl interface {
-	Exec(context.Context, string) (int, error)
+	Exec(context.Context) (*grpc.GetUserReportCountResponse, error)
 }
 
 type getUserReportCountUsecaseImpl struct {
@@ -20,10 +22,19 @@ func NewGetUserReportCountUsecaseImpl(reportRepo report.ReportRepository) GetUse
 	}
 }
 
-func (u getUserReportCountUsecaseImpl) Exec(ctx context.Context, reportedUserID string) (int, error) {
-	res, err := u.reportRepo.GetUserReportCount(ctx, reportedUserID)
+func (u getUserReportCountUsecaseImpl) Exec(ctx context.Context) (*grpc.GetUserReportCountResponse, error) {
+	res, err := u.reportRepo.GetUserReportCount(ctx)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	return res, nil
+
+	reports := make([]*grpc.ReportCount, len(res))
+	for i, r := range res {
+		reports[i] = &grpc.ReportCount{
+			UserId: util.NullUUIDToString(r.ReportedUserID),
+			Count:  int32(r.ReportCount),
+		}
+	}
+
+	return &grpc.GetUserReportCountResponse{ReportCounts: reports}, nil
 }
