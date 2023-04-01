@@ -47,3 +47,12 @@ func (s *ReportServer) GetUserReportCount(ctx context.Context, in *grpc.GetUserR
 	}
 	return &grpc.GetUserReportCountResponse{Count: int32(res)}, nil
 }
+
+func (s *ReportServer) GetReport(ctx context.Context, in *grpc.GetReportRequest) (*grpc.GetReportResponse, error) {
+	usecase := report.NewGetReportUsecaseImpl(s.reportRepo)
+	res, err := usecase.Exec(ctx, in.GetId())
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

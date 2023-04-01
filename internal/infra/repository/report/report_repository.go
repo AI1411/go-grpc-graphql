@@ -43,9 +43,13 @@ func (r reportRepository) GetUserReportCount(ctx context.Context, reportedUserID
 	return len(reports), nil
 }
 
-func (r reportRepository) GetReport(ctx context.Context, s string) (*entity.Report, error) {
-	//TODO implement me
-	panic("implement me")
+func (r reportRepository) GetReport(ctx context.Context, id string) (*entity.Report, error) {
+	var report entity.Report
+	if err := r.dbClient.Conn(ctx).Where("id = ?", id).First(&report).Error; err != nil {
+		return nil, err
+	}
+
+	return &report, nil
 }
 
 func (r reportRepository) CreateReport(ctx context.Context, e *entity.Report) error {
