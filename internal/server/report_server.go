@@ -56,3 +56,12 @@ func (s *ReportServer) GetReport(ctx context.Context, in *grpc.GetReportRequest)
 	}
 	return res, nil
 }
+
+func (s *ReportServer) CreateReport(ctx context.Context, in *grpc.CreateReportRequest) (*grpc.CreateReportResponse, error) {
+	usecase := report.NewCreateReportUsecaseImpl(s.reportRepo)
+	res, err := usecase.Exec(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

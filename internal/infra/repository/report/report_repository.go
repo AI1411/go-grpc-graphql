@@ -5,13 +5,14 @@ import (
 
 	"github.com/AI1411/go-grpc-graphql/internal/domain/report/entity"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 type ReportRepository interface {
 	ListReport(context.Context, string) ([]*entity.Report, error)
 	GetUserReportCount(context.Context, string) (int, error)
 	GetReport(context.Context, string) (*entity.Report, error)
-	CreateReport(context.Context, *entity.Report) error
+	CreateReport(context.Context, *entity.Report) (string, error)
 	UpdateReportStatus(context.Context, string, string) error
 }
 
@@ -52,9 +53,12 @@ func (r reportRepository) GetReport(ctx context.Context, id string) (*entity.Rep
 	return &report, nil
 }
 
-func (r reportRepository) CreateReport(ctx context.Context, e *entity.Report) error {
-	//TODO implement me
-	panic("implement me")
+func (r reportRepository) CreateReport(ctx context.Context, report *entity.Report) (string, error) {
+	if err := r.dbClient.Conn(ctx).Create(report).Error; err != nil {
+		return "", err
+	}
+
+	return util.NullUUIDToString(report.ID), nil
 }
 
 func (r reportRepository) UpdateReportStatus(ctx context.Context, s string, s2 string) error {

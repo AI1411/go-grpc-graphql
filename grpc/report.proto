@@ -59,7 +59,7 @@ message GetReportResponse {
 
 message CreateReportRequest {
   string reporter_user_id = 1;
-  string reported_message_id = 2;
+  string reported_chat_id = 2;
   string reported_user_id = 3;
   string reason = 4;
 }

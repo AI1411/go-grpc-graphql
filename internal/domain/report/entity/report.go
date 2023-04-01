@@ -7,7 +7,7 @@ import (
 )
 
 type Report struct {
-	ID             uuid.NullUUID
+	ID             uuid.NullUUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
 	ReporterUserID uuid.NullUUID
 	ReportedUserID uuid.NullUUID
 	ReportedChatID uuid.NullUUID
