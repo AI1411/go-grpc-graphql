@@ -121,8 +121,9 @@ message User {
   Prefecture prefecture = 6;
   string introduction = 7;
   BloodType blood_type = 8;
-  google.protobuf.Timestamp created_at = 9;
-  google.protobuf.Timestamp updated_at = 10;
+  string Image = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
 }
 
 message UserHobby {
