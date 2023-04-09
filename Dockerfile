@@ -1,4 +1,4 @@
-FROM golang:1.19.3
+FROM golang:1.20.3
 
 ARG USERNAME=AI1411
 # hadolint ignore=DL3008
