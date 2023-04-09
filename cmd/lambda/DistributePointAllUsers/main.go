@@ -33,7 +33,7 @@ func distributePointAllUsers() error {
 		return err
 	}
 
-	userRepo := repository.NewUserRepository(dbClient)
+	userRepo := repository.NewUserRepository(dbClient, nil)
 	userPointRepo := repository.NewUserPointRepository(dbClient)
 
 	usecase := user.NewDistributePointAllUsersImpl(userRepo, userPointRepo)

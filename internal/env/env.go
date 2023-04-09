@@ -10,6 +10,7 @@ import (
 type Values struct {
 	DB
 	Redis
+	AWS
 	Env        string `default:"local" split_words:"true"`
 	Debug      bool   `default:"true" split_words:"true"`
 	ServerPort string `required:"true" split_words:"true"`
@@ -26,6 +27,12 @@ type DB struct {
 type Redis struct {
 	RedisHost string `default:"localhost" split_words:"true"`
 	RedisPort string `default:"6379" split_words:"true"`
+}
+
+type AWS struct {
+	AwsRegion          string `required:"true" split_words:"true"`
+	AwsAccessKeyID     string `required:"true" split_words:"true"`
+	AwsSecretAccessKey string `required:"true" split_words:"true"`
 }
 
 func NewValue() (*Values, error) {

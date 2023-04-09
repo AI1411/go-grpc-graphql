@@ -1,12 +1,18 @@
 package user
 
 import (
+	"bytes"
 	"context"
+	"encoding/base64"
 	"errors"
+	"log"
 	"os"
 	"strconv"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -24,17 +30,20 @@ type UserRepository interface {
 	UpdateUserStatus(context.Context, *entity.User) error
 	UpdateUserPassword(context.Context, *entity.UserPassword) error
 	Login(context.Context, string, string) (string, error)
+	UploadUserImage(context.Context, *entity.User) error
 }
 
 var awardPoint = os.Getenv("STAR_AWARD_POINT")
 
 type userRepository struct {
-	dbClient *db.Client
+	dbClient   *db.Client
+	awsSession *session.Session
 }
 
-func NewUserRepository(dbClient *db.Client) UserRepository {
+func NewUserRepository(dbClient *db.Client, awsSession *session.Session) UserRepository {
 	return &userRepository{
-		dbClient: dbClient,
+		dbClient:   dbClient,
+		awsSession: awsSession,
 	}
 }
 
@@ -243,4 +252,60 @@ func (u *userRepository) awardLoginPoint(ctx context.Context, userID string) err
 	}
 
 	return nil
+}
+
+func (u *userRepository) UploadUserImage(ctx context.Context, user *entity.User) error {
+	var userEntity entity.User
+	if err := u.dbClient.Conn(ctx).Where("id", util.NullUUIDToString(user.ID)).First(&userEntity).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return status.Errorf(codes.NotFound, "user not found: %v", err)
+		}
+		return status.Errorf(codes.Internal, "failed to get user: %v", err)
+	}
+
+	// base64データをデコード
+	decodedImageBuffer, err := decodeBase64Image(user.ImagePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	uploadedImagePath, err := uploadToS3(u.awsSession, decodedImageBuffer, "star-user-image", util.NullUUIDToString(user.ID))
+
+	if err := u.dbClient.Conn(ctx).
+		Model(&entity.User{}).
+		Where("id", user.ID).
+		Update("ImagePath", uploadedImagePath).Error; err != nil {
+		return status.Errorf(codes.Internal, "failed to update user image: %v", err)
+	}
+	return nil
+}
+
+func decodeBase64Image(image string) (*bytes.Buffer, error) {
+	// base64データをデコード
+	decodedImageData, err := base64.StdEncoding.DecodeString(image)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 画像データをバッファに格納
+	decodedImageBuffer := bytes.NewBuffer(decodedImageData)
+
+	return decodedImageBuffer, nil
+}
+
+// 画像データをS3にアップロードする関数
+func uploadToS3(awsSession *session.Session, imageBuffer *bytes.Buffer, bucketName, imageKey string) (string, error) {
+	uploader := s3manager.NewUploader(awsSession)
+
+	result, err := uploader.Upload(&s3manager.UploadInput{
+		Bucket: aws.String(bucketName),
+		Key:    aws.String(imageKey),
+		Body:   imageBuffer,
+	})
+	if err != nil {
+		return "", err
+
+	}
+
+	return result.Location, nil
 }

@@ -18,6 +18,7 @@ func TestNewUser(t *testing.T) {
 		prefecture   commonEntity.Prefecture
 		introduction string
 		bloodType    commonEntity.BloodType
+		imagePath    string
 	}
 	tests := []struct {
 		name string
@@ -34,6 +35,7 @@ func TestNewUser(t *testing.T) {
 				prefecture:   "岡山県",
 				introduction: "自己紹介",
 				bloodType:    "A型",
+				imagePath:    "/path/to/image",
 			},
 			want: &entity.User{
 				Username:     "username",
@@ -43,12 +45,13 @@ func TestNewUser(t *testing.T) {
 				Prefecture:   "岡山県",
 				Introduction: "自己紹介",
 				BloodType:    "A型",
+				ImagePath:    "/path/to/image",
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := entity.NewUser(tt.args.username, tt.args.email, tt.args.password, tt.args.status, tt.args.prefecture, tt.args.introduction, tt.args.bloodType)
+			got := entity.NewUser(tt.args.username, tt.args.email, tt.args.password, tt.args.status, tt.args.prefecture, tt.args.introduction, tt.args.bloodType, tt.args.imagePath)
 			if !cmp.Equal(got, tt.want) {
 				t.Errorf("diff %s", cmp.Diff(got, tt.want))
 			}

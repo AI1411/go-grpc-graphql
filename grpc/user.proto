@@ -15,6 +15,7 @@ service UserService {
   rpc UpdateUserProfile (UpdateUserProfileRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUserStatus (UpdateUserStatusRequest) returns (google.protobuf.Empty) {}
   rpc UpdateUserPassword (UpdateUserPasswordRequest) returns (google.protobuf.Empty) {}
+  rpc UploadUserImage (UploadUserImageRequest) returns (google.protobuf.Empty) {}
 
   // auth
   rpc Login (LoginRequest) returns (LoginResponse) {}
@@ -66,6 +67,11 @@ message UpdateUserPasswordRequest {
   string password_confirmation = 3; // 新しいパスワードの確認
 }
 
+message UploadUserImageRequest {
+  string user_id = 1;
+  string image = 2;
+}
+
 message LoginRequest {
   string email = 1;
   string password = 2;
@@ -100,6 +106,10 @@ message RegisterUserHobbyResponse {
 message DeleteUserHobbyRequest {
   string user_id = 1;
   string hobby_id = 2;
+}
+
+message BanReportedUserRequest {
+  repeated string user_ids = 1;
 }
 
 message User {

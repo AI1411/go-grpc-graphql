@@ -17,6 +17,7 @@ type User struct {
 	Prefecture   entity.Prefecture
 	Introduction string
 	BloodType    entity.BloodType
+	ImagePath    string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
@@ -33,6 +34,7 @@ func NewUser(
 	prefecture entity.Prefecture,
 	introduction string,
 	bloodType entity.BloodType,
+	imagePath string,
 ) *User {
 	return &User{
 		Username:     username,
@@ -42,5 +44,6 @@ func NewUser(
 		Prefecture:   prefecture,
 		Introduction: introduction,
 		BloodType:    bloodType,
+		ImagePath:    imagePath,
 	}
 }

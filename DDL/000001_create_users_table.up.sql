@@ -66,22 +66,23 @@ CREATE TYPE blood_type AS ENUM (
     );
 CREATE TABLE users
 (
-    id                     UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID
-    username               VARCHAR(100)             NOT NULL,                           -- ユーザ名
-    email                  VARCHAR(100)             NOT NULL UNIQUE,                    -- メールアドレス
-    "password"             TEXT                     NOT NULL,                           -- パスワード
-    status                 user_status              NOT NULL DEFAULT '通常会員',        -- ユーザステータス
-    prefecture             prefecture               NOT NULL DEFAULT 'ひみつにする',          -- 都道府県
-    introduction           TEXT,                                                        -- 自己紹介
-    blood_type             blood_type               NOT NULL DEFAULT 'ひみつにする',          -- 血液型
+    id           UUID PRIMARY KEY                  DEFAULT gen_random_uuid(), -- ID
+    username     VARCHAR(100)             NOT NULL,                           -- ユーザ名
+    email        VARCHAR(100)             NOT NULL UNIQUE,                    -- メールアドレス
+    "password"   TEXT                     NOT NULL,                           -- パスワード
+    status       user_status              NOT NULL DEFAULT '通常会員',        -- ユーザステータス
+    prefecture   prefecture               NOT NULL DEFAULT 'ひみつにする',          -- 都道府県
+    introduction TEXT,                                                        -- 自己紹介
+    blood_type   blood_type               NOT NULL DEFAULT 'ひみつにする',          -- 血液型
+    image_path   VARCHAR(100)             NULL,                               -- 画像
 --     occupation             VARCHAR(100)             NULL,                               -- 職業
 --     education              VARCHAR(100)             NULL,                               -- 学歴
 --     hobbies_and_skills     TEXT                     NULL,                               -- 趣味・スキル
 --     personality            TEXT                     NULL,                               -- 性格
 --     purpose_of_interaction TEXT                     NULL,                               -- 交流目的
-    created_at             TIMESTAMP
-                               WITH TIME ZONE       NOT NULL DEFAULT NOW(),             -- 作成日時
-    updated_at             TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()              -- 更新日時
+    created_at   TIMESTAMP
+                     WITH TIME ZONE       NOT NULL DEFAULT NOW(),             -- 作成日時
+    updated_at   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()              -- 更新日時
 );
 
 COMMENT ON TABLE users IS 'ユーザテーブル';

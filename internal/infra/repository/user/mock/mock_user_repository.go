@@ -121,3 +121,17 @@ func (mr *MockUserRepositoryMockRecorder) UpdateUserStatus(arg0, arg1 interface{
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUserStatus", reflect.TypeOf((*MockUserRepository)(nil).UpdateUserStatus), arg0, arg1)
 }
+
+// UploadUserImage mocks base method.
+func (m *MockUserRepository) UploadUserImage(arg0 context.Context, arg1 *entity.User) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UploadUserImage", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UploadUserImage indicates an expected call of UploadUserImage.
+func (mr *MockUserRepositoryMockRecorder) UploadUserImage(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UploadUserImage", reflect.TypeOf((*MockUserRepository)(nil).UploadUserImage), arg0, arg1)
+}

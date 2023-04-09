@@ -96,7 +96,7 @@ func TestGetUser(t *testing.T) {
 					tt.setup(ctx, t, testClient)
 				}
 
-				userRepo := repository.NewUserRepository(testClient)
+				userRepo := repository.NewUserRepository(testClient, nil)
 
 				got, err := userRepo.GetUser(ctx, tt.userID)
 				if tt.wantError != 0 {
@@ -174,7 +174,7 @@ func TestCreateUser(t *testing.T) {
 					tt.setup(ctx, t, testClient)
 				}
 
-				userRepo := repository.NewUserRepository(testClient)
+				userRepo := repository.NewUserRepository(testClient, nil)
 
 				_, err = userRepo.CreateUser(ctx, tt.request)
 
@@ -275,7 +275,7 @@ func TestUpdateUserProfile(t *testing.T) {
 					tt.setup(ctx, t, testClient)
 				}
 
-				userRepo := repository.NewUserRepository(testClient)
+				userRepo := repository.NewUserRepository(testClient, nil)
 
 				err = userRepo.UpdateUserProfile(ctx, tt.request)
 
@@ -367,7 +367,7 @@ func TestUpdateUserStatus(t *testing.T) {
 					tt.setup(ctx, t, testClient)
 				}
 
-				userRepo := repository.NewUserRepository(testClient)
+				userRepo := repository.NewUserRepository(testClient, nil)
 
 				err = userRepo.UpdateUserStatus(ctx, tt.request)
 
@@ -440,7 +440,7 @@ func TestUpdateUserPassword(t *testing.T) {
 					tt.setup(ctx, t, testClient)
 				}
 
-				userRepo := repository.NewUserRepository(testClient)
+				userRepo := repository.NewUserRepository(testClient, nil)
 
 				err = userRepo.UpdateUserPassword(ctx, tt.request)
 

@@ -23,6 +23,7 @@ import (
 	repository "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user"
 	interceptor "github.com/AI1411/go-grpc-graphql/internal/intorceptor"
 	"github.com/AI1411/go-grpc-graphql/internal/server"
+	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
 const defaultPort = "8081"
@@ -46,7 +47,12 @@ func main() {
 	}
 	redisClient := redis.NewRedisClient(&e.Redis)
 
-	userRepo := repository.NewUserRepository(dbClient)
+	awsSession, err := util.NewAWSSession(e)
+	if err != nil {
+		log.Fatalf("failed to connect to aws: %v", err)
+	}
+
+	userRepo := repository.NewUserRepository(dbClient, awsSession)
 	tweetRepo := tweetRepo.NewTweetRepository(dbClient)
 	chatRepo := chatRepo.NewChatRepository(dbClient)
 	roomRepo := roomRepo.NewRoomRepository(dbClient)

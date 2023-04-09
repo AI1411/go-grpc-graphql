@@ -171,3 +171,17 @@ func (s *UserServer) DeleteUserHobby(ctx context.Context, in *grpc.DeleteUserHob
 	}
 	return &emptypb.Empty{}, nil
 }
+
+func (s *UserServer) UploadUserImage(ctx context.Context, in *grpc.UploadUserImageRequest) (*emptypb.Empty, error) {
+	validator := form.NewFormValidator(userForm.NewUploadUserImageForm(in))
+	if err := validator.Validate(); err != nil {
+		return nil, err
+	}
+
+	usecase := user.NewUploadUserImageUsecaseImpl(s.userRepo)
+	err := usecase.Exec(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
