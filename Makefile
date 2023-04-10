@@ -25,5 +25,7 @@ mockgen-room:
 	mockgen -source ./internal/infra/repository/room/room_repository.go -destination=./internal/infra/repository/room/mock/mock_room_repository.go
 mockgen-tweet:
 	mockgen -source ./internal/infra/repository/tweet/tweet_repository.go -destination=./internal/infra/repository/tweet/mock/mock_tweet_repository.go
+mockgen-category:
+	mockgen -source ./internal/infra/repository/category/category_repository.go -destination=./internal/infra/repository/category/mock/category_tweet_repository.go
 cp-schema:
 	cat ./DDL/*.sql > ./DDL/scripts/schema.sql
