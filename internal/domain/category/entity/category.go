@@ -20,3 +20,19 @@ type CategoryCondition struct {
 	Limit  int32
 	Offset int32
 }
+
+func NewCategory(name, description string) *Category {
+	return &Category{
+		Name:        name,
+		Description: description,
+	}
+}
+
+func NewCategoryCondition(name, order string, limit, offset int32) *CategoryCondition {
+	return &CategoryCondition{
+		Name:   name,
+		Order:  order,
+		Limit:  limit,
+		Offset: offset,
+	}
+}

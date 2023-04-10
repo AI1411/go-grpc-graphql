@@ -21,3 +21,19 @@ type ReportCount struct {
 	ReportedUserID uuid.NullUUID
 	ReportCount    int
 }
+
+func NewReport(reporterUserID, reportedUserID, reportedChatID uuid.NullUUID, reason string) *Report {
+	return &Report{
+		ReporterUserID: reporterUserID,
+		ReportedUserID: reportedUserID,
+		ReportedChatID: reportedChatID,
+		Reason:         reason,
+	}
+}
+
+func NewReportCount(reportedUserID uuid.NullUUID, reportCount int) *ReportCount {
+	return &ReportCount{
+		ReportedUserID: reportedUserID,
+		ReportCount:    reportCount,
+	}
+}
