@@ -11,6 +11,7 @@ import (
 func NewAWSSession(e *env.Values) (*session.Session, error) {
 	awsSession, err := session.NewSession(&aws.Config{
 		Region:      &e.AwsRegion,
+		Endpoint:    &e.AwsS3Endpoint,
 		Credentials: credentials.NewStaticCredentials(e.AwsAccessKeyID, e.AwsSecretAccessKey, ""),
 	})
 

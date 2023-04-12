@@ -33,6 +33,8 @@ type AWS struct {
 	AwsRegion          string `required:"true" split_words:"true"`
 	AwsAccessKeyID     string `required:"true" split_words:"true"`
 	AwsSecretAccessKey string `required:"true" split_words:"true"`
+	AwsS3BucketName    string `required:"true" split_words:"true"`
+	AwsS3Endpoint      string `required:"true" split_words:"true"`
 }
 
 func NewValue() (*Values, error) {

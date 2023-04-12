@@ -47,6 +47,22 @@ services:
       - STAR_REDIS_HOST=${STAR_REDIS_HOST}
     networks:
       - star-network
+  localstack:
+    build:
+      context: ./docker/localstack
+      dockerfile: Dockerfile
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DEFAULT_REGION=ap-northeast-1
+    volumes:
+      - "./docker/localstack/data:/tmp/localstack/data"
+    networks:
+      - star-network
 volumes:
   psql_data:
     driver: local

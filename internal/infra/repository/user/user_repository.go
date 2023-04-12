@@ -33,7 +33,10 @@ type UserRepository interface {
 	UploadUserImage(context.Context, *entity.User) error
 }
 
-var awardPoint = os.Getenv("STAR_AWARD_POINT")
+var (
+	awardPoint    = os.Getenv("STAR_AWARD_POINT")
+	awsBucketName = os.Getenv("STAR_AWS_S3_BUCKET_NAME")
+)
 
 type userRepository struct {
 	dbClient   *db.Client
@@ -269,7 +272,7 @@ func (u *userRepository) UploadUserImage(ctx context.Context, user *entity.User)
 		log.Fatal(err)
 	}
 
-	uploadedImagePath, err := uploadToS3(u.awsSession, decodedImageBuffer, "star-user-image", util.NullUUIDToString(user.ID))
+	uploadedImagePath, err := uploadToS3(u.awsSession, decodedImageBuffer, awsBucketName, util.NullUUIDToString(user.ID))
 
 	if err := u.dbClient.Conn(ctx).
 		Model(&entity.User{}).
