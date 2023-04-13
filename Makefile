@@ -29,3 +29,10 @@ mockgen-category:
 	mockgen -source ./internal/infra/repository/category/category_repository.go -destination=./internal/infra/repository/category/mock/category_tweet_repository.go
 cp-schema:
 	cat ./DDL/*.sql > ./DDL/scripts/schema.sql
+cover:
+	docker exec -t --env-file .env.test star go test -cover -- -p 1 -count=1 ./... -coverprofile=cover.out.tmp
+    # 自動生成コードをカバレッジ対象から外し、カバレッジファイルを作成
+	cat cover.out.tmp | grep -v "**_mock.go" > cover.out
+	rm cover.out.tmp
+	docker exec -t --env-file .env.test star go tool cover -html=cover.out -o cover.html
+	open cover.html

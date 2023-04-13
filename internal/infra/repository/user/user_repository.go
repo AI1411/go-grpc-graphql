@@ -11,7 +11,9 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
@@ -272,6 +274,21 @@ func (u *userRepository) UploadUserImage(ctx context.Context, user *entity.User)
 		log.Fatal(err)
 	}
 
+	sss := s3.New(u.awsSession)
+
+	// バケットがあるか確認
+	exist, err := existBucket(sss, awsBucketName)
+	if err != nil {
+		return status.Errorf(codes.Internal, "failed to check bucket: %v", err)
+	}
+
+	// バケットがなければ作成
+	if !exist {
+		if err := createBucket(sss, awsBucketName); err != nil {
+			return status.Errorf(codes.Internal, "failed to create bucket: %v", err)
+		}
+	}
+
 	uploadedImagePath, err := uploadToS3(u.awsSession, decodedImageBuffer, awsBucketName, util.NullUUIDToString(user.ID))
 
 	if err := u.dbClient.Conn(ctx).
@@ -311,4 +328,34 @@ func uploadToS3(awsSession *session.Session, imageBuffer *bytes.Buffer, bucketNa
 	}
 
 	return result.Location, nil
+}
+
+func existBucket(sss *s3.S3, bucket string) (bool, error) {
+	_, err := sss.HeadBucket(&s3.HeadBucketInput{
+		Bucket: aws.String(bucket),
+	})
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case s3.ErrCodeNoSuchBucket:
+				return false, nil
+			default:
+				return false, err
+			}
+		}
+		return false, err
+	}
+
+	return true, nil
+}
+
+func createBucket(sss *s3.S3, bucket string) error {
+	_, err := sss.CreateBucket(&s3.CreateBucketInput{
+		Bucket: aws.String(bucket),
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

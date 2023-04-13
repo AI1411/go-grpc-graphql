@@ -47,7 +47,7 @@ func main() {
 	}
 	redisClient := redis.NewRedisClient(&e.Redis)
 
-	awsSession, err := util.NewAWSSession(e)
+	awsSession := util.NewAWSSession(e)
 	if err != nil {
 		log.Fatalf("failed to connect to aws: %v", err)
 	}

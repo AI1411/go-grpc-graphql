@@ -8,16 +8,11 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/env"
 )
 
-func NewAWSSession(e *env.Values) (*session.Session, error) {
-	awsSession, err := session.NewSession(&aws.Config{
-		Region:      &e.AwsRegion,
-		Endpoint:    &e.AwsS3Endpoint,
-		Credentials: credentials.NewStaticCredentials(e.AwsAccessKeyID, e.AwsSecretAccessKey, ""),
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return awsSession, nil
+func NewAWSSession(e *env.Values) *session.Session {
+	return session.Must(session.NewSession(&aws.Config{
+		Region:           aws.String(e.AwsRegion),
+		Endpoint:         aws.String("http://localhost:9000"),
+		Credentials:      credentials.NewStaticCredentials("root", "password", ""),
+		S3ForcePathStyle: aws.Bool(true),
+	}))
 }
