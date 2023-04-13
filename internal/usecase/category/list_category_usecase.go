@@ -14,10 +14,10 @@ type ListCategoryUsecaseImpl interface {
 }
 
 type listCategoryUsecaseImpl struct {
-	categoryRepository category.CategoryRepository
+	categoryRepository category.Repository
 }
 
-func NewListCategoryUsecaseImpl(categoryRepository category.CategoryRepository) ListCategoryUsecaseImpl {
+func NewListCategoryUsecaseImpl(categoryRepository category.Repository) ListCategoryUsecaseImpl {
 	return &listCategoryUsecaseImpl{
 		categoryRepository: categoryRepository,
 	}

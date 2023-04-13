@@ -6,7 +6,7 @@ import (
 
 type CreateHobbyForm struct {
 	Name        string `jaFieldName:"趣味名" validate:"required"`
-	Description string `jaFieldName:"趣味説明""`
+	Description string `jaFieldName:"趣味説明"`
 	CategoryID  string `jaFieldName:"カテゴリID" validate:"required"`
 }
 

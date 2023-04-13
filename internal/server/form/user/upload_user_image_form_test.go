@@ -19,7 +19,7 @@ func TestNewUploadUserImageForm(t *testing.T) {
 				Image:  "base64-encoded-image",
 			},
 			expected: &UploadUserImageForm{
-				UserId: "e2a0b779-91c0-4f84-9d58-ef5ea5e5b5a9",
+				UserID: "e2a0b779-91c0-4f84-9d58-ef5ea5e5b5a9",
 				Image:  "base64-encoded-image",
 			},
 		},
@@ -28,7 +28,7 @@ func TestNewUploadUserImageForm(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			result := NewUploadUserImageForm(tc.input)
-			if result.UserId != tc.expected.UserId || result.Image != tc.expected.Image {
+			if result.UserID != tc.expected.UserID || result.Image != tc.expected.Image {
 				t.Errorf("NewUploadUserImageForm(%v) = %v; want %v", tc.input, result, tc.expected)
 			}
 		})

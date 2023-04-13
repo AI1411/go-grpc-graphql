@@ -8,7 +8,9 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
-type ReportRepository interface {
+const reportThreshold = 2
+
+type Repository interface {
 	ListReport(context.Context, string) ([]*entity.Report, error)
 	GetUserReportCount(context.Context) ([]*entity.ReportCount, error)
 	GetReport(context.Context, string) (*entity.Report, error)
@@ -20,7 +22,7 @@ type reportRepository struct {
 	dbClient *db.Client
 }
 
-func NewReportRepository(dbClient *db.Client) ReportRepository {
+func NewReportRepository(dbClient *db.Client) Repository {
 	return &reportRepository{
 		dbClient: dbClient,
 	}
@@ -41,7 +43,7 @@ func (r *reportRepository) GetUserReportCount(ctx context.Context) ([]*entity.Re
 		Model(&entity.Report{}).
 		Select("reported_user_id, COUNT(*) AS report_count").
 		Group("reported_user_id").
-		Having("COUNT(*) >= ?", 2).
+		Having("COUNT(*) >= ?", reportThreshold).
 		Order("report_count DESC").
 		Find(&reports).Error; err != nil {
 		return nil, err

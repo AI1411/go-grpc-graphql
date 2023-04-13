@@ -14,10 +14,10 @@ type UpdateUserStatusUsecase interface {
 }
 
 type updateUserStatusUsecaseImpl struct {
-	userRepository repository.UserRepository
+	userRepository repository.Repository
 }
 
-func NewUpdateUserStatusUsecaseImpl(userRepository repository.UserRepository) UpdateUserStatusUsecase {
+func NewUpdateUserStatusUsecaseImpl(userRepository repository.Repository) UpdateUserStatusUsecase {
 	return &updateUserStatusUsecaseImpl{
 		userRepository: userRepository,
 	}

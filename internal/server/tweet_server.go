@@ -19,15 +19,15 @@ type TweetServer struct {
 	grpc.UnimplementedTweetServiceServer
 	dbClient  *db.Client
 	zapLogger *zap.Logger
-	userRepo  userRepo.UserRepository
-	tweetRepo tweetRepo.TweetRepository
+	userRepo  userRepo.Repository
+	tweetRepo tweetRepo.Repository
 }
 
 func NewTweetServer(
 	dbClient *db.Client,
 	zapLogger *zap.Logger,
-	userRepo userRepo.UserRepository,
-	tweetRepo tweetRepo.TweetRepository,
+	userRepo userRepo.Repository,
+	tweetRepo tweetRepo.Repository,
 ) *TweetServer {
 	return &TweetServer{
 		dbClient:  dbClient,

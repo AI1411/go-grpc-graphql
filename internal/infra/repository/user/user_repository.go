@@ -25,7 +25,7 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
-type UserRepository interface {
+type Repository interface {
 	GetUser(context.Context, string) (*entity.User, error)
 	CreateUser(context.Context, *entity.User) (string, error)
 	UpdateUserProfile(context.Context, *entity.User) error
@@ -45,7 +45,7 @@ type userRepository struct {
 	awsSession *session.Session
 }
 
-func NewUserRepository(dbClient *db.Client, awsSession *session.Session) UserRepository {
+func NewUserRepository(dbClient *db.Client, awsSession *session.Session) Repository {
 	return &userRepository{
 		dbClient:   dbClient,
 		awsSession: awsSession,
@@ -160,7 +160,7 @@ func (u *userRepository) Login(ctx context.Context, email, password string) (str
 	if err != nil {
 		// 今日ログインしていない場合
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			if err := u.dbClient.Conn(ctx).
+			if err = u.dbClient.Conn(ctx).
 				Table("user_logins").
 				Create(&entity.UserLogin{
 					UserID:    user.ID,
@@ -169,7 +169,7 @@ func (u *userRepository) Login(ctx context.Context, email, password string) (str
 				return "", status.Errorf(codes.Internal, "failed to create user_login: %v", err)
 			}
 
-			if err := u.awardLoginPoint(ctx, util.NullUUIDToString(user.ID)); err != nil {
+			if err = u.awardLoginPoint(ctx, util.NullUUIDToString(user.ID)); err != nil {
 				return "", status.Errorf(codes.Internal, "failed to award login point: %v", err)
 			}
 		} else {
@@ -284,14 +284,17 @@ func (u *userRepository) UploadUserImage(ctx context.Context, user *entity.User)
 
 	// バケットがなければ作成
 	if !exist {
-		if err := createBucket(sss, awsBucketName); err != nil {
+		if err = createBucket(sss, awsBucketName); err != nil {
 			return status.Errorf(codes.Internal, "failed to create bucket: %v", err)
 		}
 	}
 
 	uploadedImagePath, err := uploadToS3(u.awsSession, decodedImageBuffer, awsBucketName, util.NullUUIDToString(user.ID))
+	if err != nil {
+		return status.Errorf(codes.Internal, "failed to upload image to s3: %v", err)
+	}
 
-	if err := u.dbClient.Conn(ctx).
+	if err = u.dbClient.Conn(ctx).
 		Model(&entity.User{}).
 		Where("id", user.ID).
 		Update("ImagePath", uploadedImagePath).Error; err != nil {
@@ -305,6 +308,7 @@ func decodeBase64Image(image string) (*bytes.Buffer, error) {
 	decodedImageData, err := base64.StdEncoding.DecodeString(image)
 	if err != nil {
 		log.Fatal(err)
+		return &bytes.Buffer{}, err
 	}
 
 	// 画像データをバッファに格納

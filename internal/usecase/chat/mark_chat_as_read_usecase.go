@@ -13,11 +13,11 @@ type MarkChatAsReadUsecaseImpl interface {
 }
 
 type markChatAsReadUsecaseImpl struct {
-	userRepository userRepo.UserRepository
-	chatRepo       chatRepo.ChatRepository
+	userRepository userRepo.Repository
+	chatRepo       chatRepo.Repository
 }
 
-func NewMarkChatAsReadUsecaseImpl(userRepository userRepo.UserRepository, chatRepo chatRepo.ChatRepository) MarkChatAsReadUsecaseImpl {
+func NewMarkChatAsReadUsecaseImpl(userRepository userRepo.Repository, chatRepo chatRepo.Repository) MarkChatAsReadUsecaseImpl {
 	return &markChatAsReadUsecaseImpl{
 		userRepository: userRepository,
 		chatRepo:       chatRepo,

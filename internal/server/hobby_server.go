@@ -18,13 +18,13 @@ type HobbyServer struct {
 	grpc.UnimplementedHobbyServiceServer
 	dbClient  *db.Client
 	zapLogger *zap.Logger
-	hobbyRepo hobbyRepo.HobbyRepository
+	hobbyRepo hobbyRepo.Repository
 }
 
 func NewHobbyServer(
 	dbClient *db.Client,
 	zapLogger *zap.Logger,
-	hobbyRepo hobbyRepo.HobbyRepository,
+	hobbyRepo hobbyRepo.Repository,
 ) *HobbyServer {
 	return &HobbyServer{
 		dbClient:  dbClient,

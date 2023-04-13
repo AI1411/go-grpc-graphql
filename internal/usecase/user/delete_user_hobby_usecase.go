@@ -16,10 +16,10 @@ type DeleteUserHobbyUsecaseImpl interface {
 }
 
 type deleteUserHobbyUsecaseImpl struct {
-	userHobbyRepo userRepo.UserHobbyRepository
+	userHobbyRepo userRepo.HobbyRepository
 }
 
-func NewDeleteUserHobbyUsecaseImpl(userHobbyRepo userRepo.UserHobbyRepository) DeleteUserHobbyUsecaseImpl {
+func NewDeleteUserHobbyUsecaseImpl(userHobbyRepo userRepo.HobbyRepository) DeleteUserHobbyUsecaseImpl {
 	return &deleteUserHobbyUsecaseImpl{
 		userHobbyRepo: userHobbyRepo,
 	}

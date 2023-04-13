@@ -14,7 +14,7 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
-type CategoryRepository interface {
+type Repository interface {
 	ListCategory(ctx context.Context, category *entity.CategoryCondition) ([]*entity.Category, error)
 	GetCategory(ctx context.Context, id string) (*entity.Category, error)
 	CreateCategory(ctx context.Context, category *entity.Category) (string, error)
@@ -25,7 +25,7 @@ type categoryRepository struct {
 	dbClient *db.Client
 }
 
-func NewCategoryRepository(dbClient *db.Client) CategoryRepository {
+func NewCategoryRepository(dbClient *db.Client) Repository {
 	return &categoryRepository{
 		dbClient: dbClient,
 	}

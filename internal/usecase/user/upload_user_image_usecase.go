@@ -14,10 +14,10 @@ type UploadUserImageUsecaseImpl interface {
 }
 
 type uploadUserImageUsecaseImpl struct {
-	userRepository userRepo.UserRepository
+	userRepository userRepo.Repository
 }
 
-func NewUploadUserImageUsecaseImpl(userRepository userRepo.UserRepository) UploadUserImageUsecaseImpl {
+func NewUploadUserImageUsecaseImpl(userRepository userRepo.Repository) UploadUserImageUsecaseImpl {
 	return &uploadUserImageUsecaseImpl{
 		userRepository: userRepository,
 	}

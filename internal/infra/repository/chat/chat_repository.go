@@ -14,7 +14,7 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
-type ChatRepository interface {
+type Repository interface {
 	ListChat(ctx context.Context, chat *entity.Chat) ([]*entity.Chat, error)
 	CreateChat(ctx context.Context, chat *entity.Chat) (string, error)
 	MarkChatAsRead(ctx context.Context, chatID string) error
@@ -24,7 +24,7 @@ type chatRepository struct {
 	dbClient *db.Client
 }
 
-func NewChatRepository(dbClient *db.Client) ChatRepository {
+func NewChatRepository(dbClient *db.Client) Repository {
 	return &chatRepository{
 		dbClient: dbClient,
 	}

@@ -14,11 +14,11 @@ type UpdateUserPointUsecase interface {
 }
 
 type updateUserPointUsecaseImpl struct {
-	userRepository      repository.UserRepository
-	userPointRepository repository.UserPointRepository
+	userRepository      repository.Repository
+	userPointRepository repository.PointRepository
 }
 
-func NewUpdateUserPointUsecaseImpl(userRepository repository.UserRepository, userPointRepository repository.UserPointRepository) UpdateUserPointUsecase {
+func NewUpdateUserPointUsecaseImpl(userRepository repository.Repository, userPointRepository repository.PointRepository) UpdateUserPointUsecase {
 	return &updateUserPointUsecaseImpl{
 		userRepository:      userRepository,
 		userPointRepository: userPointRepository,

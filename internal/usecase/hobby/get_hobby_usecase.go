@@ -13,10 +13,10 @@ type GetHobbyUsecaseImpl interface {
 }
 
 type getHobbyUsecaseImpl struct {
-	hobbyRepo hobby.HobbyRepository
+	hobbyRepo hobby.Repository
 }
 
-func NewGetHobbyUsecaseImpl(hobbyRepo hobby.HobbyRepository) GetHobbyUsecaseImpl {
+func NewGetHobbyUsecaseImpl(hobbyRepo hobby.Repository) GetHobbyUsecaseImpl {
 	return &getHobbyUsecaseImpl{
 		hobbyRepo: hobbyRepo,
 	}

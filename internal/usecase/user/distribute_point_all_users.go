@@ -11,11 +11,11 @@ type DistributePointAllUsers interface {
 }
 
 type distributePointAllUsersImpl struct {
-	userRepository userRepo.UserRepository
-	pointRepo      userRepo.UserPointRepository
+	userRepository userRepo.Repository
+	pointRepo      userRepo.PointRepository
 }
 
-func NewDistributePointAllUsersImpl(userRepository userRepo.UserRepository, pointRepo userRepo.UserPointRepository) DistributePointAllUsers {
+func NewDistributePointAllUsersImpl(userRepository userRepo.Repository, pointRepo userRepo.PointRepository) DistributePointAllUsers {
 	return &distributePointAllUsersImpl{
 		userRepository: userRepository,
 		pointRepo:      pointRepo,

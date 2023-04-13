@@ -1,0 +1,35 @@
+linters-settings:
+  golint:
+    min-confidence: 0.8
+  govet:
+    check-shadowing: true
+  goimports:
+    local-prefixes: github.com/yourusername/yourproject
+  gocyclo:
+    min-complexity: 15
+
+linters:
+  enable:
+    - golint
+    - govet
+    - goimports
+    - gocyclo
+    - misspell
+    - deadcode
+    - unparam
+    - nakedret
+    - gosec
+    - gomnd
+    - gocognit
+    - goconst
+    - gosimple
+    - ineffassign
+    - staticcheck
+    - typecheck
+    - unused
+    - varcheck
+    - structcheck
+    - whitespace
+
+run:
+  deadline: 5m

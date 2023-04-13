@@ -12,7 +12,7 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
 )
 
-type UserPointRepository interface {
+type PointRepository interface {
 	GetPoint(ctx context.Context, userID string) (int, error)
 	UpdateUserPoint(ctx context.Context, point *entity.UserPoint) error
 	DistributePointAllUsers(ctx context.Context, reason string) error
@@ -24,7 +24,7 @@ type userPointRepository struct {
 	dbClient *db.Client
 }
 
-func NewUserPointRepository(dbClient *db.Client) UserPointRepository {
+func NewUserPointRepository(dbClient *db.Client) PointRepository {
 	return &userPointRepository{
 		dbClient: dbClient,
 	}

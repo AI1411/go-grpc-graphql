@@ -135,6 +135,7 @@ func TestChatRepository_ListCategory(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"categories"})
 				if tt.setup != nil {
 					tt.setup(ctx, t, testClient)
@@ -237,6 +238,7 @@ func TestChatRepository_GetCategory(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"categories"})
 				if tt.setup != nil {
 					tt.setup(ctx, t, testClient)
@@ -285,6 +287,7 @@ func TestChatRepository_CreateCategory(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"categories"})
 
 				roomRepo := categoryRepo.NewCategoryRepository(testClient)
@@ -324,6 +327,7 @@ func TestChatRepository_DeleteCategory(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"categories"})
 
 				if tt.setup != nil {

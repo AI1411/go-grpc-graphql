@@ -15,11 +15,11 @@ type CreateRoomUsecaseImpl interface {
 }
 
 type createRoomUsecaseImpl struct {
-	userRepository user.UserRepository
-	roomRepository room.RoomRepository
+	userRepository user.Repository
+	roomRepository room.Repository
 }
 
-func NewCreateRoomUsecaseImpl(userRepository user.UserRepository, roomRepository room.RoomRepository) CreateRoomUsecaseImpl {
+func NewCreateRoomUsecaseImpl(userRepository user.Repository, roomRepository room.Repository) CreateRoomUsecaseImpl {
 	return &createRoomUsecaseImpl{
 		userRepository: userRepository,
 		roomRepository: roomRepository,

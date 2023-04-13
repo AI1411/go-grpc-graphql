@@ -16,13 +16,13 @@ type ReportServer struct {
 	grpc.UnimplementedReportServiceServer
 	dbClient   *db.Client
 	zapLogger  *zap.Logger
-	reportRepo reportRepo.ReportRepository
+	reportRepo reportRepo.Repository
 }
 
 func NewReportServer(
 	dbClient *db.Client,
 	zapLogger *zap.Logger,
-	reportRepo reportRepo.ReportRepository,
+	reportRepo reportRepo.Repository,
 ) *ReportServer {
 	return &ReportServer{
 		dbClient:   dbClient,

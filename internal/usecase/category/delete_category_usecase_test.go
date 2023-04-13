@@ -21,7 +21,6 @@ func TestDeleteCategoryUsecaseImpl_Exec(t *testing.T) {
 	deleteCategoryUsecase := category.NewDeleteCategoryUsecaseImpl(mockCategoryRepo)
 
 	ctx := context.Background()
-	categoryID := "123e4567-e89b-12d3-a456-426614174000"
 
 	t.Run("success", func(t *testing.T) {
 		mockCategoryRepo.EXPECT().DeleteCategory(ctx, categoryID).Return(nil)

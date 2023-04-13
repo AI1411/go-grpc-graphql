@@ -17,15 +17,15 @@ type RoomServer struct {
 	grpc.UnimplementedRoomServiceServer
 	dbClient  *db.Client
 	zapLogger *zap.Logger
-	userRepo  userRepo.UserRepository
-	chatRepo  roomRepo.RoomRepository
+	userRepo  userRepo.Repository
+	chatRepo  roomRepo.Repository
 }
 
 func NewRoomServer(
 	dbClient *db.Client,
 	zapLogger *zap.Logger,
-	userRepo userRepo.UserRepository,
-	chatRepo roomRepo.RoomRepository,
+	userRepo userRepo.Repository,
+	chatRepo roomRepo.Repository,
 ) *RoomServer {
 	return &RoomServer{
 		dbClient:  dbClient,

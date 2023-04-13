@@ -19,15 +19,15 @@ type ChatServer struct {
 	grpc.UnimplementedChatServiceServer
 	dbClient  *db.Client
 	zapLogger *zap.Logger
-	userRepo  userRepo.UserRepository
-	chatRepo  chatRepo.ChatRepository
+	userRepo  userRepo.Repository
+	chatRepo  chatRepo.Repository
 }
 
 func NewChatServer(
 	dbClient *db.Client,
 	zapLogger *zap.Logger,
-	userRepo userRepo.UserRepository,
-	chatRepo chatRepo.ChatRepository,
+	userRepo userRepo.Repository,
+	chatRepo chatRepo.Repository,
 ) *ChatServer {
 	return &ChatServer{
 		dbClient:  dbClient,

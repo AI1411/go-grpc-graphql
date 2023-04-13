@@ -5,7 +5,6 @@ import (
 
 	"github.com/AI1411/go-grpc-graphql/grpc"
 	categoryRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/category"
-	hobbyRepo "github.com/AI1411/go-grpc-graphql/internal/infra/repository/hobby"
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
@@ -14,11 +13,10 @@ type GetCategoryUsecaseImpl interface {
 }
 
 type getCategoryUsecaseImpl struct {
-	categoryRepository categoryRepo.CategoryRepository
-	hobbyRepo          hobbyRepo.HobbyRepository
+	categoryRepository categoryRepo.Repository
 }
 
-func NewGetCategoryUsecaseImpl(categoryRepository categoryRepo.CategoryRepository) GetCategoryUsecaseImpl {
+func NewGetCategoryUsecaseImpl(categoryRepository categoryRepo.Repository) GetCategoryUsecaseImpl {
 	return &getCategoryUsecaseImpl{
 		categoryRepository: categoryRepository,
 	}

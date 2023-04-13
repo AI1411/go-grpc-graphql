@@ -16,11 +16,11 @@ type ListRoomUsecaseImpl interface {
 }
 
 type listRoomUsecaseImpl struct {
-	userRepository user.UserRepository
-	roomRepository room.RoomRepository
+	userRepository user.Repository
+	roomRepository room.Repository
 }
 
-func NewListRoomUsecaseImpl(userRepository user.UserRepository, roomRepository room.RoomRepository) ListRoomUsecaseImpl {
+func NewListRoomUsecaseImpl(userRepository user.Repository, roomRepository room.Repository) ListRoomUsecaseImpl {
 	return &listRoomUsecaseImpl{
 		userRepository: userRepository,
 		roomRepository: roomRepository,

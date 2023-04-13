@@ -9,14 +9,14 @@ import (
 )
 
 type GetUserUsecase interface {
-	Exec(ctx context.Context, userId string) (*grpc.GetUserResponse, error)
+	Exec(ctx context.Context, userID string) (*grpc.GetUserResponse, error)
 }
 
 type getUserUsecaseImpl struct {
-	userRepository userRepo.UserRepository
+	userRepository userRepo.Repository
 }
 
-func NewGetUserUsecaseImpl(userRepository userRepo.UserRepository) GetUserUsecase {
+func NewGetUserUsecaseImpl(userRepository userRepo.Repository) GetUserUsecase {
 	return &getUserUsecaseImpl{
 		userRepository: userRepository,
 	}

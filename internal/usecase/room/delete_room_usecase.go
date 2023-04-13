@@ -12,11 +12,11 @@ type DeleteRoomUsecaseImpl interface {
 }
 
 type deleteRoomUsecaseImpl struct {
-	userRepository user.UserRepository
-	roomRepository roomRepo.RoomRepository
+	userRepository user.Repository
+	roomRepository roomRepo.Repository
 }
 
-func NewDeleteRoomUsecaseImpl(userRepository user.UserRepository, roomRepository roomRepo.RoomRepository) DeleteRoomUsecaseImpl {
+func NewDeleteRoomUsecaseImpl(userRepository user.Repository, roomRepository roomRepo.Repository) DeleteRoomUsecaseImpl {
 	return &deleteRoomUsecaseImpl{
 		userRepository: userRepository,
 		roomRepository: roomRepository,

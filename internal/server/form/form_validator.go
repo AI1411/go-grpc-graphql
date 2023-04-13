@@ -21,17 +21,17 @@ const (
 	ValidationBloodType  = "bloodType"
 )
 
-type formValidator struct {
+type Validator struct {
 	Form interface{}
 }
 
-func NewFormValidator(formRequest interface{}) *formValidator {
-	return &formValidator{
+func NewFormValidator(formRequest interface{}) *Validator {
+	return &Validator{
 		Form: formRequest,
 	}
 }
 
-func (formValidator *formValidator) Validate(structLevelFuncs ...validator.StructLevelFunc) error {
+func (formValidator *Validator) Validate(structLevelFuncs ...validator.StructLevelFunc) error {
 	validate := validator.New()
 	localeJa := jaLocale.New()
 	translator := ut.New(localeJa)

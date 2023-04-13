@@ -15,10 +15,10 @@ type GetReportUsecaseImpl interface {
 }
 
 type getReportUsecaseImpl struct {
-	reportRepo report.ReportRepository
+	reportRepo report.Repository
 }
 
-func NewGetReportUsecaseImpl(reportRepo report.ReportRepository) GetReportUsecaseImpl {
+func NewGetReportUsecaseImpl(reportRepo report.Repository) GetReportUsecaseImpl {
 	return &getReportUsecaseImpl{
 		reportRepo: reportRepo,
 	}

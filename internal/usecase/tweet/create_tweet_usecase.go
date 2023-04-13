@@ -14,10 +14,10 @@ type CreateTweetUsecaseImpl interface {
 }
 
 type createTweetUsecaseImpl struct {
-	tweetRepository tweet.TweetRepository
+	tweetRepository tweet.Repository
 }
 
-func NewCreateTweetUsecaseImpl(tweetRepository tweet.TweetRepository) CreateTweetUsecaseImpl {
+func NewCreateTweetUsecaseImpl(tweetRepository tweet.Repository) CreateTweetUsecaseImpl {
 	return &createTweetUsecaseImpl{
 		tweetRepository: tweetRepository,
 	}

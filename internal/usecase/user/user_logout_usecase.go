@@ -14,10 +14,10 @@ type LogoutUsecaseImpl interface {
 }
 
 type logoutUsecaseImpl struct {
-	redisRepository redisRepository.RedisRepository
+	redisRepository redisRepository.Repository
 }
 
-func NewLogoutUsecaseImpl(redisRepository redisRepository.RedisRepository) LogoutUsecaseImpl {
+func NewLogoutUsecaseImpl(redisRepository redisRepository.Repository) LogoutUsecaseImpl {
 	return &logoutUsecaseImpl{
 		redisRepository: redisRepository,
 	}

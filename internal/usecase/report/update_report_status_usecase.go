@@ -14,10 +14,10 @@ type UpdateReportStatus interface {
 }
 
 type updateReportStatusImpl struct {
-	reportRepo report.ReportRepository
+	reportRepo report.Repository
 }
 
-func NewUpdateReportStatusImpl(reportRepo report.ReportRepository) UpdateReportStatus {
+func NewUpdateReportStatusImpl(reportRepo report.Repository) UpdateReportStatus {
 	return &updateReportStatusImpl{
 		reportRepo: reportRepo,
 	}

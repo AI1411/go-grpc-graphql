@@ -19,17 +19,17 @@ type UserServer struct {
 	grpc.UnimplementedUserServiceServer
 	dbClient      *db.Client
 	zapLogger     *zap.Logger
-	userRepo      repository.UserRepository
-	userHobbyRepo repository.UserHobbyRepository
-	redisRepo     redisRepository.RedisRepository
+	userRepo      repository.Repository
+	userHobbyRepo repository.HobbyRepository
+	redisRepo     redisRepository.Repository
 }
 
 func NewUserServer(
 	dbClient *db.Client,
 	zapLogger *zap.Logger,
-	userRepo repository.UserRepository,
-	userHobbyRepo repository.UserHobbyRepository,
-	redisRepo redisRepository.RedisRepository,
+	userRepo repository.Repository,
+	userHobbyRepo repository.HobbyRepository,
+	redisRepo redisRepository.Repository,
 ) *UserServer {
 	return &UserServer{
 		dbClient:      dbClient,

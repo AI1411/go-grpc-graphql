@@ -18,13 +18,13 @@ type CategoryServer struct {
 	grpc.UnimplementedCategoryServiceServer
 	dbClient     *db.Client
 	zapLogger    *zap.Logger
-	categoryRepo categoryRepo.CategoryRepository
+	categoryRepo categoryRepo.Repository
 }
 
 func NewCategoryServer(
 	dbClient *db.Client,
 	zapLogger *zap.Logger,
-	categoryRepo categoryRepo.CategoryRepository,
+	categoryRepo categoryRepo.Repository,
 ) *CategoryServer {
 	return &CategoryServer{
 		dbClient:     dbClient,

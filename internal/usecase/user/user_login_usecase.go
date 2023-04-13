@@ -14,11 +14,11 @@ type LoginUsecaseImpl interface {
 }
 
 type loginUsecaseImpl struct {
-	userRepository  repository.UserRepository
-	redisRepository redisRepository.RedisRepository
+	userRepository  repository.Repository
+	redisRepository redisRepository.Repository
 }
 
-func NewLoginUsecaseImpl(userRepository repository.UserRepository, redisRepository redisRepository.RedisRepository) LoginUsecaseImpl {
+func NewLoginUsecaseImpl(userRepository repository.Repository, redisRepository redisRepository.Repository) LoginUsecaseImpl {
 	return &loginUsecaseImpl{
 		userRepository:  userRepository,
 		redisRepository: redisRepository,

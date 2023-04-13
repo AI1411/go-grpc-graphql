@@ -10,6 +10,10 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+const (
+	SlowThresholdDuration = 100 * time.Millisecond
+)
+
 type GormLogger struct {
 	*zap.Logger
 	LogLevel         logger.LogLevel
@@ -21,7 +25,7 @@ func initGormLogger(zapLogger *zap.Logger) *GormLogger {
 	return &GormLogger{
 		Logger:           zapLogger,
 		LogLevel:         logger.Info,
-		SlowThreshold:    100 * time.Millisecond,
+		SlowThreshold:    SlowThresholdDuration,
 		SkipCallerLookup: false,
 	}
 }

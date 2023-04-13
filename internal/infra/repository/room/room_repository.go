@@ -12,7 +12,7 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
-type RoomRepository interface {
+type Repository interface {
 	ListRoom(ctx context.Context, userID string) ([]*entity.Room, error)
 	GetRoom(ctx context.Context, id string) (*entity.Room, error)
 	CreateRoom(ctx context.Context, Room *entity.Room) (string, error)
@@ -23,7 +23,7 @@ type roomRepository struct {
 	dbClient *db.Client
 }
 
-func NewRoomRepository(dbClient *db.Client) RoomRepository {
+func NewRoomRepository(dbClient *db.Client) Repository {
 	return &roomRepository{
 		dbClient: dbClient,
 	}

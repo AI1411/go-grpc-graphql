@@ -7,7 +7,9 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-type RedisRepository interface {
+const oneDay = time.Hour * 24
+
+type Repository interface {
 	Get(ctx context.Context, key string) (string, error)
 	Set(ctx context.Context, key, value string) error
 	Delete(ctx context.Context, key string) error
@@ -17,7 +19,7 @@ type redisRepository struct {
 	redisClient *redis.Client
 }
 
-func NewRedisRepository(redisClient *redis.Client) RedisRepository {
+func NewRedisRepository(redisClient *redis.Client) Repository {
 	return &redisRepository{
 		redisClient: redisClient,
 	}
@@ -32,7 +34,7 @@ func (r *redisRepository) Get(ctx context.Context, key string) (string, error) {
 }
 
 func (r *redisRepository) Set(ctx context.Context, key, value string) error {
-	if err := r.redisClient.Set(ctx, key, value, time.Hour*24).Err(); err != nil {
+	if err := r.redisClient.Set(ctx, key, value, oneDay).Err(); err != nil {
 		return err
 	}
 

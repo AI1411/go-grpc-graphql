@@ -14,6 +14,8 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/usecase/category"
 )
 
+const categoryID = "123e4567-e89b-12d3-a456-426614174000"
+
 func TestCreateCategoryUsecaseImpl_Exec(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -27,8 +29,6 @@ func TestCreateCategoryUsecaseImpl_Exec(t *testing.T) {
 		Name:        "Sports",
 		Description: "All about sports",
 	}
-
-	categoryID := "123e4567-e89b-12d3-a456-426614174000"
 
 	t.Run("success", func(t *testing.T) {
 		mockCategoryRepo.EXPECT().CreateCategory(ctx, &entity.Category{

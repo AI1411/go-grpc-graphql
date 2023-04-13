@@ -108,6 +108,7 @@ func TestTweetRepository_ListTweet(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"users", "tweets"})
 				if tt.setup != nil {
 					tt.setup(ctx, t, testClient)
@@ -166,6 +167,7 @@ func TestTweetRepository_CreateTweet(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"users", "tweets"})
 				if tt.setup != nil {
 					tt.setup(ctx, t, testClient)

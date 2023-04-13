@@ -9,12 +9,14 @@ import (
 
 var jwtSecret = []byte("my_secret_key")
 
+const oneDay = 24 * time.Hour
+
 func GenerateToken(userID string) (string, error) {
 	// JWTに含めるクレーム（Claim）の設定
 	claims := jwt.MapClaims{
 		"authorized": true,
 		"userId":     userID,
-		"exp":        time.Now().Add(time.Hour * 24).Unix(), // トークンの有効期限は24時間
+		"exp":        time.Now().Add(oneDay).Unix(), // トークンの有効期限は24時間
 	}
 
 	// JWTの設定

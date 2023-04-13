@@ -11,6 +11,10 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
+type contextKey string
+
+const key contextKey = "userID"
+
 func AuthUnaryInterceptor(ctx context.Context) (context.Context, error) {
 	meta, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
@@ -30,8 +34,11 @@ func AuthUnaryInterceptor(ctx context.Context) (context.Context, error) {
 	}
 
 	userID, err := util.GetUserIDFromJWT(token[0])
+	if err != nil {
+		return nil, status.Error(codes.Unauthenticated, err.Error())
+	}
 
-	context.WithValue(ctx, "userID", userID)
+	ctx = context.WithValue(ctx, key, userID)
 
 	return ctx, nil
 }

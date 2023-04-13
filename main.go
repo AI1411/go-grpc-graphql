@@ -5,7 +5,6 @@ import (
 	"log"
 	"net"
 
-	grpcMiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
 
 	grpcServer "github.com/AI1411/go-grpc-graphql/grpc"
@@ -25,8 +24,6 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/server"
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
-
-const defaultPort = "8081"
 
 func main() {
 	e, err := env.NewValue()
@@ -65,7 +62,7 @@ func main() {
 	redisRepo := redisRepository.NewRedisRepository(redisClient)
 
 	s := grpc.NewServer(
-		grpcMiddleware.WithUnaryServerChain(
+		grpc.ChainUnaryInterceptor(
 			interceptor.ZapLoggerInterceptor(zapLogger),
 			// grpcAuth.UnaryServerInterceptor(interceptor.AuthUnaryInterceptor),
 		),

@@ -85,6 +85,7 @@ func TestChatRepository_ListRoom(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"users", "chats", "rooms"})
 				if tt.setup != nil {
 					tt.setup(ctx, t, testClient)
@@ -209,6 +210,7 @@ func TestChatRepository_GetRoom(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"users", "chats", "rooms"})
 				if tt.setup != nil {
 					tt.setup(ctx, t, testClient)
@@ -261,6 +263,7 @@ func TestChatRepository_CreateRoom(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"users", "chats", "rooms"})
 
 				roomRepo := repository.NewRoomRepository(testClient)
@@ -298,6 +301,7 @@ func TestChatRepository_DeleteRoom(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"users", "chats", "rooms"})
 
 				roomRepo := repository.NewRoomRepository(testClient)

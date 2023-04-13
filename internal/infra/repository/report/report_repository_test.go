@@ -20,16 +20,13 @@ import (
 )
 
 const (
-	testUserID    = "cc293e0a-7342-4aac-b49b-a851e8af9dfc"
 	testReportID  = "18bb7429-e891-4f41-b045-a52aaf53ea93"
 	testReportID2 = "cc293e0a-7342-4aac-b49b-a851e8af9dfc"
 	testReportID3 = "da0b1f2b-276a-417d-b4c2-77b81c8ad3c3"
-	testReportID4 = "d183dc26-2083-4375-8abe-5d292d84c0ce"
 	testReportID5 = "d183dc26-2083-4375-8abe-5d292d84c0ce"
 	testReportID6 = "cc293e0a-7342-4aac-b49b-a851e8af9dfc"
 	testChatID    = "a35f1d56-068d-4ec5-a892-a83e479393d7"
 	testChatID2   = "3975482e-0133-4b4e-8d91-b8c983fbc9e6"
-	testToUserID2 = "e5b5b2a1-0b1f-4b0e-8c1f-8b5b0b2b2b2b"
 )
 
 func Test_reportRepository_ListReport(t *testing.T) {
@@ -115,6 +112,7 @@ func Test_reportRepository_ListReport(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"users", "chats", "rooms", "reports"})
 				if tt.setup != nil {
 					tt.setup(ctx, t, testClient)
@@ -183,6 +181,7 @@ func Test_reportRepository_GetUserReportCount(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"users", "chats", "rooms", "reports"})
 				if tt.setup != nil {
 					tt.setup(ctx, t, testClient)
@@ -268,6 +267,7 @@ func Test_reportRepository_CreateReportCount(t *testing.T) {
 				a := assert.New(t)
 
 				testClient, err := testutil.TestConnection(t)
+				a.NoError(err)
 				testClient.TruncateTable(ctx, t, []string{"users", "chats", "rooms", "reports"})
 				if tt.setup != nil {
 					tt.setup(ctx, t, testClient)
@@ -284,6 +284,7 @@ func Test_reportRepository_CreateReportCount(t *testing.T) {
 
 				var got *entity.Report
 				err = testClient.Conn(ctx).Raw(`SELECT * FROM reports WHERE id = ?`, id).Scan(&got).Error
+				a.NoError(err)
 
 				if tt.want != nil {
 					opt := cmpopts.IgnoreFields(entity.Report{}, "ID", "CreatedAt", "UpdatedAt")

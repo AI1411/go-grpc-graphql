@@ -11,10 +11,10 @@ type DeleteCategoryUsecaseImpl interface {
 }
 
 type deleteCategoryUsecaseImpl struct {
-	categoryRepo category.CategoryRepository
+	categoryRepo category.Repository
 }
 
-func NewDeleteCategoryUsecaseImpl(categoryRepo category.CategoryRepository) DeleteCategoryUsecaseImpl {
+func NewDeleteCategoryUsecaseImpl(categoryRepo category.Repository) DeleteCategoryUsecaseImpl {
 	return &deleteCategoryUsecaseImpl{
 		categoryRepo: categoryRepo,
 	}

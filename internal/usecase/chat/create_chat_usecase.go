@@ -15,11 +15,11 @@ type CreateChatUsecaseImpl interface {
 }
 
 type createChatUsecaseImpl struct {
-	userRepository userRepo.UserRepository
-	chatRepo       chatRepo.ChatRepository
+	userRepository userRepo.Repository
+	chatRepo       chatRepo.Repository
 }
 
-func NewCreateChatUsecaseImpl(userRepository userRepo.UserRepository, chatRepo chatRepo.ChatRepository) CreateChatUsecaseImpl {
+func NewCreateChatUsecaseImpl(userRepository userRepo.Repository, chatRepo chatRepo.Repository) CreateChatUsecaseImpl {
 	return &createChatUsecaseImpl{
 		userRepository: userRepository,
 		chatRepo:       chatRepo,

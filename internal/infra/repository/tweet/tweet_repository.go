@@ -9,7 +9,7 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
-type TweetRepository interface {
+type Repository interface {
 	ListTweet(context.Context) ([]*entity.Tweet, error)
 	CreateTweet(ctx context.Context, tweet *entity.Tweet) (string, error)
 }
@@ -18,7 +18,7 @@ type tweetRepository struct {
 	dbClient *db.Client
 }
 
-func NewTweetRepository(dbClient *db.Client) TweetRepository {
+func NewTweetRepository(dbClient *db.Client) Repository {
 	return &tweetRepository{
 		dbClient: dbClient,
 	}

@@ -12,7 +12,7 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
-type HobbyRepository interface {
+type Repository interface {
 	GetHobby(ctx context.Context, id string) (*entity.Hobby, error)
 	CreateHobby(ctx context.Context, Hobby *entity.Hobby) (string, error)
 	DeleteHobby(ctx context.Context, id string) error
@@ -22,7 +22,7 @@ type hobbyRepository struct {
 	dbClient *db.Client
 }
 
-func NewHobbyRepository(dbClient *db.Client) HobbyRepository {
+func NewHobbyRepository(dbClient *db.Client) Repository {
 	return &hobbyRepository{
 		dbClient: dbClient,
 	}

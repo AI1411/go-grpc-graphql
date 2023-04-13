@@ -13,10 +13,10 @@ type CreateCategoryUsecaseImpl interface {
 }
 
 type createCategoryUsecaseImpl struct {
-	categoryRepo category.CategoryRepository
+	categoryRepo category.Repository
 }
 
-func NewCreateCategoryUsecaseImpl(categoryRepo category.CategoryRepository) CreateCategoryUsecaseImpl {
+func NewCreateCategoryUsecaseImpl(categoryRepo category.Repository) CreateCategoryUsecaseImpl {
 	return &createCategoryUsecaseImpl{
 		categoryRepo: categoryRepo,
 	}

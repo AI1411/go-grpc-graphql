@@ -16,11 +16,11 @@ type ListTweetUsecaseImpl interface {
 }
 
 type listTweetUsecaseImpl struct {
-	userRepository  user.UserRepository
-	tweetRepository tweet.TweetRepository
+	userRepository  user.Repository
+	tweetRepository tweet.Repository
 }
 
-func NewListTweetUsecaseImpl(userRepository user.UserRepository, tweetRepository tweet.TweetRepository) ListTweetUsecaseImpl {
+func NewListTweetUsecaseImpl(userRepository user.Repository, tweetRepository tweet.Repository) ListTweetUsecaseImpl {
 	return &listTweetUsecaseImpl{
 		userRepository:  userRepository,
 		tweetRepository: tweetRepository,

@@ -13,10 +13,10 @@ type GetUserReportCountUsecaseImpl interface {
 }
 
 type getUserReportCountUsecaseImpl struct {
-	reportRepo report.ReportRepository
+	reportRepo report.Repository
 }
 
-func NewGetUserReportCountUsecaseImpl(reportRepo report.ReportRepository) GetUserReportCountUsecaseImpl {
+func NewGetUserReportCountUsecaseImpl(reportRepo report.Repository) GetUserReportCountUsecaseImpl {
 	return &getUserReportCountUsecaseImpl{
 		reportRepo: reportRepo,
 	}

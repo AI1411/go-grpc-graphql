@@ -12,11 +12,11 @@ type GetUserPointUsecase interface {
 }
 
 type getUserPointUsecaseImpl struct {
-	userRepository      userRepo.UserRepository
-	userPointRepository userRepo.UserPointRepository
+	userRepository      userRepo.Repository
+	userPointRepository userRepo.PointRepository
 }
 
-func NewGetUserPointUsecaseImpl(userRepository userRepo.UserRepository, userPointRepository userRepo.UserPointRepository) GetUserPointUsecase {
+func NewGetUserPointUsecaseImpl(userRepository userRepo.Repository, userPointRepository userRepo.PointRepository) GetUserPointUsecase {
 	return &getUserPointUsecaseImpl{
 		userRepository:      userRepository,
 		userPointRepository: userPointRepository,

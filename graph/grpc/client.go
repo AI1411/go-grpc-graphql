@@ -2,15 +2,14 @@ package grpc
 
 import (
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	grpcClient "github.com/AI1411/go-grpc-graphql/grpc"
 )
 
 func connect() (*grpc.ClientConn, error) {
-	var opts []grpc.DialOption
-
-	opts = []grpc.DialOption{
-		grpc.WithInsecure(),
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithBlock(),
 	}
 	conn, err := grpc.Dial("localhost:8080", opts...)
