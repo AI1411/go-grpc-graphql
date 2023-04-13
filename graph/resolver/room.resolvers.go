@@ -17,7 +17,6 @@ func (r *mutationResolver) CreateRoom(ctx context.Context, input model.CreateRoo
 	res, err := r.RoomClient.CreateRoom(ctx, &grpc.CreateRoomRequest{
 		UserId: input.UserID,
 	})
-
 	if err != nil {
 		return "", err
 	}
@@ -30,7 +29,6 @@ func (r *mutationResolver) DeleteRoom(ctx context.Context, input model.DeleteRoo
 	_, err := r.RoomClient.DeleteRoom(ctx, &grpc.DeleteRoomRequest{
 		Id: input.ID,
 	})
-
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +66,6 @@ func (r *queryResolver) GetRoom(ctx context.Context, input model.GetRoomInput) (
 	res, err := r.RoomClient.GetRoom(ctx, &grpc.GetRoomRequest{
 		Id: input.ID,
 	})
-
 	if err != nil {
 		return nil, err
 	}

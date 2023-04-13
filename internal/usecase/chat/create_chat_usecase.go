@@ -33,7 +33,6 @@ func (u *createChatUsecaseImpl) Exec(ctx context.Context, in *grpc.CreateChatReq
 		ToUserID:   util.StringToNullUUID(in.GetToUserId()),
 		Body:       in.GetBody(),
 	})
-
 	if err != nil {
 		return nil, err
 	}

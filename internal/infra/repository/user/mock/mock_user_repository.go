@@ -8,8 +8,9 @@ import (
 	context "context"
 	reflect "reflect"
 
-	entity "github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
 	gomock "github.com/golang/mock/gomock"
+
+	entity "github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
 )
 
 // MockUserRepository is a mock of UserRepository interface.

@@ -27,7 +27,6 @@ func (u *createCategoryUsecaseImpl) Exec(ctx context.Context, in *grpc.CreateCat
 		Name:        in.GetName(),
 		Description: in.GetDescription(),
 	})
-
 	if err != nil {
 		return nil, err
 	}

@@ -26,7 +26,6 @@ func NewMarkChatAsReadUsecaseImpl(userRepository userRepo.UserRepository, chatRe
 
 func (u *markChatAsReadUsecaseImpl) Exec(ctx context.Context, in *grpc.MarkChatAsReadRequest) error {
 	err := u.chatRepo.MarkChatAsRead(ctx, in.GetId())
-
 	if err != nil {
 		return err
 	}

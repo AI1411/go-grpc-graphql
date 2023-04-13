@@ -324,7 +324,6 @@ func uploadToS3(awsSession *session.Session, imageBuffer *bytes.Buffer, bucketNa
 	})
 	if err != nil {
 		return "", err
-
 	}
 
 	return result.Location, nil

@@ -18,7 +18,6 @@ func (r *mutationResolver) CreateChat(ctx context.Context, input model.CreateCha
 		ToUserId:   input.ToUserID,
 		Body:       input.Body,
 	})
-
 	if err != nil {
 		return "", err
 	}

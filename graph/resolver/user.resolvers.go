@@ -22,7 +22,6 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUse
 		Introduction: input.Introduction,
 		BloodType:    grpc.BloodType(input.BloodType),
 	})
-
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +38,6 @@ func (r *mutationResolver) UpdateUserProfile(ctx context.Context, input model.Up
 		Introduction: input.Introduction,
 		BloodType:    grpc.BloodType(input.BloodType),
 	})
-
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +51,6 @@ func (r *mutationResolver) UpdateUserStatus(ctx context.Context, input model.Upd
 		Id:     input.ID,
 		Status: grpc.Status(input.Status),
 	})
-
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +65,6 @@ func (r *mutationResolver) UpdateUserPassword(ctx context.Context, input model.U
 		Password:             input.Password,
 		PasswordConfirmation: input.PasswordConfirmation,
 	})
-
 	if err != nil {
 		return nil, err
 	}
@@ -104,5 +100,7 @@ func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{
 // Query returns graph.QueryResolver implementation.
 func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
 
-type mutationResolver struct{ *Resolver }
-type queryResolver struct{ *Resolver }
+type (
+	mutationResolver struct{ *Resolver }
+	queryResolver    struct{ *Resolver }
+)

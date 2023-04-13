@@ -7,9 +7,10 @@ package resolver
 import (
 	"context"
 
+	"google.golang.org/protobuf/types/known/emptypb"
+
 	"github.com/AI1411/go-grpc-graphql/graph/model"
 	"github.com/AI1411/go-grpc-graphql/grpc"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // CreateTweet is the resolver for the createTweet field.
@@ -18,7 +19,6 @@ func (r *mutationResolver) CreateTweet(ctx context.Context, input model.CreateTw
 		UserId: input.UserID,
 		Body:   input.Body,
 	})
-
 	if err != nil {
 		return "", err
 	}

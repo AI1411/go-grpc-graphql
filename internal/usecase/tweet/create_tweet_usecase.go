@@ -28,7 +28,6 @@ func (c createTweetUsecaseImpl) Exec(ctx context.Context, in *grpc.CreateTweetRe
 		UserID: util.StringToNullUUID(in.UserId),
 		Body:   in.Body,
 	})
-
 	if err != nil {
 		return nil, err
 	}

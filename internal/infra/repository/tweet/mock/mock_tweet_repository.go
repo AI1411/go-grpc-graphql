@@ -8,8 +8,9 @@ import (
 	context "context"
 	reflect "reflect"
 
-	entity "github.com/AI1411/go-grpc-graphql/internal/domain/tweet/entity"
 	gomock "github.com/golang/mock/gomock"
+
+	entity "github.com/AI1411/go-grpc-graphql/internal/domain/tweet/entity"
 )
 
 // MockTweetRepository is a mock of TweetRepository interface.

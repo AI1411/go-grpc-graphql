@@ -67,7 +67,7 @@ func main() {
 	s := grpc.NewServer(
 		grpcMiddleware.WithUnaryServerChain(
 			interceptor.ZapLoggerInterceptor(zapLogger),
-			//grpcAuth.UnaryServerInterceptor(interceptor.AuthUnaryInterceptor),
+			// grpcAuth.UnaryServerInterceptor(interceptor.AuthUnaryInterceptor),
 		),
 	)
 

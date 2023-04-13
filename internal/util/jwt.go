@@ -36,7 +36,6 @@ func ValidateJWT(tokenString string) (bool, error) {
 		}
 		return jwtSecret, nil
 	})
-
 	if err != nil {
 		return false, err
 	}
@@ -58,7 +57,6 @@ func GetUserIDFromJWT(tokenString string) (string, error) {
 		}
 		return jwtSecret, nil
 	})
-
 	if err != nil {
 		return "", err
 	}

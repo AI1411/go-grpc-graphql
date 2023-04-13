@@ -36,3 +36,6 @@ cover:
 	rm cover.out.tmp
 	docker exec -t --env-file .env.test star go tool cover -html=cover.out -o cover.html
 	open cover.html
+fmt: ## 除外する必要のあるディレクトリを新規で作成した場合、-not -path "除外したいディレクトリ"を追加する
+	find . -name "*.go" -not -path "./grpc/*.pb.go" | xargs gofumpt -w -l
+	find . -name "*.go" -not -path "./grpc/*.pb.go" | xargs goimports -w -l -local "github.com/AI1411"
