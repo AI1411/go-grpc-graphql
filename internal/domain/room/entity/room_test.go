@@ -1,4 +1,4 @@
-package entity
+package entity_test
 
 import (
 	"testing"
@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/AI1411/go-grpc-graphql/internal/domain/chat/entity"
+	roomEntity "github.com/AI1411/go-grpc-graphql/internal/domain/room/entity"
 )
 
 func TestNewRoom(t *testing.T) {
@@ -61,7 +62,7 @@ func TestNewRoom(t *testing.T) {
 		},
 	}
 
-	room := NewRoom(roomID, userID, chats, createdAt, updatedAt)
+	room := roomEntity.NewRoom(roomID, userID, chats, createdAt, updatedAt)
 
 	assert.NotNil(t, room)
 	assert.Equal(t, roomID, room.ID.UUID)

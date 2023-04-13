@@ -1,4 +1,4 @@
-package entity
+package entity_test
 
 import (
 	"testing"
@@ -6,6 +6,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/AI1411/go-grpc-graphql/internal/domain/chat/entity"
 )
 
 func TestNewChat(t *testing.T) {
@@ -18,7 +20,7 @@ func TestNewChat(t *testing.T) {
 	createdAt := time.Now().UTC().Truncate(time.Millisecond)
 	updatedAt := createdAt.Add(10 * time.Minute)
 
-	chat := NewChat(chatID, roomID, fromUserID, toUserID, body, isRead, createdAt, updatedAt)
+	chat := entity.NewChat(chatID, roomID, fromUserID, toUserID, body, isRead, createdAt, updatedAt)
 
 	assert.NotNil(t, chat)
 	assert.Equal(t, chatID, chat.ID.UUID)

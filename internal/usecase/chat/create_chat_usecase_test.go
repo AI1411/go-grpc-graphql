@@ -1,4 +1,4 @@
-package chat
+package chat_test
 
 import (
 	"context"
@@ -15,6 +15,7 @@ import (
 	chatEntity "github.com/AI1411/go-grpc-graphql/internal/domain/chat/entity"
 	mockChat "github.com/AI1411/go-grpc-graphql/internal/infra/repository/chat/mock"
 	mockUser "github.com/AI1411/go-grpc-graphql/internal/infra/repository/user/mock"
+	"github.com/AI1411/go-grpc-graphql/internal/usecase/chat"
 	"github.com/AI1411/go-grpc-graphql/internal/util"
 )
 
@@ -49,7 +50,7 @@ func Test_createChatUsecaseImpl_Exec(t *testing.T) {
 			Return(util.NullUUIDToString(testChat.ID), nil).
 			Times(1)
 
-		usecase := NewCreateChatUsecaseImpl(mockUserRepo, mockChatRepo)
+		usecase := chat.NewCreateChatUsecaseImpl(mockUserRepo, mockChatRepo)
 
 		in := &grpc.CreateChatRequest{
 			RoomId:     roomID,
@@ -71,7 +72,7 @@ func Test_createChatUsecaseImpl_Exec(t *testing.T) {
 			Return("", status.Errorf(codes.NotFound, "from user not found")).
 			Times(1)
 
-		usecase := NewCreateChatUsecaseImpl(mockUserRepo, mockChatRepo)
+		usecase := chat.NewCreateChatUsecaseImpl(mockUserRepo, mockChatRepo)
 
 		in := &grpc.CreateChatRequest{
 			RoomId:     roomID,

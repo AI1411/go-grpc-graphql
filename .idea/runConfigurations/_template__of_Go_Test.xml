@@ -3,7 +3,10 @@
     <module name="go-graphql-grpc" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
+      <env name="STAR_AWS_ACCESS_KEY_ID" value="dummy" />
       <env name="STAR_AWS_REGION" value="ap-northeast-1" />
+      <env name="STAR_AWS_S3_BUCKET_NAME" value="star-user-images" />
+      <env name="STAR_AWS_SECRET_ACCESS_KEY" value="dummy" />
       <env name="STAR_DEBUG" value="true" />
       <env name="STAR_ENV" value="local" />
       <env name="STAR_GRAPHQL_PATH" value="/graphql" />
@@ -15,8 +18,7 @@
       <env name="STAR_POSTGRES_PORT" value="5432" />
       <env name="STAR_POSTGRES_USER" value="root" />
       <env name="STAR_SERVER_PORT" value="8080" />
-      <env name="STAR_AWS_ACCESS_KEY_ID" value="dummy" />
-      <env name="STAR_AWS_SECRET_ACCESS_KEY" value="dummy" />
+      <env name="STAR_AWS_S3_ENDPOINT" value="http://localhost:4566" />
     </envs>
     <kind value="DIRECTORY" />
     <package value="github.com/AI1411/go-grpc-praphql" />

@@ -1,4 +1,4 @@
-package entity
+package entity_test
 
 import (
 	"testing"
@@ -6,6 +6,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/AI1411/go-grpc-graphql/internal/domain/tweet/entity"
 )
 
 func TestNewTweet(t *testing.T) {
@@ -15,7 +17,7 @@ func TestNewTweet(t *testing.T) {
 	createdAt := time.Now()
 	updatedAt := time.Now()
 
-	tweet := NewTweet(id, userID, body, createdAt, updatedAt)
+	tweet := entity.NewTweet(id, userID, body, createdAt, updatedAt)
 
 	assert.Equal(t, id, tweet.ID)
 	assert.Equal(t, userID, tweet.UserID)

@@ -26,7 +26,7 @@ func NewReportRepository(dbClient *db.Client) ReportRepository {
 	}
 }
 
-func (r reportRepository) ListReport(ctx context.Context, reportedUserID string) ([]*entity.Report, error) {
+func (r *reportRepository) ListReport(ctx context.Context, reportedUserID string) ([]*entity.Report, error) {
 	var reports []*entity.Report
 	if err := r.dbClient.Conn(ctx).Where("reported_user_id = ?", reportedUserID).Find(&reports).Error; err != nil {
 		return nil, err
@@ -35,7 +35,7 @@ func (r reportRepository) ListReport(ctx context.Context, reportedUserID string)
 	return reports, nil
 }
 
-func (r reportRepository) GetUserReportCount(ctx context.Context) ([]*entity.ReportCount, error) {
+func (r *reportRepository) GetUserReportCount(ctx context.Context) ([]*entity.ReportCount, error) {
 	var reports []*entity.ReportCount
 	if err := r.dbClient.Conn(ctx).
 		Model(&entity.Report{}).
@@ -50,7 +50,7 @@ func (r reportRepository) GetUserReportCount(ctx context.Context) ([]*entity.Rep
 	return reports, nil
 }
 
-func (r reportRepository) GetReport(ctx context.Context, id string) (*entity.Report, error) {
+func (r *reportRepository) GetReport(ctx context.Context, id string) (*entity.Report, error) {
 	var report entity.Report
 	if err := r.dbClient.Conn(ctx).Where("id = ?", id).First(&report).Error; err != nil {
 		return nil, err
@@ -59,7 +59,7 @@ func (r reportRepository) GetReport(ctx context.Context, id string) (*entity.Rep
 	return &report, nil
 }
 
-func (r reportRepository) CreateReport(ctx context.Context, report *entity.Report) (string, error) {
+func (r *reportRepository) CreateReport(ctx context.Context, report *entity.Report) (string, error) {
 	if err := r.dbClient.Conn(ctx).Create(report).Error; err != nil {
 		return "", err
 	}
@@ -67,7 +67,7 @@ func (r reportRepository) CreateReport(ctx context.Context, report *entity.Repor
 	return util.NullUUIDToString(report.ID), nil
 }
 
-func (r reportRepository) UpdateReportStatus(ctx context.Context, report *entity.Report) error {
+func (r *reportRepository) UpdateReportStatus(ctx context.Context, report *entity.Report) error {
 	if err := r.dbClient.Conn(ctx).Model(&entity.Report{}).Where("id = ?", report.ID).
 		Select("Status").Updates(&report).Error; err != nil {
 		return err
