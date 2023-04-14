@@ -20,10 +20,10 @@ type Repository interface {
 }
 
 type roomRepository struct {
-	dbClient *db.Client
+	dbClient db.Client
 }
 
-func NewRoomRepository(dbClient *db.Client) Repository {
+func NewRoomRepository(dbClient db.Client) Repository {
 	return &roomRepository{
 		dbClient: dbClient,
 	}

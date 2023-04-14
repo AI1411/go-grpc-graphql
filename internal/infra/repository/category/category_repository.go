@@ -22,10 +22,10 @@ type Repository interface {
 }
 
 type categoryRepository struct {
-	dbClient *db.Client
+	dbClient db.Client
 }
 
-func NewCategoryRepository(dbClient *db.Client) Repository {
+func NewCategoryRepository(dbClient db.Client) Repository {
 	return &categoryRepository{
 		dbClient: dbClient,
 	}

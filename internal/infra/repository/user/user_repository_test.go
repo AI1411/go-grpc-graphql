@@ -37,7 +37,7 @@ func TestGetUser(t *testing.T) {
 		userID    string
 		want      *entity.User
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:     1,
@@ -58,7 +58,7 @@ func TestGetUser(t *testing.T) {
 				CreatedAt:    time.Date(2017, 1, 1, 0, 0, 0, 0, time.UTC),
 				UpdatedAt:    time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC),
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('242a9ea8-a9c7-40ba-b44a-deb3bae8ac6a','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
@@ -68,7 +68,7 @@ func TestGetUser(t *testing.T) {
 			name:      "異常系/Userが取得できない場合、NotFoundエラーを返すこと",
 			userID:    notExistTestUUID,
 			wantError: codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('242a9ea8-a9c7-40ba-b44a-deb3bae8ac6a','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
@@ -78,7 +78,7 @@ func TestGetUser(t *testing.T) {
 			name:      "異常系/エラーが起きた場合はInternalエラーを返すこと",
 			userID:    notExistTestUUID,
 			wantError: codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('242a9ea8-a9c7-40ba-b44a-deb3bae8ac6a','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
@@ -125,7 +125,7 @@ func TestCreateUser(t *testing.T) {
 		request   *entity.User
 		want      *entity.User
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:   1,
@@ -209,7 +209,7 @@ func TestUpdateUserProfile(t *testing.T) {
 		request   *entity.User
 		want      *entity.User
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:   1,
@@ -230,7 +230,7 @@ func TestUpdateUserProfile(t *testing.T) {
 				Introduction: "更新",
 				BloodType:    commonEntity.BloodTypeB,
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
 		},
@@ -245,7 +245,7 @@ func TestUpdateUserProfile(t *testing.T) {
 				BloodType:    commonEntity.BloodTypeB,
 			},
 			wantError: codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
 		},
@@ -260,7 +260,7 @@ func TestUpdateUserProfile(t *testing.T) {
 				BloodType:    commonEntity.BloodTypeB,
 			},
 			wantError: codes.Internal,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
 		},
@@ -311,7 +311,7 @@ func TestUpdateUserStatus(t *testing.T) {
 		request   *entity.User
 		want      *entity.User
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:   1,
@@ -329,7 +329,7 @@ func TestUpdateUserStatus(t *testing.T) {
 				Introduction: "introduction",
 				BloodType:    commonEntity.BloodTypeA,
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
 		},
@@ -341,7 +341,7 @@ func TestUpdateUserStatus(t *testing.T) {
 				Status: entity.UserStatusPremium,
 			},
 			wantError: codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
 		},
@@ -353,7 +353,7 @@ func TestUpdateUserStatus(t *testing.T) {
 				Status: "invalid status",
 			},
 			wantError: codes.Internal,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
 		},
@@ -404,7 +404,7 @@ func TestUpdateUserPassword(t *testing.T) {
 		request   *entity.UserPassword
 		want      *entity.User
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:   1,
@@ -414,7 +414,7 @@ func TestUpdateUserPassword(t *testing.T) {
 				Password:             "password!",
 				PasswordConfirmation: "password!",
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
 		},
@@ -427,7 +427,7 @@ func TestUpdateUserPassword(t *testing.T) {
 				PasswordConfirmation: "password!",
 			},
 			wantError: codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('27220eac-e75d-40cf-8163-e252c78bf2fe','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
 		},

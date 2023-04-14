@@ -13,22 +13,24 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/env"
 )
 
-type Client struct {
+type Client interface {
+	Conn(ctx context.Context) *gorm.DB
+	TruncateTable(ctx context.Context, t *testing.T, tables []string)
+}
+
+type client struct {
 	db *gorm.DB
 }
 
-func NewClient(e *env.DB, zapLogger *zap.Logger) (*Client, error) {
+func NewClient(e *env.DB, zapLogger *zap.Logger) Client {
 	gormLogger := initGormLogger(zapLogger)
-	db, err := open(e)
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect master DB: %v", err)
-	}
+	db, _ := open(e)
 
 	db.Logger = db.Logger.LogMode(gormLogger.LogLevel)
 
-	return &Client{
+	return &client{
 		db: db,
-	}, nil
+	}
 }
 
 func open(env *env.DB) (*gorm.DB, error) {
@@ -47,11 +49,11 @@ func open(env *env.DB) (*gorm.DB, error) {
 	return db, nil
 }
 
-func (c *Client) Conn(ctx context.Context) *gorm.DB {
+func (c *client) Conn(ctx context.Context) *gorm.DB {
 	return c.db.WithContext(ctx)
 }
 
-func (c *Client) TruncateTable(ctx context.Context, t *testing.T, tables []string) {
+func (c *client) TruncateTable(ctx context.Context, t *testing.T, tables []string) {
 	for _, table := range tables {
 		require.NoError(t, c.Conn(ctx).Exec(fmt.Sprintf("TRUNCATE TABLE %s RESTART IDENTITY CASCADE;", table)).Error)
 	}

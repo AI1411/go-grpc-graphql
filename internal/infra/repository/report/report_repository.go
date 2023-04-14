@@ -19,10 +19,10 @@ type Repository interface {
 }
 
 type reportRepository struct {
-	dbClient *db.Client
+	dbClient db.Client
 }
 
-func NewReportRepository(dbClient *db.Client) Repository {
+func NewReportRepository(dbClient db.Client) Repository {
 	return &reportRepository{
 		dbClient: dbClient,
 	}

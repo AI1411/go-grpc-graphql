@@ -10,7 +10,7 @@ import (
 	"github.com/AI1411/go-grpc-graphql/internal/infra/logger"
 )
 
-func TestConnection(t *testing.T) (*db.Client, error) {
+func TestConnection(t *testing.T) (db.Client, error) {
 	a := assert.New(t)
 
 	e, err := env.NewValue()
@@ -19,8 +19,6 @@ func TestConnection(t *testing.T) (*db.Client, error) {
 	zapLogger, err := logger.NewLogger(true)
 	a.NoError(err)
 
-	dbClient, err := db.NewClient(&e.DB, zapLogger)
-	a.NoError(err)
-
+	dbClient := db.NewClient(&e.DB, zapLogger)
 	return dbClient, err
 }

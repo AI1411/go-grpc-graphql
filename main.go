@@ -38,10 +38,7 @@ func main() {
 
 	zapLogger, _ := logger.NewLogger(e.Debug)
 
-	dbClient, err := db.NewClient(&e.DB, zapLogger)
-	if err != nil {
-		log.Fatalf("failed to connect to db: %v", err)
-	}
+	dbClient := db.NewClient(&e.DB, zapLogger)
 	redisClient := redis.NewRedisClient(&e.Redis)
 
 	awsSession := util.NewAWSSession(e)

@@ -15,10 +15,10 @@ type Repository interface {
 }
 
 type tweetRepository struct {
-	dbClient *db.Client
+	dbClient db.Client
 }
 
-func NewTweetRepository(dbClient *db.Client) Repository {
+func NewTweetRepository(dbClient db.Client) Repository {
 	return &tweetRepository{
 		dbClient: dbClient,
 	}

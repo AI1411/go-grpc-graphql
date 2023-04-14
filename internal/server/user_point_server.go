@@ -14,14 +14,14 @@ import (
 
 type UserPointServer struct {
 	grpc.UnimplementedUserPointServiceServer
-	dbClient      *db.Client
+	dbClient      db.Client
 	zapLogger     *zap.Logger
 	userRepo      repository.Repository
 	userPointRepo repository.PointRepository
 }
 
 func NewUserPointServer(
-	dbClient *db.Client,
+	dbClient db.Client,
 	zapLogger *zap.Logger,
 	userRepo repository.Repository,
 	userPointRepo repository.PointRepository,

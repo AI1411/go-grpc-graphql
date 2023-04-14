@@ -19,10 +19,10 @@ type Repository interface {
 }
 
 type hobbyRepository struct {
-	dbClient *db.Client
+	dbClient db.Client
 }
 
-func NewHobbyRepository(dbClient *db.Client) Repository {
+func NewHobbyRepository(dbClient db.Client) Repository {
 	return &hobbyRepository{
 		dbClient: dbClient,
 	}

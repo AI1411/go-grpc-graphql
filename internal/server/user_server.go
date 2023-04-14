@@ -17,7 +17,7 @@ import (
 
 type UserServer struct {
 	grpc.UnimplementedUserServiceServer
-	dbClient      *db.Client
+	dbClient      db.Client
 	zapLogger     *zap.Logger
 	userRepo      repository.Repository
 	userHobbyRepo repository.HobbyRepository
@@ -25,7 +25,7 @@ type UserServer struct {
 }
 
 func NewUserServer(
-	dbClient *db.Client,
+	dbClient db.Client,
 	zapLogger *zap.Logger,
 	userRepo repository.Repository,
 	userHobbyRepo repository.HobbyRepository,

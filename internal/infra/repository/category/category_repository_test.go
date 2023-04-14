@@ -35,7 +35,7 @@ func TestChatRepository_ListCategory(t *testing.T) {
 		request   *entity.CategoryCondition
 		want      []*entity.Category
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:      1,
@@ -59,7 +59,7 @@ func TestChatRepository_ListCategory(t *testing.T) {
 					Description: "remarks",
 				},
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc', 'category', 'description');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('18bb7429-e891-4f41-b045-a52aaf53ea93', 'name', 'remarks');`).Error)
 			},
@@ -80,7 +80,7 @@ func TestChatRepository_ListCategory(t *testing.T) {
 					Description: "description",
 				},
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc', 'category', 'description');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('18bb7429-e891-4f41-b045-a52aaf53ea93', 'name', 'remarks');`).Error)
 			},
@@ -101,7 +101,7 @@ func TestChatRepository_ListCategory(t *testing.T) {
 					Description: "description",
 				},
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc', 'category', 'description');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('18bb7429-e891-4f41-b045-a52aaf53ea93', 'name', 'remarks');`).Error)
 			},
@@ -122,7 +122,7 @@ func TestChatRepository_ListCategory(t *testing.T) {
 					Description: "remarks",
 				},
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc', 'category', 'description');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('18bb7429-e891-4f41-b045-a52aaf53ea93', 'name', 'remarks');`).Error)
 			},
@@ -169,7 +169,7 @@ func TestChatRepository_GetCategory(t *testing.T) {
 		categoryID string
 		want       *entity.Category
 		wantError  codes.Code
-		setup      func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup      func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:         1,
@@ -209,7 +209,7 @@ func TestChatRepository_GetCategory(t *testing.T) {
 					},
 				},
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc', 'category', 'description');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('18bb7429-e891-4f41-b045-a52aaf53ea93', 'name', 'remarks');`).Error)
 
@@ -222,7 +222,7 @@ func TestChatRepository_GetCategory(t *testing.T) {
 			name:       "異常系/Categoryが存在しない場合はNotFoundエラー",
 			categoryID: notExistUserID,
 			wantError:  codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc', 'category', 'description');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('18bb7429-e891-4f41-b045-a52aaf53ea93', 'name', 'remarks');`).Error)
 
@@ -306,13 +306,13 @@ func TestChatRepository_DeleteCategory(t *testing.T) {
 		id         int
 		name       string
 		categoryID string
-		setup      func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup      func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:         1,
 			name:       "正常系/Categoryが削除できること",
 			categoryID: categoryID,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO categories (id,name,description) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc', 'category', 'description');`).Error)
 
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO hobbies (id,name,description, category_id) VALUES ('da0b1f2b-276a-417d-b4c2-77b81c8ad3c3', 'スポーツ', '大谷翔平', 'cc293e0a-7342-4aac-b49b-a851e8af9dfc');`).Error)

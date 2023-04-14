@@ -41,11 +41,11 @@ var (
 )
 
 type userRepository struct {
-	dbClient   *db.Client
+	dbClient   db.Client
 	awsSession *session.Session
 }
 
-func NewUserRepository(dbClient *db.Client, awsSession *session.Session) Repository {
+func NewUserRepository(dbClient db.Client, awsSession *session.Session) Repository {
 	return &userRepository{
 		dbClient:   dbClient,
 		awsSession: awsSession,

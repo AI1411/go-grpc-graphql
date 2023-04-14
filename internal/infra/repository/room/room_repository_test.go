@@ -40,7 +40,7 @@ func TestChatRepository_ListRoom(t *testing.T) {
 		userID    string
 		want      []*entity.Room
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:     1,
@@ -72,7 +72,7 @@ func TestChatRepository_ListRoom(t *testing.T) {
 					UpdatedAt: time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC),
 				},
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO rooms (id,user_id,created_at,updated_at) VALUES ('18bb7429-e891-4f41-b045-a52aaf53ea93','cc293e0a-7342-4aac-b49b-a851e8af9dfc','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO rooms (id,user_id,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','cc293e0a-7342-4aac-b49b-a851e8af9dfc','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 			},
@@ -119,7 +119,7 @@ func TestChatRepository_GetRoom(t *testing.T) {
 		roomID    string
 		want      *entity.Room
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:     1,
@@ -181,7 +181,7 @@ func TestChatRepository_GetRoom(t *testing.T) {
 				CreatedAt: time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC),
 				UpdatedAt: time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC),
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO rooms (id,user_id,created_at,updated_at) VALUES ('18bb7429-e891-4f41-b045-a52aaf53ea93','cc293e0a-7342-4aac-b49b-a851e8af9dfc','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO rooms (id,user_id,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','cc293e0a-7342-4aac-b49b-a851e8af9dfc','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 
@@ -194,7 +194,7 @@ func TestChatRepository_GetRoom(t *testing.T) {
 			name:      "正常系/Roomが取得できること",
 			roomID:    notExistUserID,
 			wantError: codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO rooms (id,user_id,created_at,updated_at) VALUES ('18bb7429-e891-4f41-b045-a52aaf53ea93','cc293e0a-7342-4aac-b49b-a851e8af9dfc','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO rooms (id,user_id,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','cc293e0a-7342-4aac-b49b-a851e8af9dfc','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 

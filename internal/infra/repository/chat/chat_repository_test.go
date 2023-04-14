@@ -37,7 +37,7 @@ func TestChatRepository_ListChat(t *testing.T) {
 		request   *entity.Chat
 		want      []*entity.Chat
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:   1,
@@ -96,7 +96,7 @@ func TestChatRepository_ListChat(t *testing.T) {
 					UpdatedAt: time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC),
 				},
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('3975482e-0133-4b4e-8d91-b8c983fbc9e6','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 
@@ -148,7 +148,7 @@ func TestChatRepository_CreateChat(t *testing.T) {
 		request   *entity.Chat
 		want      []*entity.Chat
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:   1,
@@ -211,7 +211,7 @@ func TestChatRepository_CreateChat(t *testing.T) {
 					UpdatedAt: time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC),
 				},
 			},
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('3975482e-0133-4b4e-8d91-b8c983fbc9e6','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 
@@ -236,7 +236,7 @@ func TestChatRepository_CreateChat(t *testing.T) {
 				},
 			},
 			wantError: codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('3975482e-0133-4b4e-8d91-b8c983fbc9e6','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 
@@ -261,7 +261,7 @@ func TestChatRepository_CreateChat(t *testing.T) {
 				},
 			},
 			wantError: codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('3975482e-0133-4b4e-8d91-b8c983fbc9e6','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 
@@ -286,7 +286,7 @@ func TestChatRepository_CreateChat(t *testing.T) {
 				},
 			},
 			wantError: codes.FailedPrecondition,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('3975482e-0133-4b4e-8d91-b8c983fbc9e6','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','退会済','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 
@@ -311,7 +311,7 @@ func TestChatRepository_CreateChat(t *testing.T) {
 				},
 			},
 			wantError: codes.FailedPrecondition,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','アカウント停止','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('3975482e-0133-4b4e-8d91-b8c983fbc9e6','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','通常会員','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 
@@ -353,13 +353,13 @@ func TestChatRepository_MarkChatAsRead(t *testing.T) {
 		name      string
 		chatID    string
 		wantError codes.Code
-		setup     func(ctx context.Context, t *testing.T, dbClient *db.Client)
+		setup     func(ctx context.Context, t *testing.T, dbClient db.Client)
 	}{
 		{
 			id:     1,
 			name:   "正常系/Chatが既読にできること",
 			chatID: testChatID,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('3975482e-0133-4b4e-8d91-b8c983fbc9e6','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 
@@ -373,7 +373,7 @@ func TestChatRepository_MarkChatAsRead(t *testing.T) {
 			name:      "異常系/Chatが見つからない場合、NotFoundエラーが返ること",
 			chatID:    notExistUserID,
 			wantError: codes.NotFound,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('3975482e-0133-4b4e-8d91-b8c983fbc9e6','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 
@@ -387,7 +387,7 @@ func TestChatRepository_MarkChatAsRead(t *testing.T) {
 			name:      "異常系/Chatが既読の場合はInvalidArgumentが返ること",
 			chatID:    testChatID,
 			wantError: codes.InvalidArgument,
-			setup: func(ctx context.Context, t *testing.T, dbClient *db.Client) {
+			setup: func(ctx context.Context, t *testing.T, dbClient db.Client) {
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('cc293e0a-7342-4aac-b49b-a851e8af9dfc','username','test@gmail.com','$2a$10$Ig2ubFhcRtxTswDOZ95ymOfpnhRjm4DhmTPwlp1VtC.3NoCO4y2aC','通常会員','岡山県','introduction','A型','2017-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 				require.NoError(t, dbClient.Conn(ctx).Exec(`INSERT INTO users (id,username,email,password,status,prefecture,introduction,blood_type,created_at,updated_at) VALUES ('3975482e-0133-4b4e-8d91-b8c983fbc9e6','tetuser','usr@gmail.com','$2a$10$.0GNxvJhIqEuE4riZhpvAe/H83bbmstg2PGtlsPBidyd/R51ooW9y','プレミアム','岩手県','自己紹介','B型','2018-01-01T00:00:00+00:00','2018-01-01T00:00:00+00:00');`).Error)
 

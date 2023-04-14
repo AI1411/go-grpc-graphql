@@ -17,14 +17,14 @@ import (
 
 type ChatServer struct {
 	grpc.UnimplementedChatServiceServer
-	dbClient  *db.Client
+	dbClient  db.Client
 	zapLogger *zap.Logger
 	userRepo  userRepo.Repository
 	chatRepo  chatRepo.Repository
 }
 
 func NewChatServer(
-	dbClient *db.Client,
+	dbClient db.Client,
 	zapLogger *zap.Logger,
 	userRepo userRepo.Repository,
 	chatRepo chatRepo.Repository,

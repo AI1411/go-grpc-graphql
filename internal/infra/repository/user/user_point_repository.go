@@ -21,10 +21,10 @@ type PointRepository interface {
 const defaultDistributePoint = 50
 
 type userPointRepository struct {
-	dbClient *db.Client
+	dbClient db.Client
 }
 
-func NewUserPointRepository(dbClient *db.Client) PointRepository {
+func NewUserPointRepository(dbClient db.Client) PointRepository {
 	return &userPointRepository{
 		dbClient: dbClient,
 	}

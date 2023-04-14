@@ -21,10 +21,10 @@ type Repository interface {
 }
 
 type chatRepository struct {
-	dbClient *db.Client
+	dbClient db.Client
 }
 
-func NewChatRepository(dbClient *db.Client) Repository {
+func NewChatRepository(dbClient db.Client) Repository {
 	return &chatRepository{
 		dbClient: dbClient,
 	}

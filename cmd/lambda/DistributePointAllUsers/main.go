@@ -27,11 +27,7 @@ func distributePointAllUsers() error {
 	zapLogger, _ := logger.NewLogger(e.Debug)
 	zapLogger.Info("DistributePointAllUsers Start")
 
-	dbClient, err := db.NewClient(&e.DB, zapLogger)
-	if err != nil {
-		log.Fatalf("failed to connect to db: %v", err)
-		return err
-	}
+	dbClient := db.NewClient(&e.DB, zapLogger)
 
 	userRepo := repository.NewUserRepository(dbClient, nil)
 	userPointRepo := repository.NewUserPointRepository(dbClient)
