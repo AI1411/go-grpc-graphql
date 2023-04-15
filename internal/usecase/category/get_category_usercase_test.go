@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/AI1411/go-grpc-graphql/internal/domain/category/entity"
+	hobbyEntity "github.com/AI1411/go-grpc-graphql/internal/domain/hobby/entity"
 	mockCategory "github.com/AI1411/go-grpc-graphql/internal/infra/repository/category/mock"
 	"github.com/AI1411/go-grpc-graphql/internal/usecase/category"
 	"github.com/AI1411/go-grpc-graphql/internal/util"
@@ -29,6 +30,20 @@ func TestGetCategoryUsecaseImpl_Exec(t *testing.T) {
 		ID:          id,
 		Name:        "Sports",
 		Description: "All about sports",
+		Hobbies: []*hobbyEntity.Hobby{
+			{
+				ID:          util.StringToNullUUID("123e4567-e89b-12d3-a456-426614174001"),
+				Name:        "Football",
+				Description: "All about football",
+				CategoryID:  id,
+			},
+			{
+				ID:          util.StringToNullUUID("123e4567-e89b-12d3-a456-426614174002"),
+				Name:        "Basketball",
+				Description: "All about basketball",
+				CategoryID:  id,
+			},
+		},
 	}
 
 	t.Run("success", func(t *testing.T) {
@@ -41,6 +56,7 @@ func TestGetCategoryUsecaseImpl_Exec(t *testing.T) {
 		assert.Equal(t, categoryID, res.Category.Id)
 		assert.Equal(t, category.Name, res.Category.Name)
 		assert.Equal(t, category.Description, res.Category.Description)
+		assert.Equal(t, len(category.Hobbies), len(res.Hobbies))
 	})
 
 	t.Run("error", func(t *testing.T) {
