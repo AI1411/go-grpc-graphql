@@ -72,4 +72,9 @@ jobs:
           STAR_AWS_S3_BUCKET_NAME: star-user-images
           STAR_AWS_S3_ENDPOINT: http://localhost:4566
 
-        run: gotestsum -- -p 1 -count=1 ./...
+        run: go test -coverprofile=coverage.out -p 1 -count=1 ./... && go tool cover -html=coverage.out -o coverage.json
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.json

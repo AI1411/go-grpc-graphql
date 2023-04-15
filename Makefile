@@ -17,7 +17,7 @@ test:
 	docker exec -t --env-file .env.test star gotestsum -- -p 1 -count=1 ./...
 test-with-coverage:
 	docker exec -t --env-file .env.test star richgo test -coverprofile=coverage.out -p 1 -count=1 ./...
-	docker exec -t --env-file .env.test star go tool cover -html=coverage.out -o coverage.html
+	docker exec -t --env-file .env.test star go tool cover -html=coverage.out -o coverage.json
 mockgen-chat:
 	mockgen -source ./internal/infra/repository/chat/chat_repository.go -destination=./internal/infra/repository/chat/mock/mock_chat_repository.go
 mockgen-user:
