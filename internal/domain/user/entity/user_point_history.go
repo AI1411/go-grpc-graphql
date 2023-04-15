@@ -14,3 +14,14 @@ type UserPointHistory struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 }
+
+func NewUserPointHistory(id, userID uuid.NullUUID, point int, operationType string, createdAt, updatedAt time.Time) *UserPointHistory {
+	return &UserPointHistory{
+		ID:            id,
+		UserID:        userID,
+		Point:         point,
+		OperationType: operationType,
+		CreatedAt:     createdAt,
+		UpdatedAt:     updatedAt,
+	}
+}

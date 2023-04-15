@@ -7,3 +7,11 @@ type UserHobby struct {
 	UserID  uuid.NullUUID
 	HobbyID uuid.NullUUID
 }
+
+func NewUserHobby(id, userID, hobbyID uuid.NullUUID) *UserHobby {
+	return &UserHobby{
+		ID:      id,
+		UserID:  userID,
+		HobbyID: hobbyID,
+	}
+}

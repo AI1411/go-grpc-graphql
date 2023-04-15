@@ -32,3 +32,7 @@ var UserStatusValue = map[string]UserStatus{
 func (u UserStatus) String() string {
 	return string(u)
 }
+
+func NewUserStatus(status string) UserStatus {
+	return UserStatus(status)
+}
