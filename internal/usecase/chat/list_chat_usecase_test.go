@@ -8,6 +8,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/AI1411/go-grpc-graphql/grpc"
 	chatEntity "github.com/AI1411/go-grpc-graphql/internal/domain/chat/entity"
@@ -83,5 +85,27 @@ func Test_listChatUsecaseImpl_Exec(t *testing.T) {
 			assert.Equal(t, chat.CreatedAt.Unix(), resp.Chats[i].GetCreatedAt().AsTime().Unix())
 			assert.Equal(t, chat.UpdatedAt.Unix(), resp.Chats[i].GetUpdatedAt().AsTime().Unix())
 		}
+	})
+
+	t.Run("異常系/Test listChatUsecaseImpl_Exec", func(t *testing.T) {
+		// Test data
+		roomID = uuid.New().String()
+		userID = uuid.New().String()
+
+		mockChatRepo.
+			EXPECT().
+			ListChat(ctx, gomock.Any()).
+			Return(nil, status.Errorf(codes.Internal, "failed to list chat")).
+			Times(1)
+
+		// Call Exec() method
+		in = &grpc.ListChatRequest{
+			RoomId: roomID,
+			UserId: userID,
+		}
+		resp, err = usecase.Exec(context.Background(), in)
+
+		a.Nil(resp)
+		a.Error(err)
 	})
 }

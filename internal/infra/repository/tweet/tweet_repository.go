@@ -3,6 +3,9 @@ package tweet
 import (
 	"context"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	"github.com/AI1411/go-grpc-graphql/internal/domain/tweet/entity"
 	userEntity "github.com/AI1411/go-grpc-graphql/internal/domain/user/entity"
 	"github.com/AI1411/go-grpc-graphql/internal/infra/db"
@@ -47,7 +50,7 @@ func (r *tweetRepository) ListTweet(ctx context.Context) ([]*entity.Tweet, error
 
 func (r *tweetRepository) CreateTweet(ctx context.Context, tweet *entity.Tweet) (string, error) {
 	if err := r.dbClient.Conn(ctx).Create(tweet).Error; err != nil {
-		return "", err
+		return "", status.Errorf(codes.Internal, "failed to create tweet: %v", err)
 	}
 
 	return util.NullUUIDToString(tweet.ID), nil

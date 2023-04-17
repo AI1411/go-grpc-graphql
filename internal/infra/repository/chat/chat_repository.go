@@ -36,7 +36,7 @@ func (c *chatRepository) ListChat(ctx context.Context, chat *entity.Chat) ([]*en
 		Where("from_user_id", chat.FromUserID).
 		Where("room_id", chat.RoomID).
 		Find(&chats).Error; err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.Internal, "failed to list chat: %v", err)
 	}
 	return chats, nil
 }
