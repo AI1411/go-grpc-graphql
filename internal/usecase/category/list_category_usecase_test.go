@@ -19,7 +19,7 @@ func TestListCategoryUsecaseImpl_Exec(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockCategoryRepo := mockCategory.NewMockCategoryRepository(ctrl)
+	mockCategoryRepo := mockCategory.NewMockRepository(ctrl)
 
 	listCategoryUsecase := category.NewListCategoryUsecaseImpl(mockCategoryRepo)
 
