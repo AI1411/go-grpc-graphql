@@ -16,7 +16,7 @@ func TestDeleteCategoryUsecaseImpl_Exec(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockCategoryRepo := mockCategory.NewMockCategoryRepository(ctrl)
+	mockCategoryRepo := mockCategory.NewMockRepository(ctrl)
 
 	deleteCategoryUsecase := category.NewDeleteCategoryUsecaseImpl(mockCategoryRepo)
 

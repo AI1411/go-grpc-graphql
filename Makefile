@@ -26,13 +26,17 @@ mockgen-room:
 mockgen-tweet:
 	mockgen -source ./internal/infra/repository/tweet/tweet_repository.go -destination=./internal/infra/repository/tweet/mock/mock_tweet_repository.go
 mockgen-category:
-	mockgen -source ./internal/infra/repository/category/category_repository.go -destination=./internal/infra/repository/category/mock/category_tweet_repository.go
+	mockgen -source ./internal/infra/repository/category/category_repository.go -destination=./internal/infra/repository/category/mock/mock_category_repository.go
+mockgen-hobby:
+	mockgen -source ./internal/infra/repository/hobby/hobby_repository.go -destination=./internal/infra/repository/hobby/mock/mock_hobby_repository.go
+mockgen-report:
+	mockgen -source ./internal/infra/repository/report/report_repository.go -destination=./internal/infra/repository/report/mock/mock_report_repository.go
 cp-schema:
 	cat ./DDL/*.sql > ./DDL/scripts/schema.sql
 cover:
-	docker exec -t --env-file .env.test star go test -cover -- -p 1 -count=1 ./... -coverprofile=cover.out
+	docker exec -t --env-file .env.test star go test -cover -- -p 1 -count=1 ./... -coverprofile=coverage.out
     # 自動生成コードをカバレッジ対象から外し、カバレッジファイルを作成
-	docker exec -t --env-file .env.test star go tool cover -html=cover.out -o cover.html
+	docker exec -t --env-file .env.test star go tool cover -html=coverage.out -o cover.html
 	open cover.html
 fmt: ## 除外する必要のあるディレクトリを新規で作成した場合、-not -path "除外したいディレクトリ"を追加する
 	find . -name "*.go" -not -path "./grpc/*.pb.go" | xargs gofumpt -w -l
