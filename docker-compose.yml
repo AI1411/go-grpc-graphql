@@ -33,6 +33,7 @@ services:
       - STAR_POSTGRES_USER=${STAR_POSTGRES_USER}
       - STAR_POSTGRES_PASSWORD=${STAR_POSTGRES_PASSWORD}
       - TZ=Asia/Tokyo
+      - POSTGRES_HOST_AUTH_METHOD=trust
     networks:
       - star-network
   redis-server:

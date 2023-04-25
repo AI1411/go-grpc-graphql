@@ -5,6 +5,8 @@ upd:
 	docker-compose --env-file .env.local -f docker-compose.yml up -d
 down:
 	docker-compose --env-file .env.local -f docker-compose.yml down
+destroy:
+	docker-compose --env-file .env.local -f docker-compose.yml down --rmi all -v && docker volume prune --force
 star:
 	docker-compose --env-file .env.local -f docker-compose.yml exec star bash
 gen-proto:
