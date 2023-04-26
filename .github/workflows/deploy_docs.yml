@@ -1,0 +1,55 @@
+name: Deploy GitHub Pages with Astro
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+
+      - name: Set up golang
+        uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.18.4'
+            # 実行権限付与
+      - name: Add Permission
+        run: chmod a+x ./generate-document.sh
+
+      - name: Run
+        run: ./generate-document.sh
+
+      - name: Run
+        run: ./generate-document.sh
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: docs/
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
